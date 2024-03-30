@@ -51,11 +51,13 @@ class LoginScreen extends StatelessWidget {
                   SizeConfig.getSpace(),
                   Obx(
                     () => CustomPasswordField(
-                        labelText: "Password",
-                        eye: c.passwordObscure.value,
-                        onEyeClick: c.onEyeCLick,
-                        controller: c.passwordController,
-                        textInputAction: TextInputAction.done),
+                      labelText: "Password",
+                      eye: c.passwordObscure.value,
+                      onEyeClick: c.onEyeCLick,
+                      controller: c.passwordController,
+                      textInputAction: TextInputAction.done,
+                      validator: Validators.checkPasswordField,
+                    ),
                   ),
                   const SizedBox(
                     height: 16,

@@ -48,6 +48,7 @@ class DashboardScreen extends StatelessWidget {
       ),
       body: PageView(
         controller: c.pageController,
+        physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (value) {
           c.changeIndex(value);
         },

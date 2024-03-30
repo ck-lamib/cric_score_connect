@@ -42,14 +42,12 @@ class LoginRepo {
       // }
       AccessToken token = AccessToken(
         accessToken: "access token",
-        tokenType: "Bearer",
-        expiresAt: "2024-15-15",
       );
 
       User user = User(
           fullName: "Bimal khatri",
           playerName: "ninja123",
-          email: "bimal@gmail.com",
+          email: email,
           phone: "9867743236",
           dob: "2002-07-07",
           address: "Pokhara",

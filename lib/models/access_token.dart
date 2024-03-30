@@ -1,26 +1,20 @@
 class AccessToken {
   String? accessToken;
-  String? tokenType;
-  String? expiresAt;
 
-  AccessToken({this.accessToken, this.tokenType, this.expiresAt});
+  AccessToken({this.accessToken});
 
   AccessToken.fromJson(Map<String, dynamic> json) {
-    accessToken = json['access_token'];
-    tokenType = json['token_type'];
-    expiresAt = json['expires_at'];
+    accessToken = json['token'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['access_token'] = accessToken;
-    data['token_type'] = tokenType;
-    data['expires_at'] = expiresAt;
+    data['token'] = accessToken;
     return data;
   }
 
   @override
   String toString() {
-    return "$tokenType $accessToken";
+    return "$accessToken";
   }
 }

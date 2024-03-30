@@ -4,7 +4,6 @@ import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
-import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_date_picker.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
@@ -12,13 +11,12 @@ import 'package:cric_score_connect/widgets/custom/custom_passwordfiled.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class SignupScreen extends StatelessWidget {
   static const String routeName = "/signup-screen";
   SignupScreen({super.key});
-  var c = Get.find<SignupController>();
+  final SignupController c = Get.find<SignupController>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +48,23 @@ class SignupScreen extends StatelessWidget {
                     controller: c.userNameController,
                     labelText: "Full name",
                     hint: "Harry Gonzalage",
+                    preIconPath: const Icon(
+                      Icons.person_2_outlined,
+                      color: AppColors.hintTextColor,
+                    ),
                     validator: Validators.checkFieldEmpty,
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.name,
                   ),
                   SizeConfig.getSpace(),
-                  CustomTextField(
+                  const CustomTextField(
                     // controller: c.userNameController,
                     labelText: "User name",
                     hint: "Player123",
+                    preIconPath: Icon(
+                      Icons.person_3_outlined,
+                      color: AppColors.hintTextColor,
+                    ),
                     validator: Validators.checkFieldEmpty,
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.name,
@@ -68,6 +74,10 @@ class SignupScreen extends StatelessWidget {
                     controller: c.emailController,
                     labelText: "Email",
                     hint: "harry@gmail.com",
+                    preIconPath: const Icon(
+                      Icons.email_outlined,
+                      color: AppColors.hintTextColor,
+                    ),
                     validator: Validators.checkEmailField,
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.emailAddress,
@@ -77,11 +87,14 @@ class SignupScreen extends StatelessWidget {
                     controller: c.birthdayController,
                     labelText: "Birthday",
                     hint: "2002-07-07",
+                    preIconPath: const Icon(
+                      Icons.calendar_month_outlined,
+                      color: AppColors.hintTextColor,
+                    ),
                     validator: Validators.checkEmailField,
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.datetime,
                     readOnly: true,
-                    suffixIconPath: ImagePath.calendar,
                     onTap: () async {
                       DateTime? result = await CustomDatePicker().pickDate(
                         context: context,
@@ -98,6 +111,11 @@ class SignupScreen extends StatelessWidget {
                   CustomTextField(
                     controller: c.phoneController,
                     labelText: "Phone",
+                    hint: "9867743236",
+                    preIconPath: const Icon(
+                      Icons.phone,
+                      color: AppColors.hintTextColor,
+                    ),
                     validator: Validators.checkPhoneField,
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.phone,

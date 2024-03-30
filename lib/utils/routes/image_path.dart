@@ -2,7 +2,7 @@ class ImagePath {
   static const String baseIconPath = "assets/icons";
   static const String eye = "$baseIconPath/eye.svg";
   static const String eyeOff = "$baseIconPath/eye_off.svg";
-  static const String calendar = "$baseIconPath/calendar.svg.svg";
+  static const String calendar = "$baseIconPath/calendar.svg";
 
   static const basePath = "assets/images";
   static const String placeholder = "$basePath/placeholder.jpg";

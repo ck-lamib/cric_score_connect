@@ -22,7 +22,8 @@ class Validators {
 
   static String? checkOptionalPhoneField(String? fieldContent) {
     fieldContent!.trim();
-    if ((fieldContent.isNotEmpty) && !(fieldContent.isNumericOnly && fieldContent.length == 10)) {
+    if ((fieldContent.isNotEmpty) &&
+        !(fieldContent.isNumericOnly && fieldContent.length == 10)) {
       return 'Invalid phone number';
     }
     return null;
@@ -32,8 +33,8 @@ class Validators {
     fieldContent!.trim();
     if (fieldContent.isEmpty) {
       return 'This field is required';
-    } else if (fieldContent.length < 8) {
-      return 'The password should be at least 8 digits';
+    } else if (fieldContent.length < 6) {
+      return 'The password should be at least 6 digits';
     }
 
     return null;

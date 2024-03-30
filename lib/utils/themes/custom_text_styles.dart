@@ -57,6 +57,14 @@ class CustomTextStyles {
         fontWeight: FontWeight.w400);
   }
 
+  static TextStyle f14W500({Color? color}) {
+    return TextStyle(
+        color: color,
+        fontFamily: "WorkSans",
+        fontSize: 14,
+        fontWeight: FontWeight.w500);
+  }
+
   static TextStyle f16W400({Color? color}) {
     return TextStyle(
         color: color,

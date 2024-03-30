@@ -9,9 +9,13 @@ import 'package:http/http.dart' as http;
 
 class RegisterRepo {
   static Future<void> register({
-    required String email,
-    required String password,
     required String name,
+    required String userName,
+    required String email,
+    required String dob,
+    required String phone,
+    required String address,
+    required String password,
     required Function(User user, AccessToken token) onSuccess,
     required Function(String message) onError,
   }) async {
@@ -23,7 +27,11 @@ class RegisterRepo {
 
       var body = {
         "name": name,
+        "userName": userName,
         "email": email,
+        "dob": dob,
+        "phone": phone,
+        "address": address,
         "password": password,
       };
 
@@ -34,17 +42,28 @@ class RegisterRepo {
           headers: headers,
           body: body);
 
-      log("${Api.signupUrl} ===================>");
-      log(json.encode(body));
-      log(response.body);
+      if (response.statusCode == 200) {
+        log("${Api.signupUrl} ===================>");
+        log(json.encode(body));
+        log(response.body);
 
-      dynamic data = jsonDecode(response.body);
-      if (data["success"]) {
-        AccessToken token = AccessToken.fromJson(data["data"]["token"]);
-        User user = User.fromJson(data["data"]["customer"]);
-        onSuccess(user, token);
+        dynamic data = jsonDecode(response.body);
+        // if (data["success"]) {
+        //   AccessToken token = AccessToken.fromJson(data["data"]["token"]);
+        //   User user = User.fromJson(data["data"]["customer"]);
+        //   onSuccess(user, token);
+        // } else {
+        //   onError(data["message"]);
+        // }
+        try {
+          AccessToken token = AccessToken.fromJson(data["token"]);
+          User user = User.fromJson(data["user"]);
+          onSuccess(user, token);
+        } catch (e) {
+          onError("Something went wrong.");
+        }
       } else {
-        onError(data["message"]);
+        onError("Status code is bad.");
       }
     } catch (e, s) {
       log(e.toString());

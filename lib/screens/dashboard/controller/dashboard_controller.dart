@@ -7,10 +7,10 @@ import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
   PageController pageController = PageController();
-  var pageViewItems = const [
+  var pageViewItems = [
     HomeScreen(),
-    SearchScreen(),
-    PlayerScreen(),
+    const SearchScreen(),
+    const PlayerScreen(),
     ProfileScreen(),
   ];
 

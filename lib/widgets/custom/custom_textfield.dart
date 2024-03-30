@@ -7,8 +7,10 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onValueChange;
   final FocusNode? focusNode;
   final String? hint;
-  final String? preIconPath;
-  final String? suffixIconPath;
+  final String? preIconSvgPath;
+  final Widget? preIconPath;
+  final String? suffixIconSvgPath;
+  final Widget? suffixIconPath;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputAction textInputAction;
@@ -29,7 +31,9 @@ class CustomTextField extends StatelessWidget {
     super.key,
     this.fillColor,
     this.hint,
+    this.preIconSvgPath,
     this.preIconPath,
+    this.suffixIconSvgPath,
     this.suffixIconPath,
     this.onValueChange,
     this.controller,
@@ -83,14 +87,32 @@ class CustomTextField extends StatelessWidget {
             : null,
         fillColor: fillColor ?? Colors.white,
         filled: true,
-        prefixIcon: (preIconPath != null)
-            ? SvgPicture.asset(
-                preIconPath!,
-                fit: BoxFit.scaleDown,
-              )
+        prefixIcon: (preIconSvgPath != null || preIconPath != null)
+            ? preIconPath ??
+                SvgPicture.asset(
+                  preIconSvgPath!,
+                  fit: BoxFit.scaleDown,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.hintTextColor,
+                    BlendMode.srcIn,
+                  ),
+                )
             : null,
-        suffixIcon: (suffixIconPath != null)
-            ? SvgPicture.asset(suffixIconPath!, fit: BoxFit.scaleDown)
+        suffixIcon: (suffixIconSvgPath != null || suffixIconPath != null)
+            ? suffixIconPath ??
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset(
+                    suffixIconSvgPath!,
+                    fit: BoxFit.scaleDown,
+                    height: 5,
+                    width: 5,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.hintTextColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                )
             : null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),

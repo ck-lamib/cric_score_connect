@@ -1,7 +1,11 @@
 import 'package:cric_score_connect/screens/dashboard/controller/dashboard_controller.dart';
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
+import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/screens/login/controller/login_controller.dart';
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
+import 'package:cric_score_connect/screens/personalinfo/controller/personal_info_controller.dart';
+import 'package:cric_score_connect/screens/personalinfo/views/personal_info.dart';
+import 'package:cric_score_connect/screens/profile/controller/profile_controller.dart';
 import 'package:cric_score_connect/screens/signup/controller/signup_controller.dart';
 import 'package:cric_score_connect/screens/signup/views/signup_screen.dart';
 import 'package:cric_score_connect/screens/splash/controller/splash_controller.dart';
@@ -42,6 +46,17 @@ var pages = [
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => DashboardController());
+        Get.lazyPut(() => HomeController());
+        Get.lazyPut(() => ProfileController());
+      },
+    ),
+  ),
+  GetPage(
+    name: PersonalInfoScreen.routeName,
+    page: () => PersonalInfoScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => PersonalInfoController());
       },
     ),
   ),
