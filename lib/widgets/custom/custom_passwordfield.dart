@@ -41,7 +41,7 @@ class CustomPasswordField extends StatelessWidget {
       validator: validator ?? Validators.checkPasswordField,
       obscureText: eye,
       maxLines: 1,
-      onTapOutside: (event) => FocusScope.of(context).unfocus(),
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       textInputAction: textInputAction,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
@@ -79,21 +79,29 @@ class CustomPasswordField extends StatelessWidget {
             width: 1,
           ),
         ),
+        prefixIcon: const Icon(
+          Icons.password_rounded,
+          color: AppColors.hintTextColor,
+        ),
         suffixIcon: IconButton(
           onPressed: onEyeClick,
           icon: (eye)
               ? SvgPicture.asset(
                   ImagePath.eyeOff,
                   height: 16,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                  colorFilter: const ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.srcIn,
+                  ),
                   fit: BoxFit.scaleDown,
                 )
               : SvgPicture.asset(
                   ImagePath.eye,
                   height: 12,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                  colorFilter: const ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.srcIn,
+                  ),
                   fit: BoxFit.scaleDown,
                 ),
         ),

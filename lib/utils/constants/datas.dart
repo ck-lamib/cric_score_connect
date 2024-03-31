@@ -1,6 +1,6 @@
 var playerType = {
   "Bowler",
   "Batsman",
-  "Wicket-Keeper",
+  "Wicket-keeper",
   "All-Rounder",
 };

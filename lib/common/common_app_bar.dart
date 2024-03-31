@@ -87,7 +87,7 @@ class CommonSilverAppBar extends StatelessWidget {
                         ? InkWell(
                             borderRadius: BorderRadius.circular(360),
                             onTap: () {},
-                            child: Center(
+                            child: const Center(
                               child: Icon(
                                 Icons.notifications_active,
                                 color: AppColors.primaryColor,

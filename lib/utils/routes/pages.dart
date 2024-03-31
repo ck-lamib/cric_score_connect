@@ -3,6 +3,10 @@ import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/screens/login/controller/login_controller.dart';
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
+import 'package:cric_score_connect/screens/password/controller/change_password_controller.dart';
+import 'package:cric_score_connect/screens/password/controller/forget_password_controller.dart';
+import 'package:cric_score_connect/screens/password/views/change_passowrd_screen.dart';
+import 'package:cric_score_connect/screens/password/views/forget_passowrd_screen.dart';
 import 'package:cric_score_connect/screens/personalinfo/controller/personal_info_controller.dart';
 import 'package:cric_score_connect/screens/personalinfo/views/personal_info.dart';
 import 'package:cric_score_connect/screens/profile/controller/profile_controller.dart';
@@ -37,6 +41,24 @@ var pages = [
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => SignupController());
+      },
+    ),
+  ),
+  GetPage(
+    name: ForgetPasswordScreen.routeName,
+    page: () => ForgetPasswordScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => ForgetPasswordController());
+      },
+    ),
+  ),
+  GetPage(
+    name: ChangePasswordScreen.routeName,
+    page: () => ChangePasswordScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => ChangePasswordController());
       },
     ),
   ),

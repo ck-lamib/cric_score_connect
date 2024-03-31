@@ -1,12 +1,17 @@
+import 'package:cric_score_connect/core/core_controller.dart';
+import 'package:cric_score_connect/screens/login/views/login_screen.dart';
+import 'package:cric_score_connect/screens/password/views/change_passowrd_screen.dart';
 import 'package:cric_score_connect/screens/personalinfo/views/personal_info.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileBottomSection extends StatelessWidget {
-  const ProfileBottomSection({
+  ProfileBottomSection({
     super.key,
   });
+  final CoreController cc = Get.find<CoreController>();
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +52,15 @@ class ProfileBottomSection extends StatelessWidget {
             ),
             title: 'Game Information',
           ),
+          ProfileListTile(
+            leadingWidget: const Icon(
+              Icons.password_rounded,
+              color: AppColors.backGroundColor,
+            ),
+            title: 'Change password',
+            onTap: () =>
+                Navigator.of(context).pushNamed(ChangePasswordScreen.routeName),
+          ),
           const ProfileListTile(
             leadingWidget: Icon(
               Icons.history_rounded,
@@ -80,12 +94,17 @@ class ProfileBottomSection extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () async {
-                          if (context.mounted) {
-                            CustomSnackBar.success(
-                              title: "Logout Success",
-                              message: "You have successfully logout.",
-                            );
-                          }
+                          await cc.logOut().whenComplete(
+                            () {
+                              Get.offAllNamed(LoginScreen.routeName);
+                              if (context.mounted) {
+                                CustomSnackBar.success(
+                                  title: "Logout Success",
+                                  message: "You have successfully logout.",
+                                );
+                              }
+                            },
+                          );
                         },
                         child: const Text("Yes"),
                       ),

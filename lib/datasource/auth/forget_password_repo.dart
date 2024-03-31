@@ -1,18 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cric_score_connect/models/access_token.dart';
-import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/http_request.dart';
 import 'package:cric_score_connect/utils/routes/api.dart';
 import 'package:http/http.dart' as http;
 
-class LoginRepo {
-  static Future<void> login({
+class ForgetPasswordRepo {
+  static Future<void> forgetPassword({
     required String email,
-    required String password,
-    required Function(User user, AccessToken token) onSuccess,
+    required Function(String message) onSuccess,
     required Function(String message) onError,
   }) async {
     try {
@@ -23,30 +20,26 @@ class LoginRepo {
 
       var body = {
         "email": email,
-        "password": password,
       };
 
-      CustomLogger.trace(Api.loginUrl);
+      CustomLogger.trace(Api.forgetPasswordUrl);
       CustomLogger.trace(json.encode(body));
 
       http.Response response = await HttpRequest.post(
         Uri.parse(
-          Api.loginUrl,
+          Api.forgetPasswordUrl,
         ),
         headers: headers,
         body: body,
       );
 
       var responseData = jsonDecode(response.body);
-      CustomLogger.trace(" login decoded response : -> $responseData");
+      CustomLogger.trace(
+          " forget password decoded response : -> $responseData");
       //check status code
       if (response.statusCode == 200) {
-        if (responseData.toString().contains("token")) {
-          AccessToken token = AccessToken.fromJson(responseData);
-          User user = User.fromJson(
-            responseData["user"],
-          );
-          onSuccess(user, token);
+        if (responseData.toString().contains("message")) {
+          onSuccess(responseData["message"]);
         } else {
           onError("Invalid data available");
         }

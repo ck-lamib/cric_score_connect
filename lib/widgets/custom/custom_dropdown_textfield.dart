@@ -29,7 +29,7 @@ class CustomDropdownTextField extends StatelessWidget {
   final String? itemValue;
 
   const CustomDropdownTextField({
-    Key? key,
+    super.key,
     this.fillColor,
     required this.hint,
     this.suffixIcon,
@@ -45,7 +45,7 @@ class CustomDropdownTextField extends StatelessWidget {
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 20),
     required this.dropDownItemLists,
     this.itemValue,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

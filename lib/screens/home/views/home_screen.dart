@@ -1,6 +1,8 @@
+import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
+import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +12,11 @@ class HomeScreen extends StatelessWidget {
   static const String routeName = "/home-screen";
   HomeScreen({super.key});
   final HomeController c = Get.find<HomeController>();
+  final CoreController cc = Get.find<CoreController>();
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
+    // var theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -40,9 +43,21 @@ class HomeScreen extends StatelessWidget {
                 child: SizedBox(
                   child: Row(
                     children: [
-                      const CircleAvatar(
-                        backgroundColor: AppColors.primaryColor,
-                        radius: 25,
+                      Obx(
+                        () => cc.currentUser.value?.profilePhotoPath != null
+                            ? const CircleAvatar(
+                                backgroundColor: AppColors.primaryColor,
+                                backgroundImage: NetworkImage(
+                                    "https://bimalkhatri.com.np/img/hell.png"),
+                                radius: 25,
+                              )
+                            : const CircleAvatar(
+                                backgroundColor: AppColors.primaryColor,
+                                backgroundImage: AssetImage(
+                                  ImagePath.defaultAvatar,
+                                ),
+                                radius: 25,
+                              ),
                       ),
                       const SizedBox(
                         width: 15,
@@ -62,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                               height: 5,
                             ),
                             Text(
-                              "Bibek Khatri",
+                              cc.currentUser.value?.name ?? "Bibek Khatri",
                               style: CustomTextStyles.f14W400(
                                 color: AppColors.primaryColor,
                               ),
@@ -103,20 +118,20 @@ class HomeScreen extends StatelessWidget {
                   ),
                   child: ListView(
                     shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     children: [
                       CustomElevatedButton(
                         onTap: () {},
                         title: "Team Vs Team",
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                       CustomElevatedButton(
                         onTap: () {},
                         title: "Individual",
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                       CustomElevatedButton(

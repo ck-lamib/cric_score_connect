@@ -19,20 +19,20 @@ class ProfileUpperSection extends StatelessWidget {
             color: AppColors.backGroundColor,
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(
+        Padding(
+          padding: const EdgeInsets.symmetric(
             horizontal: 24,
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ProfileUserDetailCard(),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              ProfileFrientStats(),
+              const ProfileFrientStats(),
             ],
           ),
         ),

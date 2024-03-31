@@ -1,11 +1,12 @@
 import 'package:cric_score_connect/screens/login/controller/login_controller.dart';
+import 'package:cric_score_connect/screens/password/views/forget_passowrd_screen.dart';
 import 'package:cric_score_connect/screens/signup/views/signup_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
-import 'package:cric_score_connect/widgets/custom/custom_passwordfiled.dart';
+import 'package:cric_score_connect/widgets/custom/custom_passwordfield.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,9 +45,15 @@ class LoginScreen extends StatelessWidget {
                   CustomTextField(
                     controller: c.emailController,
                     labelText: "Email",
+                    hint: "bibek@gmail.com",
+                    preIconPath: const Icon(
+                      Icons.email_outlined,
+                      color: AppColors.hintTextColor,
+                    ),
                     validator: Validators.checkEmailField,
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.emailAddress,
+                    textCapitalization: TextCapitalization.none,
                   ),
                   SizeConfig.getSpace(),
                   Obx(
@@ -71,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        // Get.toNamed(ForgetPassworScreen.routeName);
+                        Get.toNamed(ForgetPasswordScreen.routeName);
                       },
                       child: Text(
                         "Forget Password?",

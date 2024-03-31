@@ -3,13 +3,14 @@ import 'dart:developer';
 
 import 'package:cric_score_connect/models/access_token.dart';
 import 'package:cric_score_connect/models/user.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/http_request.dart';
 import 'package:cric_score_connect/utils/routes/api.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterRepo {
   static Future<void> register({
-    required String name,
+    required String fullName,
     required String userName,
     required String email,
     required String dob,
@@ -26,44 +27,53 @@ class RegisterRepo {
       };
 
       var body = {
-        "name": name,
-        "userName": userName,
+        "name": fullName,
+        "username": userName,
         "email": email,
         "dob": dob,
         "phone": phone,
+        "password": password.trim(),
         "address": address,
-        "password": password,
       };
 
+      //   "name": fullName,
+      //   "userName": userName,
+      //   "email": email,
+      //   "dob": dob,
+      //   "phone": phone,
+      //   "address": address,
+      //   "password": password.trim(),
+      // };
+      CustomLogger.trace(Api.signupUrl);
+      CustomLogger.trace(json.encode(body));
+
       http.Response response = await HttpRequest.post(
-          Uri.parse(
-            Api.signupUrl,
-          ),
-          headers: headers,
-          body: body);
+        Uri.parse(
+          Api.signupUrl,
+        ),
+        headers: headers,
+        body: body,
+      );
 
+      var responseData = jsonDecode(response.body);
+      CustomLogger.trace("register decoded response : -> $responseData");
+      //check status code
       if (response.statusCode == 200) {
-        log("${Api.signupUrl} ===================>");
-        log(json.encode(body));
-        log(response.body);
-
-        dynamic data = jsonDecode(response.body);
-        // if (data["success"]) {
-        //   AccessToken token = AccessToken.fromJson(data["data"]["token"]);
-        //   User user = User.fromJson(data["data"]["customer"]);
-        //   onSuccess(user, token);
-        // } else {
-        //   onError(data["message"]);
-        // }
-        try {
-          AccessToken token = AccessToken.fromJson(data["token"]);
-          User user = User.fromJson(data["user"]);
+        if (responseData.toString().contains("token")) {
+          AccessToken token = AccessToken.fromJson(responseData);
+          User user = User.fromJson(
+            responseData["user"],
+          );
           onSuccess(user, token);
-        } catch (e) {
-          onError("Something went wrong.");
+        } else {
+          onError("Invalid data available");
         }
       } else {
-        onError("Status code is bad.");
+        if (responseData.toString().contains("error")) {
+          onError(responseData["error"]);
+        } else {
+          onError("Sorry something went wrong");
+        }
       }
     } catch (e, s) {
       log(e.toString());

@@ -24,13 +24,13 @@ class ProfileScreen extends StatelessWidget {
               child: CustomScrollView(
                 slivers: [
                   SliverList.list(
-                    children: const [
-                      ProfileUpperSection(),
-                      SizedBox(
+                    children: [
+                      const ProfileUpperSection(),
+                      const SizedBox(
                         height: 25,
                       ),
                       ProfileBottomSection(),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                     ],

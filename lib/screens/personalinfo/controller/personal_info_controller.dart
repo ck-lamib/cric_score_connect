@@ -1,30 +1,56 @@
+import 'dart:io';
+
+import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/utils/constants/datas.dart';
+import 'package:cric_score_connect/utils/helpers/pick_image_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class PersonalInfoController extends GetxController {
+  late CoreController cc;
   final formKey = GlobalKey<FormState>();
   final loading = SimpleFontelicoProgressDialog(
       context: Get.context!, barrierDimisable: false);
 
+  late TextEditingController fullNameController;
   late TextEditingController userNameController;
   late TextEditingController emailController;
-  late TextEditingController passwordController;
-  late TextEditingController verifyPasswordController;
   late TextEditingController birthdayController;
   late TextEditingController phoneController;
   late TextEditingController addressController;
+  String? playerTypeValue;
+  String? userAvatar;
 
   @override
   void onInit() {
-    userNameController = TextEditingController();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    verifyPasswordController = TextEditingController();
-    birthdayController = TextEditingController();
-    phoneController = TextEditingController();
-    addressController = TextEditingController();
+    cc = Get.find<CoreController>();
+    if (cc.currentUser.value != null) {
+      fullNameController =
+          TextEditingController(text: cc.currentUser.value!.name);
+      userNameController =
+          TextEditingController(text: cc.currentUser.value!.username);
+      emailController =
+          TextEditingController(text: cc.currentUser.value!.email);
+      birthdayController =
+          TextEditingController(text: cc.currentUser.value!.dob);
+      phoneController =
+          TextEditingController(text: cc.currentUser.value!.phone);
+      addressController =
+          TextEditingController(text: cc.currentUser.value!.address);
+
+      playerTypeValue =
+          cc.currentUser.value!.playerType?.toString().capitalizeFirst;
+      userAvatar = cc.currentUser.value!.profilePhotoPath;
+    } else {
+      fullNameController = TextEditingController();
+      userNameController = TextEditingController();
+      emailController = TextEditingController();
+      birthdayController = TextEditingController();
+      phoneController = TextEditingController();
+      addressController = TextEditingController();
+    }
     super.onInit();
   }
 
@@ -68,7 +94,6 @@ class PersonalInfoController extends GetxController {
   }
 
   //dropdown
-  String? playerTypeValue;
   List<DropdownMenuItem<String>> playerTypeItemList = playerType
       .map(
         (e) => DropdownMenuItem(
@@ -80,5 +105,16 @@ class PersonalInfoController extends GetxController {
 
   onPlayerTypeValueChange(value) {
     playerTypeValue = value;
+  }
+
+  //for picking image
+  final Rxn<File> _pickedImage = Rxn<File>();
+  File? get pickedFile => _pickedImage.value;
+
+  onPickImageTap(ImageSource source) async {
+    File? pickedfile = await PickImageHelper().pickAndCropImage(source);
+    if (pickedfile != null) {
+      _pickedImage.value = pickedfile;
+    }
   }
 }

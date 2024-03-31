@@ -1,6 +1,7 @@
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final int? maxCharacters;
   final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     super.key,
@@ -51,11 +53,13 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     required this.labelText,
     this.borderRadius = 8,
+    this.inputFormatters,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: inputFormatters,
       focusNode: focusNode,
       maxLength: maxCharacters,
       autofocus: autofocus!,
@@ -66,7 +70,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: textInputType,
       textInputAction: textInputAction,
       maxLines: 1,
-      onTapOutside: (event) => FocusScope.of(context).unfocus(),
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       validator: (validator != null) ? validator : null,
       controller: (controller != null) ? controller : null,
       cursorColor: AppColors.backGroundColor,
