@@ -28,37 +28,39 @@ class CustomTextField extends StatelessWidget {
   final int? maxCharacters;
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter>? inputFormatters;
+  final Iterable<String>? autofillHints;
 
-  const CustomTextField({
-    super.key,
-    this.fillColor,
-    this.hint,
-    this.preIconSvgPath,
-    this.preIconPath,
-    this.suffixIconSvgPath,
-    this.suffixIconPath,
-    this.onValueChange,
-    this.controller,
-    this.validator,
-    required this.textInputAction,
-    required this.textInputType,
-    this.border,
-    this.readOnly = false,
-    this.showError = true,
-    this.textCapitalization = TextCapitalization.sentences,
-    this.onTap,
-    this.onSubmitted,
-    this.autofocus = false,
-    this.maxCharacters,
-    this.focusNode,
-    required this.labelText,
-    this.borderRadius = 8,
-    this.inputFormatters,
-  });
+  const CustomTextField(
+      {super.key,
+      this.fillColor,
+      this.hint,
+      this.preIconSvgPath,
+      this.preIconPath,
+      this.suffixIconSvgPath,
+      this.suffixIconPath,
+      this.onValueChange,
+      this.controller,
+      this.validator,
+      required this.textInputAction,
+      required this.textInputType,
+      this.border,
+      this.readOnly = false,
+      this.showError = true,
+      this.textCapitalization = TextCapitalization.sentences,
+      this.onTap,
+      this.onSubmitted,
+      this.autofocus = false,
+      this.maxCharacters,
+      this.focusNode,
+      required this.labelText,
+      this.borderRadius = 8,
+      this.inputFormatters,
+      this.autofillHints});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofillHints: autofillHints,
       inputFormatters: inputFormatters,
       focusNode: focusNode,
       maxLength: maxCharacters,

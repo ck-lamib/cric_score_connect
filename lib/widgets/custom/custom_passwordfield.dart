@@ -16,24 +16,26 @@ class CustomPasswordField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final double borderRadius;
   final String? labelText;
+  final Iterable<String>? autofillHints;
 
-  const CustomPasswordField({
-    super.key,
-    this.hint,
-    required this.eye,
-    required this.onEyeClick,
-    required this.controller,
-    required this.textInputAction,
-    required this.labelText,
-    this.validator,
-    this.onSubmitted,
-    this.focusNode,
-    this.borderRadius = 8,
-  });
+  const CustomPasswordField(
+      {super.key,
+      this.hint,
+      required this.eye,
+      required this.onEyeClick,
+      required this.controller,
+      required this.textInputAction,
+      required this.labelText,
+      this.validator,
+      this.onSubmitted,
+      this.focusNode,
+      this.borderRadius = 8,
+      this.autofillHints});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofillHints: autofillHints,
       cursorColor: AppColors.backGroundColor,
       focusNode: focusNode,
       onFieldSubmitted: onSubmitted,

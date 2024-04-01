@@ -7,6 +7,7 @@ import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:cric_score_connect/utils/helpers/storage_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -54,6 +55,7 @@ class SignupController extends GetxController {
           Get.offAllNamed(DashboardScreen.routeName);
           CustomSnackBar.success(
               title: "Sign up", message: "User Registered Successfull");
+          TextInput.finishAutofillContext();
         },
         onError: (message) {
           requestLoader.hide();

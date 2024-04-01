@@ -25,92 +25,99 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Form(
               key: c.formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizeConfig.getSpace(),
-                  Text(
-                    "Login",
-                    style: CustomTextStyles.f32W600(),
-                  ),
-                  Text(
-                    "Hi! Welcome 👋",
-                    style: CustomTextStyles.f18W600().copyWith(
-                      color: AppColors.hintTextColor,
+              child: AutofillGroup(
+                onDisposeAction: AutofillContextAction.commit,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizeConfig.getSpace(),
+                    Text(
+                      "Login",
+                      style: CustomTextStyles.f32W600(),
                     ),
-                  ),
-                  SizeConfig.getSpace(height: 100),
-                  CustomTextField(
-                    controller: c.emailController,
-                    labelText: "Email",
-                    hint: "bibek@gmail.com",
-                    preIconPath: const Icon(
-                      Icons.email_outlined,
-                      color: AppColors.hintTextColor,
-                    ),
-                    validator: Validators.checkEmailField,
-                    textInputAction: TextInputAction.next,
-                    textInputType: TextInputType.emailAddress,
-                    textCapitalization: TextCapitalization.none,
-                  ),
-                  SizeConfig.getSpace(),
-                  Obx(
-                    () => CustomPasswordField(
-                      labelText: "Password",
-                      eye: c.passwordObscure.value,
-                      onEyeClick: c.onEyeCLick,
-                      controller: c.passwordController,
-                      textInputAction: TextInputAction.done,
-                      validator: Validators.checkPasswordField,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  CustomElevatedButton(
-                    title: "Login",
-                    onTap: c.onSubmit,
-                  ),
-                  SizeConfig.getSpace(),
-                  Align(
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () {
-                        Get.toNamed(ForgetPasswordScreen.routeName);
-                      },
-                      child: Text(
-                        "Forget Password?",
-                        style: CustomTextStyles.f16W400(
-                            color: AppColors.backGroundColor),
+                    Text(
+                      "Hi! Welcome 👋",
+                      style: CustomTextStyles.f18W600().copyWith(
+                        color: AppColors.hintTextColor,
                       ),
                     ),
-                  ),
-                  Row(
-                    // mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Don't have an account?",
-                        style: CustomTextStyles.f16W400(
-                          color: AppColors.hintTextColor,
-                        ),
+                    SizeConfig.getSpace(height: 100),
+                    CustomTextField(
+                      controller: c.emailController,
+                      labelText: "Email",
+                      hint: "bibek@gmail.com",
+                      preIconPath: const Icon(
+                        Icons.email_outlined,
+                        color: AppColors.hintTextColor,
                       ),
-                      TextButton(
+                      autofillHints: const [AutofillHints.email],
+                      validator: Validators.checkEmailField,
+                      textInputAction: TextInputAction.next,
+                      textInputType: TextInputType.emailAddress,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    SizeConfig.getSpace(),
+                    Obx(
+                      () => CustomPasswordField(
+                        labelText: "Password",
+                        eye: c.passwordObscure.value,
+                        onEyeClick: c.onEyeCLick,
+                        controller: c.passwordController,
+                        autofillHints: const [
+                          AutofillHints.password,
+                        ],
+                        textInputAction: TextInputAction.done,
+                        validator: Validators.checkPasswordField,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomElevatedButton(
+                      title: "Login",
+                      onTap: c.onSubmit,
+                    ),
+                    SizeConfig.getSpace(),
+                    Align(
+                      alignment: Alignment.center,
+                      child: TextButton(
                         onPressed: () {
-                          Get.offNamed(SignupScreen.routeName);
+                          Get.toNamed(ForgetPasswordScreen.routeName);
                         },
                         child: Text(
-                          "Sign Up Now",
+                          "Forget Password?",
                           style: CustomTextStyles.f16W400(
-                            color: AppColors.backGroundColor,
-                          ),
+                              color: AppColors.backGroundColor),
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    Row(
+                      // mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account?",
+                          style: CustomTextStyles.f16W400(
+                            color: AppColors.hintTextColor,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Get.offNamed(SignupScreen.routeName);
+                          },
+                          child: Text(
+                            "Sign Up Now",
+                            style: CustomTextStyles.f16W400(
+                              color: AppColors.backGroundColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

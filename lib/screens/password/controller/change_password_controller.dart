@@ -70,8 +70,8 @@ class ChangePasswordController extends GetxController {
                     onPressed: () async {
                       Get.offAllNamed(LoginScreen.routeName);
                       CustomSnackBar.success(
-                          title: "Forget password",
-                          message: "Forget password Successfull");
+                          title: "Change password",
+                          message: "Change password Successfull");
                     },
                     child: Text(
                       "Okay",
@@ -87,7 +87,7 @@ class ChangePasswordController extends GetxController {
         },
         onError: (message) {
           requestLoader.hide();
-          CustomSnackBar.error(title: "Forget password", message: message);
+          CustomSnackBar.error(title: "Change password", message: message);
         },
       );
     }
