@@ -1,4 +1,5 @@
 import 'package:cric_score_connect/core/core_controller.dart';
+import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/screens/password/views/change_passowrd_screen.dart';
 import 'package:cric_score_connect/screens/personalinfo/views/personal_info.dart';
@@ -45,12 +46,14 @@ class ProfileBottomSection extends StatelessWidget {
             onTap: () =>
                 Navigator.of(context).pushNamed(PersonalInfoScreen.routeName),
           ),
-          const ProfileListTile(
-            leadingWidget: Icon(
+          ProfileListTile(
+            leadingWidget: const Icon(
               Icons.gamepad_outlined,
               color: AppColors.backGroundColor,
             ),
             title: 'Game Information',
+            onTap: () =>
+                Navigator.of(context).pushNamed(GameProfileScreen.routeName),
           ),
           ProfileListTile(
             leadingWidget: const Icon(

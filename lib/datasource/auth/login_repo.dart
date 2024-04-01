@@ -64,3 +64,18 @@ class LoginRepo {
     }
   }
 }
+
+
+
+      // return onSuccess(
+      //   User(
+      //     name: "Bimal khatri",
+      //     username: "username",
+      //     email: "email@gmail.com",
+      //     address: "Pokhara",
+      //     dob: "2002-07-07",
+      //     phone: "98677743236",
+      //   ),
+      //   AccessToken(accessToken: "token"),
+
+      // );
