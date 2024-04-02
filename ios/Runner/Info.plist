@@ -45,5 +45,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Let Cric Score Connect access Camera to take picture for image upload</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow microphone access for Cric Score Connect</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cric Score Connect requests photo access to seamlessly upload screenshots and pictures.</string>
+	
 </dict>
 </plist>

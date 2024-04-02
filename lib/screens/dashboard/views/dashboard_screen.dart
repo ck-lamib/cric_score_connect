@@ -1,5 +1,4 @@
 import 'package:cric_score_connect/screens/dashboard/controller/dashboard_controller.dart';
-import 'package:cric_score_connect/utils/custom_snackbar.dart';
 
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,7 @@ class DashboardScreen extends StatelessWidget {
     const NavigationDestination(
       icon: Icon(Icons.group_outlined),
       selectedIcon: Icon(Icons.group_outlined),
-      label: "Players",
+      label: "Friends",
     ),
     const NavigationDestination(
       icon: Icon(Icons.account_box_outlined),
@@ -48,6 +47,7 @@ class DashboardScreen extends StatelessWidget {
       ),
       body: PageView(
         controller: c.pageController,
+        physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (value) {
           c.changeIndex(value);
         },

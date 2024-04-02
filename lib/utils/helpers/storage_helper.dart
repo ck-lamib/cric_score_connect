@@ -19,7 +19,7 @@ class StorageHelper {
       AccessToken token = AccessToken.fromJson(
           jsonDecode(box.read(StorageKeys.ACCESS_TOKEN)) ?? "");
       return token;
-    } catch (e, s) {
+    } catch (e) {
       log("Failed to fetch token");
       return null;
     }
@@ -31,7 +31,7 @@ class StorageHelper {
       User user = User.fromJson(json.decode(box.read(StorageKeys.USER)));
 
       return user;
-    } catch (e, s) {
+    } catch (e) {
       log("Failed fetch customer");
       return null;
     }

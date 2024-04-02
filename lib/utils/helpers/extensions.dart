@@ -4,6 +4,17 @@ extension DateTimeExtension on DateTime {
   String parseDateTimeToString() {
     return toString().split(" ").first;
   }
+
+  String getGreeting() {
+    var hour = this.hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 18) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
+  }
 }
 
 extension FileExtension on File {

@@ -1,14 +1,17 @@
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomTextField extends StatelessWidget {
   final Function(String)? onValueChange;
   final FocusNode? focusNode;
   final String? hint;
-  final String? preIconPath;
-  final String? suffixIconPath;
+  final String? preIconSvgPath;
+  final Widget? preIconPath;
+  final String? suffixIconSvgPath;
+  final Widget? suffixIconPath;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputAction textInputAction;
@@ -24,34 +27,41 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final int? maxCharacters;
   final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
+  final Iterable<String>? autofillHints;
 
-  const CustomTextField({
-    super.key,
-    this.fillColor,
-    this.hint,
-    this.preIconPath,
-    this.suffixIconPath,
-    this.onValueChange,
-    this.controller,
-    this.validator,
-    required this.textInputAction,
-    required this.textInputType,
-    this.border,
-    this.readOnly = false,
-    this.showError = true,
-    this.textCapitalization = TextCapitalization.sentences,
-    this.onTap,
-    this.onSubmitted,
-    this.autofocus = false,
-    this.maxCharacters,
-    this.focusNode,
-    required this.labelText,
-    this.borderRadius = 8,
-  });
+  const CustomTextField(
+      {super.key,
+      this.fillColor,
+      this.hint,
+      this.preIconSvgPath,
+      this.preIconPath,
+      this.suffixIconSvgPath,
+      this.suffixIconPath,
+      this.onValueChange,
+      this.controller,
+      this.validator,
+      required this.textInputAction,
+      required this.textInputType,
+      this.border,
+      this.readOnly = false,
+      this.showError = true,
+      this.textCapitalization = TextCapitalization.sentences,
+      this.onTap,
+      this.onSubmitted,
+      this.autofocus = false,
+      this.maxCharacters,
+      this.focusNode,
+      required this.labelText,
+      this.borderRadius = 8,
+      this.inputFormatters,
+      this.autofillHints});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofillHints: autofillHints,
+      inputFormatters: inputFormatters,
       focusNode: focusNode,
       maxLength: maxCharacters,
       autofocus: autofocus!,
@@ -62,7 +72,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: textInputType,
       textInputAction: textInputAction,
       maxLines: 1,
-      onTapOutside: (event) => FocusScope.of(context).unfocus(),
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       validator: (validator != null) ? validator : null,
       controller: (controller != null) ? controller : null,
       cursorColor: AppColors.backGroundColor,
@@ -83,14 +93,32 @@ class CustomTextField extends StatelessWidget {
             : null,
         fillColor: fillColor ?? Colors.white,
         filled: true,
-        prefixIcon: (preIconPath != null)
-            ? SvgPicture.asset(
-                preIconPath!,
-                fit: BoxFit.scaleDown,
-              )
+        prefixIcon: (preIconSvgPath != null || preIconPath != null)
+            ? preIconPath ??
+                SvgPicture.asset(
+                  preIconSvgPath!,
+                  fit: BoxFit.scaleDown,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.hintTextColor,
+                    BlendMode.srcIn,
+                  ),
+                )
             : null,
-        suffixIcon: (suffixIconPath != null)
-            ? SvgPicture.asset(suffixIconPath!, fit: BoxFit.scaleDown)
+        suffixIcon: (suffixIconSvgPath != null || suffixIconPath != null)
+            ? suffixIconPath ??
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SvgPicture.asset(
+                    suffixIconSvgPath!,
+                    fit: BoxFit.scaleDown,
+                    height: 5,
+                    width: 5,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.hintTextColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                )
             : null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),

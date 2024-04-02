@@ -16,24 +16,26 @@ class CustomPasswordField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final double borderRadius;
   final String? labelText;
+  final Iterable<String>? autofillHints;
 
-  const CustomPasswordField({
-    super.key,
-    this.hint,
-    required this.eye,
-    required this.onEyeClick,
-    required this.controller,
-    required this.textInputAction,
-    required this.labelText,
-    this.validator,
-    this.onSubmitted,
-    this.focusNode,
-    this.borderRadius = 8,
-  });
+  const CustomPasswordField(
+      {super.key,
+      this.hint,
+      required this.eye,
+      required this.onEyeClick,
+      required this.controller,
+      required this.textInputAction,
+      required this.labelText,
+      this.validator,
+      this.onSubmitted,
+      this.focusNode,
+      this.borderRadius = 8,
+      this.autofillHints});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofillHints: autofillHints,
       cursorColor: AppColors.backGroundColor,
       focusNode: focusNode,
       onFieldSubmitted: onSubmitted,
@@ -41,7 +43,7 @@ class CustomPasswordField extends StatelessWidget {
       validator: validator ?? Validators.checkPasswordField,
       obscureText: eye,
       maxLines: 1,
-      onTapOutside: (event) => FocusScope.of(context).unfocus(),
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       textInputAction: textInputAction,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
@@ -79,21 +81,29 @@ class CustomPasswordField extends StatelessWidget {
             width: 1,
           ),
         ),
+        prefixIcon: const Icon(
+          Icons.password_rounded,
+          color: AppColors.hintTextColor,
+        ),
         suffixIcon: IconButton(
           onPressed: onEyeClick,
           icon: (eye)
               ? SvgPicture.asset(
                   ImagePath.eyeOff,
                   height: 16,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                  colorFilter: const ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.srcIn,
+                  ),
                   fit: BoxFit.scaleDown,
                 )
               : SvgPicture.asset(
                   ImagePath.eye,
                   height: 12,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                  colorFilter: const ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.srcIn,
+                  ),
                   fit: BoxFit.scaleDown,
                 ),
         ),
