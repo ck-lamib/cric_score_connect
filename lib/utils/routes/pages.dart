@@ -1,5 +1,7 @@
 import 'package:cric_score_connect/screens/dashboard/controller/dashboard_controller.dart';
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
+import 'package:cric_score_connect/screens/friend/controller/friend_screen_controller.dart';
+import 'package:cric_score_connect/screens/friend/views/friend_screen.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
@@ -72,6 +74,7 @@ var pages = [
         Get.lazyPut(() => DashboardController());
         Get.lazyPut(() => HomeController());
         Get.lazyPut(() => ProfileController());
+        Get.lazyPut(() => FriendScreenController());
       },
     ),
   ),
@@ -90,6 +93,15 @@ var pages = [
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => GameProfileController());
+      },
+    ),
+  ),
+  GetPage(
+    name: FriendScreen.routeName,
+    page: () => FriendScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => FriendScreenController());
       },
     ),
   ),

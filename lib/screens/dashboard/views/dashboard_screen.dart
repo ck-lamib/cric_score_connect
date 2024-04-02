@@ -23,7 +23,7 @@ class DashboardScreen extends StatelessWidget {
     const NavigationDestination(
       icon: Icon(Icons.group_outlined),
       selectedIcon: Icon(Icons.group_outlined),
-      label: "Players",
+      label: "Friends",
     ),
     const NavigationDestination(
       icon: Icon(Icons.account_box_outlined),

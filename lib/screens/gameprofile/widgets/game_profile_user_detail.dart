@@ -1,7 +1,10 @@
 import 'package:cric_score_connect/core/core_controller.dart';
+import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
+import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
+import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +14,7 @@ class GameProfileUserDetailCard extends StatelessWidget {
   });
 
   final CoreController cc = Get.find<CoreController>();
+  final GameProfileController c = Get.find<GameProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,22 +33,20 @@ class GameProfileUserDetailCard extends StatelessWidget {
                 ),
                 shape: BoxShape.circle,
               ),
-              child: Obx(
-                () => cc.currentUser.value?.profilePhotoPath != null
-                    ? const CircleAvatar(
-                        backgroundColor: AppColors.onBackGroundColor,
-                        backgroundImage: NetworkImage(
-                            "https://bimalkhatri.com.np/img/hell.png"),
-                        radius: 55,
-                      )
-                    : const CircleAvatar(
-                        backgroundColor: AppColors.onBackGroundColor,
-                        backgroundImage: AssetImage(
-                          ImagePath.defaultAvatar,
-                        ),
-                        radius: 55,
+              child: c.user?.profilePhotoPath != null
+                  ? const CircleAvatar(
+                      backgroundColor: AppColors.onBackGroundColor,
+                      backgroundImage: NetworkImage(
+                          "https://bimalkhatri.com.np/img/hell.png"),
+                      radius: 55,
+                    )
+                  : const CircleAvatar(
+                      backgroundColor: AppColors.onBackGroundColor,
+                      backgroundImage: AssetImage(
+                        ImagePath.defaultAvatar,
                       ),
-              ),
+                      radius: 55,
+                    ),
             ),
             Positioned(
               bottom: 0,
@@ -62,7 +64,7 @@ class GameProfileUserDetailCard extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "@${cc.currentUser.value?.username}",
+                  "@${c.user?.username}",
                   style: CustomTextStyles.f12W400(
                     color: AppColors.primaryColor,
                   ),
@@ -75,17 +77,34 @@ class GameProfileUserDetailCard extends StatelessWidget {
           height: 10,
         ),
         Text(
-          "${cc.currentUser.value?.name}",
+          "${c.user?.name}",
           style: CustomTextStyles.f18W600(
             color: AppColors.primaryColor,
           ),
         ),
         Text(
-          "${cc.currentUser.value?.email}",
+          "${c.user?.email}",
           style: CustomTextStyles.f16W300(
             color: AppColors.primaryColor,
           ),
         ),
+        c.user?.username == cc.currentUser.value?.username
+            ? const SizedBox.shrink()
+            : Column(
+                children: [
+                  SizeConfig.getSpace(),
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: CustomElevatedButton(
+                      title: "Add Friend",
+                      backGroundColor: Colors.blue,
+                      onTap: () {},
+                    ),
+                  ),
+                  SizeConfig.getSpace(),
+                ],
+              ),
       ],
     );
   }

@@ -9,23 +9,29 @@ class CustomElevatedButton extends StatelessWidget {
   final bool isDisabled;
   final Color? backGroundColor;
   final Color? textColor;
-  const CustomElevatedButton(
-      {super.key,
-      required this.title,
-      required this.onTap,
-      this.height = 50,
-      this.isDisabled = false,
-      this.backGroundColor = AppColors.backGroundColor,
-      this.textColor});
+  final Size? fixedSize;
+  const CustomElevatedButton({
+    super.key,
+    required this.title,
+    required this.onTap,
+    this.height = 50,
+    this.isDisabled = false,
+    this.backGroundColor = AppColors.backGroundColor,
+    this.textColor,
+    this.fixedSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: backGroundColor,
-            minimumSize: Size.fromHeight(height),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+          backgroundColor: backGroundColor,
+          minimumSize: Size.fromHeight(height),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          fixedSize: fixedSize,
+        ),
         onPressed: isDisabled ? null : onTap,
         child: Text(
           title,
