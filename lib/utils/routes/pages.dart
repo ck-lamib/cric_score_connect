@@ -2,14 +2,15 @@ import 'package:cric_score_connect/screens/dashboard/controller/dashboard_contro
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
 import 'package:cric_score_connect/screens/friend/controller/friend_screen_controller.dart';
 import 'package:cric_score_connect/screens/friend/views/friend_screen.dart';
+import 'package:cric_score_connect/screens/game/controller/gaming/gaming_controller.dart';
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
+import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
-import 'package:cric_score_connect/screens/home/views/home_screen.dart';
 import 'package:cric_score_connect/screens/login/controller/login_controller.dart';
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/screens/password/controller/change_password_controller.dart';
@@ -94,7 +95,7 @@ var pages = [
   ),
   GetPage(
     name: GameProfileScreen.routeName,
-    page: () => GameProfileScreen(),
+    page: () => const GameProfileScreen(),
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => GameProfileController());
@@ -103,7 +104,7 @@ var pages = [
   ),
   GetPage(
     name: FriendScreen.routeName,
-    page: () => FriendScreen(),
+    page: () => const FriendScreen(),
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => FriendScreenController());
@@ -134,6 +135,15 @@ var pages = [
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => TeamVsTeamGameController());
+      },
+    ),
+  ),
+  GetPage(
+    name: GamingScreen.routeName,
+    page: () => const GamingScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => GamingController());
       },
     ),
   ),

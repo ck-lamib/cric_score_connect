@@ -1,4 +1,5 @@
 import 'package:cric_score_connect/core/core_controller.dart';
+import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/splash/views/splash_screen.dart';
 import 'package:cric_score_connect/utils/routes/pages.dart';
 import 'package:cric_score_connect/utils/themes/theme.dart';
@@ -24,7 +25,7 @@ class CricScoreConnect extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: pages,
       theme: basicTheme(),
-      initialRoute: SplashScreen.routeName,
+      initialRoute: GamingScreen.routeName,
     );
   }
 }
