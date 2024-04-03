@@ -88,6 +88,7 @@ class CustomDropdownTextField extends StatelessWidget {
         ),
         decoration: InputDecoration(
           contentPadding: contentPadding,
+
           label: labelText != null
               ? Text(
                   labelText ?? "",
@@ -125,6 +126,8 @@ class CustomDropdownTextField extends StatelessWidget {
           errorStyle: const TextStyle(fontSize: 12, color: Colors.redAccent),
           hintText: hint,
           hintStyle: hintStyle ??
+              CustomTextStyles.f16W400(color: AppColors.hintTextColor),
+          labelStyle: hintStyle ??
               CustomTextStyles.f16W400(color: AppColors.hintTextColor),
           // hintStyle: CustomTextStyles.f16W400(color: AppColors.hintTextColor),
         ),

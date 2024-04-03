@@ -1,4 +1,5 @@
 import 'package:cric_score_connect/core/core_controller.dart';
+import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
@@ -121,7 +122,9 @@ class HomeScreen extends StatelessWidget {
                     physics: const ClampingScrollPhysics(),
                     children: [
                       CustomElevatedButton(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(TeamVsTeamGameScreen.routeName);
+                        },
                         title: "Team Vs Team",
                       ),
                       const SizedBox(

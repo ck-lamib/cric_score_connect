@@ -165,4 +165,24 @@ class CustomDatePicker {
     );
     return result;
   }
+
+  Future<TimeOfDay?> pickTime({
+    required BuildContext context,
+    TimeOfDay? initialTime,
+  }) async {
+    TimeOfDay? result = await showTimePicker(
+      context: context,
+      initialTime: initialTime ?? TimeOfDay.now(),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            alwaysUse24HourFormat: false,
+          ),
+          child: child!,
+        );
+      },
+      helpText: "Select Time",
+    );
+    return result;
+  }
 }
