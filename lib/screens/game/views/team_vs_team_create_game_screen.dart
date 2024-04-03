@@ -1,5 +1,6 @@
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
+import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_create_game_app_bar.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_game_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -55,6 +56,7 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: CustomTextStyles.f24W600(),
                           ),
+                          SizeConfig.getSpace(),
                           CustomOutlineButton(
                             title: "Add Player",
                             padding: EdgeInsets.zero,
@@ -233,7 +235,9 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                     Expanded(
                       child: CustomElevatedButton(
                         title: "Next",
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(GamingScreen.routeName);
+                        },
                       ),
                     ),
                   ],

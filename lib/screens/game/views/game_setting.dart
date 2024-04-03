@@ -8,6 +8,7 @@ import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -90,67 +91,131 @@ class GameSettingScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              "No Ball Run",
+                              style: CustomTextStyles.f18W600(),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintText: "1",
+                                  hintStyle: CustomTextStyles.f16W400(
+                                      color: AppColors.hintTextColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizeConfig.getSpace(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Wide Ball",
+                        style: CustomTextStyles.f18W600(),
+                      ),
+                    ),
+                    Switch(
+                      value: true,
+                      onChanged: (value) {},
+                    ),
+                  ],
+                ),
+                SizeConfig.getSpace(
+                  height: 10,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: AppColors.backGroundColor,
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Re-Ball",
+                              style: CustomTextStyles.f18W600(),
+                            ),
+                          ),
+                          Switch(
+                            value: true,
+                            onChanged: (value) {},
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              "Wide Ball Run",
+                              style: CustomTextStyles.f18W600(),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintText: "1",
+                                  hintStyle: CustomTextStyles.f16W400(
+                                      color: AppColors.hintTextColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
                 SizeConfig.getSpace(),
                 CustomElevatedButton(
-                  title: "Next",
+                  title: "Save Setting",
                   onTap: () {
-                    Get.toNamed(TeamVsTeamCreateGame.routeName);
+                    // Get.toNamed(TeamVsTeamCreateGame.routeName);
                   },
                 ),
-                SizeConfig.getSpace(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: "You have ",
-                      style: CustomTextStyles.f14W400(
-                        color: AppColors.hintTextColor,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "3*",
-                          style: CustomTextStyles.f14W400(
-                            color: AppColors.backGroundColor,
-                          ),
-                        ),
-                        const TextSpan(
-                          text: "  remaining Team vs Team Match Credits.",
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 SizeConfig.getSpace(height: 5),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: CustomTextStyles.f14W400(
-                        color: AppColors.hintTextColor,
-                      ),
-                      children: [
-                        TextSpan(
-                            text: "Click Here",
-                            style: CustomTextStyles.f14W400(
-                              color: AppColors.backGroundColor,
-                            ),
-                            recognizer: TapGestureRecognizer()..onTap = () {}),
-                        const TextSpan(
-                          text: "  to pay via Khalti.",
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

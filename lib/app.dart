@@ -25,7 +25,7 @@ class CricScoreConnect extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: pages,
       theme: basicTheme(),
-      initialRoute: GamingScreen.routeName,
+      initialRoute: SplashScreen.routeName,
     );
   }
 }

@@ -5,7 +5,9 @@ import 'package:cric_score_connect/screens/friend/views/friend_screen.dart';
 import 'package:cric_score_connect/screens/game/controller/gaming/gaming_controller.dart';
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
+import 'package:cric_score_connect/screens/game/views/gaming/fall_of_wicket.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
+import 'package:cric_score_connect/screens/game/views/gaming/next_over.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
@@ -141,6 +143,24 @@ var pages = [
   GetPage(
     name: GamingScreen.routeName,
     page: () => const GamingScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => GamingController());
+      },
+    ),
+  ),
+  GetPage(
+    name: FallOfWicketScreen.routeName,
+    page: () => const FallOfWicketScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => GamingController());
+      },
+    ),
+  ),
+  GetPage(
+    name: NextOverScreen.routeName,
+    page: () => const NextOverScreen(),
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => GamingController());
