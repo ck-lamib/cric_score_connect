@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
@@ -12,10 +14,7 @@ import 'package:cric_score_connect/widgets/custom/custom_dropdown_textfield.dart
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_outline_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class TeamVsTeamCreateGame extends StatelessWidget {
@@ -26,6 +25,12 @@ class TeamVsTeamCreateGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -50,7 +55,7 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "Home Team",
+                            c.homeTeamController.text,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
@@ -82,7 +87,7 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "Away Team",
+                            c.awayTeamController.text,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,

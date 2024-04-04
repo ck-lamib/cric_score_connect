@@ -70,11 +70,30 @@ class FriendTile extends StatelessWidget {
                   ),
                 ),
                 SizeConfig.getSpace(height: 5),
-                CustomElevatedButton(
-                  title: "Confirm",
-                  backGroundColor: Colors.blue,
-                  height: 40,
-                  onTap: () {},
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomElevatedButton(
+                        title: "Confirm",
+                        padding: EdgeInsets.zero,
+                        backGroundColor: Colors.blue,
+                        height: 40,
+                        onTap: () {},
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                      child: CustomElevatedButton(
+                        title: "Reject",
+                        backGroundColor: AppColors.errorColor,
+                        padding: EdgeInsets.zero,
+                        height: 40,
+                        onTap: () {},
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -2,18 +2,18 @@ import 'package:get/get.dart';
 
 class Validators {
   static String? checkFieldEmpty(String? fieldContent) {
-    fieldContent!.trim();
-    if (fieldContent.isEmpty) {
+    var trimmedContent = fieldContent!.trim();
+    if (trimmedContent.isEmpty) {
       return 'This field is required';
     }
     return null;
   }
 
   static String? checkPhoneField(String? fieldContent) {
-    fieldContent!.trim();
-    if (fieldContent.isEmpty) {
+    var trimmedContent = fieldContent!.trim();
+    if (trimmedContent.isEmpty) {
       return 'This field is required';
-    } else if (!(fieldContent.isNumericOnly && fieldContent.length == 10)) {
+    } else if (!(trimmedContent.isNumericOnly && trimmedContent.length == 10)) {
       return 'Invalid phone number';
     }
 
@@ -21,19 +21,19 @@ class Validators {
   }
 
   static String? checkOptionalPhoneField(String? fieldContent) {
-    fieldContent!.trim();
-    if ((fieldContent.isNotEmpty) &&
-        !(fieldContent.isNumericOnly && fieldContent.length == 10)) {
+    var trimmedContent = fieldContent!.trim();
+    if ((trimmedContent.isNotEmpty) &&
+        !(trimmedContent.isNumericOnly && trimmedContent.length == 10)) {
       return 'Invalid phone number';
     }
     return null;
   }
 
   static String? checkPasswordField(String? fieldContent) {
-    fieldContent!.trim();
-    if (fieldContent.isEmpty) {
+    var trimmedContent = fieldContent!.trim();
+    if (trimmedContent.isEmpty) {
       return 'This field is required';
-    } else if (fieldContent.length < 6) {
+    } else if (trimmedContent.length < 6) {
       return 'The password should be at least 6 digits';
     }
 
@@ -53,28 +53,28 @@ class Validators {
   }
 
   static String? checkEmailField(String? fieldContent) {
-    fieldContent!.trim();
-    if (fieldContent.isEmpty) {
+    var trimmedContent = fieldContent!.trim();
+    if (trimmedContent.isEmpty) {
       return 'This field is required';
-    } else if (!GetUtils.isEmail(fieldContent.trim())) {
+    } else if (!GetUtils.isEmail(trimmedContent.trim())) {
       return 'Invalid email address';
     }
     return null;
   }
 
   static String? checkOptionalEmailField(String? fieldContent) {
-    fieldContent!.trim();
-    if ((fieldContent.isNotEmpty) && !GetUtils.isEmail(fieldContent)) {
+    var trimmedContent = fieldContent!.trim();
+    if ((trimmedContent.isNotEmpty) && !GetUtils.isEmail(trimmedContent)) {
       return 'Invalid email address';
     }
     return null;
   }
 
   static String? checkPinField(String? fieldContent) {
-    fieldContent!.trim();
-    if (fieldContent.isEmpty) {
+    var trimmedContent = fieldContent!.trim();
+    if (trimmedContent.isEmpty) {
       return 'This field is required';
-    } else if (!(fieldContent.isNumericOnly && fieldContent.length == 5)) {
+    } else if (!(trimmedContent.isNumericOnly && trimmedContent.length == 5)) {
       return 'Invalid OTP';
     }
     return null;

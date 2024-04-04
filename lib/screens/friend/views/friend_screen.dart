@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/friend/widgets/friend_screen_app_bar.dart';
 import 'package:cric_score_connect/screens/friend/widgets/friend_tabbaar_view.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -31,6 +33,12 @@ class _FriendScreenState extends State<FriendScreen>
   Widget build(BuildContext context) {
     // var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [

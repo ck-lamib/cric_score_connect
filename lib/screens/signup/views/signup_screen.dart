@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/screens/signup/controller/signup_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -22,6 +24,12 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

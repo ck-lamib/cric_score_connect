@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/widgets/gamesetting/game_setting_app_bar.dart';
@@ -22,6 +24,12 @@ class GameSettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [

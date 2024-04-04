@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/profile/controller/profile_controller.dart';
 import 'package:cric_score_connect/screens/profile/widgets/profile_app_bar.dart';
 import 'package:cric_score_connect/screens/profile/widgets/profile_bottom_section.dart';
 import 'package:cric_score_connect/screens/profile/widgets/profile_upper_section.dart';
+import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -13,6 +17,12 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: Stack(
           children: [
@@ -22,6 +32,7 @@ class ProfileScreen extends StatelessWidget {
                 top: kToolbarHeight * 1.18,
               ),
               child: CustomScrollView(
+                physics: ClampingScrollPhysics(),
                 slivers: [
                   SliverList.list(
                     children: [

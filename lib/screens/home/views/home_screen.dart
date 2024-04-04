@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
@@ -7,6 +9,7 @@ import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,6 +22,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // var theme = Theme.of(context);
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: CustomScrollView(
           physics: const NeverScrollableScrollPhysics(),

@@ -1,5 +1,6 @@
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -42,6 +43,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: padding ?? const EdgeInsets.fromLTRB(24, 12, 24, 10),
       child: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: AppColors.backGroundColor, // status bar color
+          statusBarIconBrightness: Brightness.light,
+        ),
+        backgroundColor: AppColors.backGroundColor,
         scrolledUnderElevation: 0,
         leading: hasLeading
             ? InkWell(

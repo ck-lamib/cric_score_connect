@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/game/widgets/gaming/fall_of_wicket_app_bar.dart';
 import 'package:cric_score_connect/screens/game/widgets/gaming/gaming_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -17,6 +19,12 @@ class FallOfWicketScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [

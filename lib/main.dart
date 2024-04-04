@@ -10,10 +10,13 @@ void main() async {
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: AppColors.backGroundColor, // status bar color
-    statusBarIconBrightness: Brightness.light,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: AppColors.backGroundColor, // status bar color
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
+
   await GetStorage.init();
   runApp(
     const CricScoreConnect(),

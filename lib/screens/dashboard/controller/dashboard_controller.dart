@@ -9,7 +9,7 @@ class DashboardController extends GetxController {
   PageController pageController = PageController();
   var pageViewItems = [
     HomeScreen(),
-    const SearchScreen(),
+    SearchScreen(),
     const FriendScreen(),
     ProfileScreen(),
   ];

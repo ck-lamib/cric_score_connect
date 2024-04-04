@@ -29,33 +29,36 @@ class CustomTextField extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter>? inputFormatters;
   final Iterable<String>? autofillHints;
+  final TextStyle? style;
 
-  const CustomTextField(
-      {super.key,
-      this.fillColor,
-      this.hint,
-      this.preIconSvgPath,
-      this.preIconPath,
-      this.suffixIconSvgPath,
-      this.suffixIconPath,
-      this.onValueChange,
-      this.controller,
-      this.validator,
-      required this.textInputAction,
-      required this.textInputType,
-      this.border,
-      this.readOnly = false,
-      this.showError = true,
-      this.textCapitalization = TextCapitalization.sentences,
-      this.onTap,
-      this.onSubmitted,
-      this.autofocus = false,
-      this.maxCharacters,
-      this.focusNode,
-      required this.labelText,
-      this.borderRadius = 8,
-      this.inputFormatters,
-      this.autofillHints});
+  const CustomTextField({
+    super.key,
+    this.fillColor,
+    this.hint,
+    this.preIconSvgPath,
+    this.preIconPath,
+    this.suffixIconSvgPath,
+    this.suffixIconPath,
+    this.onValueChange,
+    this.controller,
+    this.validator,
+    required this.textInputAction,
+    required this.textInputType,
+    this.border,
+    this.readOnly = false,
+    this.showError = true,
+    this.textCapitalization = TextCapitalization.sentences,
+    this.onTap,
+    this.onSubmitted,
+    this.autofocus = false,
+    this.maxCharacters,
+    this.focusNode,
+    required this.labelText,
+    this.borderRadius = 8,
+    this.inputFormatters,
+    this.autofillHints,
+    this.style,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -148,10 +151,11 @@ class CustomTextField extends StatelessWidget {
         hintText: hint,
         hintStyle: CustomTextStyles.f16W400(color: AppColors.hintTextColor),
       ),
-      style: CustomTextStyles.f16W400(
-          color: (readOnly ?? false)
-              ? AppColors.hintTextColor
-              : AppColors.backGroundColor),
+      style: style ??
+          CustomTextStyles.f16W400(
+              color: (readOnly ?? false)
+                  ? AppColors.hintTextColor
+                  : AppColors.backGroundColor),
     );
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/game/widgets/gaming/next_over_app_bar.dart';
+import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/widgets/custom/custom_dropdown_textfield.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +13,12 @@ class NextOverScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [

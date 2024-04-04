@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/personalinfo/controller/personal_info_controller.dart';
 import 'package:cric_score_connect/screens/personalinfo/widgets/personal_info_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -24,6 +26,12 @@ class PersonalInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: CustomScrollView(
           physics: const ClampingScrollPhysics(),
@@ -237,6 +245,11 @@ class PersonalInfoScreen extends StatelessWidget {
                             textInputAction: TextInputAction.next,
                             textInputType: TextInputType.datetime,
                             readOnly: true,
+                            style: c.isEditTap
+                                ? CustomTextStyles.f16W400(
+                                    color: AppColors.backGroundColor)
+                                : CustomTextStyles.f16W400(
+                                    color: AppColors.hintTextColor),
                             onTap: !c.isEditTap
                                 ? () {
                                     if (!c.isEditTap) {

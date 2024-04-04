@@ -1,19 +1,24 @@
 import 'dart:convert';
 
+List<User> userFromJson(List<dynamic> userJsons) =>
+    userJsons.map((userJson) => User.fromJson(userJson)).toList();
+
 class User {
-  final String name;
-  final String username;
-  final String email;
+  final int? id;
+  final String? name;
+  final String? username;
+  final String? email;
   final String? dob;
   final String? phone;
   final String? address;
-  final dynamic profilePhotoPath;
+  final String? profilePhotoPath;
   final String? playerType;
 
   User({
-    required this.name,
-    required this.username,
-    required this.email,
+    this.id,
+    this.name,
+    this.username,
+    this.email,
     this.dob,
     this.phone,
     this.address,
@@ -22,16 +27,18 @@ class User {
   });
 
   User copyWith({
+    int? id,
     String? name,
     String? username,
     String? email,
     String? dob,
     String? phone,
     String? address,
-    dynamic profilePhotoPath,
+    String? profilePhotoPath,
     String? playerType,
   }) =>
       User(
+        id: id ?? this.id,
         name: name ?? this.name,
         username: username ?? this.username,
         email: email ?? this.email,
@@ -47,6 +54,7 @@ class User {
   String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"],
         name: json["name"],
         username: json["username"],
         email: json["email"],
@@ -58,6 +66,7 @@ class User {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
         "username": username,
         "email": email,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/login/controller/login_controller.dart';
 import 'package:cric_score_connect/screens/password/views/forget_passowrd_screen.dart';
 import 'package:cric_score_connect/screens/signup/views/signup_screen.dart';
@@ -19,6 +21,12 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

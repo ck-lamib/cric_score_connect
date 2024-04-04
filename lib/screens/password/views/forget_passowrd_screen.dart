@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/password/controller/forget_password_controller.dart';
 import 'package:cric_score_connect/screens/password/widgets/forgetpassword/forget_password_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -18,6 +20,12 @@ class ForgetPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
         child: Stack(
           children: [

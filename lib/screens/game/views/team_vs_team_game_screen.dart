@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_game_app_bar.dart';
@@ -19,101 +21,117 @@ class TeamVsTeamGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(0, 0),
+        child: Container(
+          color: AppColors.backGroundColor,
+        ),
+      ),
       body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        child: CustomScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          slivers: [
             const TeamVsTeamGameAppBar(),
-          ],
-          body: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                SizeConfig.getSpace(height: 30),
-                CustomTextField(
-                  controller: c.homeTeamController,
-                  textInputAction: TextInputAction.next,
-                  textInputType: TextInputType.name,
-                  labelText: "Home Team",
-                  hint: "Home Team",
-                  preIconPath: Icon(
-                    Icons.diversity_2_rounded,
-                  ),
-                  validator: Validators.checkFieldEmpty,
-                ),
-                SizeConfig.getSpace(),
-                CustomTextField(
-                  controller: c.awayTeamController,
-                  textInputAction: TextInputAction.next,
-                  textInputType: TextInputType.name,
-                  labelText: "Away Team",
-                  hint: "Away Team",
-                  preIconPath: Icon(
-                    Icons.diversity_2_rounded,
-                  ),
-                  validator: Validators.checkFieldEmpty,
-                ),
-                SizeConfig.getSpace(),
-                CustomElevatedButton(
-                  title: "Next",
-                  onTap: () {
-                    Get.toNamed(TeamVsTeamCreateGame.routeName);
-                  },
-                ),
-                SizeConfig.getSpace(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: "You have ",
-                      style: CustomTextStyles.f14W400(
-                        color: AppColors.hintTextColor,
+            SliverToBoxAdapter(
+              child: Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                child: Form(
+                  key: c.formKey,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      SizeConfig.getSpace(height: 30),
+                      CustomTextField(
+                        controller: c.homeTeamController,
+                        textInputAction: TextInputAction.next,
+                        textInputType: TextInputType.name,
+                        labelText: "Home Team",
+                        hint: "Home Team",
+                        preIconPath: const Icon(
+                          Icons.diversity_2_rounded,
+                        ),
+                        validator: Validators.checkFieldEmpty,
                       ),
-                      children: [
-                        TextSpan(
-                          text: "3*",
-                          style: CustomTextStyles.f14W400(
-                            color: AppColors.backGroundColor,
+                      SizeConfig.getSpace(),
+                      CustomTextField(
+                        controller: c.awayTeamController,
+                        textInputAction: TextInputAction.next,
+                        textInputType: TextInputType.name,
+                        labelText: "Away Team",
+                        hint: "Away Team",
+                        preIconPath: Icon(
+                          Icons.diversity_2_rounded,
+                        ),
+                        validator: Validators.checkFieldEmpty,
+                      ),
+                      SizeConfig.getSpace(),
+                      CustomElevatedButton(
+                        title: "Next",
+                        onTap: () {
+                          if (c.formKey.currentState!.validate()) {
+                            Get.toNamed(TeamVsTeamCreateGame.routeName);
+                          }
+                        },
+                      ),
+                      SizeConfig.getSpace(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: "You have ",
+                            style: CustomTextStyles.f14W400(
+                              color: AppColors.hintTextColor,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "3*",
+                                style: CustomTextStyles.f14W400(
+                                  color: AppColors.backGroundColor,
+                                ),
+                              ),
+                              const TextSpan(
+                                text: "  remaining Team vs Team Match Credits.",
+                              ),
+                            ],
                           ),
                         ),
-                        const TextSpan(
-                          text: "  remaining Team vs Team Match Credits.",
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizeConfig.getSpace(height: 5),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: CustomTextStyles.f14W400(
-                        color: AppColors.hintTextColor,
                       ),
-                      children: [
-                        TextSpan(
-                            text: "Click Here",
-                            style: CustomTextStyles.f14W400(
-                              color: AppColors.backGroundColor,
-                            ),
-                            recognizer: TapGestureRecognizer()..onTap = () {}),
-                        const TextSpan(
-                          text: "  to pay via Khalti.",
+                      SizeConfig.getSpace(height: 5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
                         ),
-                      ],
-                    ),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: CustomTextStyles.f14W400(
+                              color: AppColors.hintTextColor,
+                            ),
+                            children: [
+                              TextSpan(
+                                  text: "Click Here",
+                                  style: CustomTextStyles.f14W400(
+                                    color: AppColors.backGroundColor,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {}),
+                              const TextSpan(
+                                text: "  to pay via Khalti.",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
