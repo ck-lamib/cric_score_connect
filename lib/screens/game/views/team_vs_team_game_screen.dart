@@ -29,7 +29,7 @@ class TeamVsTeamGameScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: CustomScrollView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           slivers: [
             const TeamVsTeamGameAppBar(),
             SliverToBoxAdapter(
@@ -70,7 +70,10 @@ class TeamVsTeamGameScreen extends StatelessWidget {
                         title: "Next",
                         onTap: () {
                           if (c.formKey.currentState!.validate()) {
-                            Get.toNamed(TeamVsTeamCreateGame.routeName);
+                            if (c.homeTeamController.text.trim().isNotEmpty ||
+                                c.awayTeamController.text.trim().isNotEmpty) {
+                              Get.toNamed(TeamVsTeamCreateGame.routeName);
+                            }
                           }
                         },
                       ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
+import 'package:cric_score_connect/screens/game/views/selectplayer/team_vs_team_select_player.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_create_game_app_bar.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_game_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -62,11 +63,32 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                             style: CustomTextStyles.f24W600(),
                           ),
                           SizeConfig.getSpace(),
-                          CustomOutlineButton(
-                            title: "Add Player",
-                            padding: EdgeInsets.zero,
-                            height: 40,
-                            onTap: () {},
+                          Obx(
+                            () => CustomOutlineButton(
+                              title: "Add Player (${c.homeTeamPlayer.length})",
+                              padding: EdgeInsets.zero,
+                              height: 40,
+                              onTap: () async {
+                                int? playerCount = int.tryParse(
+                                  c.totalNumberOfPlayer.text,
+                                );
+
+                                SelectedPlayerArgument data = await Get.toNamed(
+                                  SelectPlayer.routeName,
+                                  arguments: SelectedPlayerArgument(
+                                    allGamePlayer: c.allAvailablePlayers,
+                                    selectedTeamPlayer: c.homeTeamPlayer,
+                                    allSelectedPlayer:
+                                        c.homeTeamPlayer + c.awayTeamPlayer,
+                                    maxPlayer: playerCount ?? 6,
+                                  ),
+                                );
+                                if (data != null) {
+                                  c.homeTeamPlayer.value =
+                                      data.selectedTeamPlayer;
+                                }
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -94,11 +116,32 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                             style: CustomTextStyles.f24W600(),
                           ),
                           SizeConfig.getSpace(),
-                          CustomOutlineButton(
-                            title: "Add Player",
-                            padding: EdgeInsets.zero,
-                            height: 40,
-                            onTap: () {},
+                          Obx(
+                            () => CustomOutlineButton(
+                              title: "Add Player (${c.awayTeamPlayer.length})",
+                              padding: EdgeInsets.zero,
+                              height: 40,
+                              onTap: () async {
+                                int? playerCount = int.tryParse(
+                                  c.totalNumberOfPlayer.text,
+                                );
+
+                                var data = await Get.toNamed(
+                                  SelectPlayer.routeName,
+                                  arguments: SelectedPlayerArgument(
+                                    allGamePlayer: c.allAvailablePlayers,
+                                    selectedTeamPlayer: c.awayTeamPlayer,
+                                    allSelectedPlayer:
+                                        c.homeTeamPlayer + c.awayTeamPlayer,
+                                    maxPlayer: playerCount ?? 6,
+                                  ),
+                                );
+                                if (data != null) {
+                                  c.awayTeamPlayer.value =
+                                      data.selectedTeamPlayer;
+                                }
+                              },
+                            ),
                           ),
                         ],
                       ),
