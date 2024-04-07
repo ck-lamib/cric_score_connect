@@ -1,14 +1,18 @@
 import 'package:cric_score_connect/common/common_app_bar.dart';
+import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class GamingAppBar extends StatelessWidget {
-  const GamingAppBar({super.key});
+  GamingAppBar({super.key});
+
+  final TeamVsTeamGameController c = Get.find<TeamVsTeamGameController>();
 
   @override
   Widget build(BuildContext context) {
-    return const CommonSilverAppBar(
+    return CommonSilverAppBar(
       hasLeading: true,
-      title: "Home Team Vs Away Team",
+      title: "${c.homeTeamController.text} Vs ${c.awayTeamController.text}",
       hasNotification: false,
       scrolledUnderElevation: 0,
       floating: false,

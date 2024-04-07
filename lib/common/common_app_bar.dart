@@ -76,6 +76,8 @@ class CommonSilverAppBar extends StatelessWidget {
                   child: Text(
                     title,
                     textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: titleStyle ??
                         CustomTextStyles.f24W600(
                           color: AppColors.primaryColor,

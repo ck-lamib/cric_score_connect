@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/fall_of_wicket.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/next_over.dart';
+import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/widgets/gaming/gaming_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
@@ -14,7 +16,8 @@ import 'package:get/get.dart';
 
 class GamingScreen extends StatelessWidget {
   static const String routeName = "/game-screen";
-  const GamingScreen({super.key});
+  GamingScreen({super.key});
+  final TeamVsTeamGameController c = Get.find<TeamVsTeamGameController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class GamingScreen extends StatelessWidget {
       body: SafeArea(
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            const GamingAppBar(),
+            GamingAppBar(),
           ],
           body: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -63,20 +66,23 @@ class GamingScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        text: "11-1",
-                        style: CustomTextStyles.f32W600(
-                          color: AppColors.backGroundColor,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "(2.0)",
-                            style: CustomTextStyles.f18W600(
-                              color: AppColors.hintTextColor,
-                            ),
+                    Obx(
+                      () => RichText(
+                        text: TextSpan(
+                          text:
+                              "${c.totalRunTillNow.value}-${c.totalWicketTillNow.value}",
+                          style: CustomTextStyles.f32W600(
+                            color: AppColors.backGroundColor,
                           ),
-                        ],
+                          children: [
+                            TextSpan(
+                              text: "(2.0)",
+                              style: CustomTextStyles.f18W600(
+                                color: AppColors.hintTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Row(
@@ -125,9 +131,15 @@ class GamingScreen extends StatelessWidget {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      GamingRatingStat(),
-                      GamingRatingStat(),
-                      GamingRatingStat(),
+                      GamingRatingStat(
+                        title: "Target",
+                      ),
+                      GamingRatingStat(
+                        title: "C.R.R",
+                      ),
+                      GamingRatingStat(
+                        title: "R.R.R",
+                      ),
                     ],
                   ),
                 ),
@@ -1041,8 +1053,12 @@ class GamingScreen extends StatelessWidget {
 }
 
 class GamingRatingStat extends StatelessWidget {
+  final String title;
+  final String? stat;
   const GamingRatingStat({
     super.key,
+    required this.title,
+    this.stat,
   });
 
   @override
@@ -1050,13 +1066,13 @@ class GamingRatingStat extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "99",
+          stat ?? "--:--",
           style: CustomTextStyles.f18W400(
             color: AppColors.backGroundColor,
           ),
         ),
         Text(
-          "Target",
+          title,
           style: CustomTextStyles.f14W400(
             color: AppColors.backGroundColor,
           ),

@@ -50,9 +50,10 @@ class SelectPlayerController extends GetxController {
   togglePlayer({bool? value, required User user}) {
     if (value != null) {
       if (value) {
-        //add to selected team
+        //add to selected team and selected player
         if (selectedTeamPlayer.length < maxPlayerCount) {
           selectedTeamPlayer.add(user);
+          allSelectedPlayer.add(user);
         } else {
           CustomSnackBar.info(
             title: "Selection failed!",
@@ -61,9 +62,9 @@ class SelectPlayerController extends GetxController {
           );
         }
       } else {
-        //remove from team
-
+        //remove from team and selected player
         selectedTeamPlayer.removeWhere((e) => e.username == user.username);
+        allSelectedPlayer.removeWhere((e) => e.username == user.username);
       }
     }
     selectedTeamPlayer.refresh();

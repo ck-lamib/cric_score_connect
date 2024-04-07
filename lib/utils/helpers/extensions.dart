@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 extension DateTimeExtension on DateTime {
   String parseDateTimeToString() {
     return toString().split(" ").first;
@@ -14,6 +16,12 @@ extension DateTimeExtension on DateTime {
     } else {
       return 'Good Evening';
     }
+  }
+}
+
+extension TimeOfDayExtension on TimeOfDay {
+  String parseDateTimeToString() {
+    return toString().split(" ").first;
   }
 }
 

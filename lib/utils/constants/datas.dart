@@ -14,3 +14,15 @@ var wicketReason = {
   "LBW",
   "Hit wicket",
 };
+
+var optedToDaata = {
+  "Bat",
+  "Bowl",
+};
+
+var noOfOverData = {
+  "5",
+  "10",
+  "15",
+  "20",
+};

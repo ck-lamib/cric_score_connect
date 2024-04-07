@@ -66,13 +66,17 @@ class SelectPlayer extends StatelessWidget {
               subtitle:
                   Text(c.availablePlayer[index].username ?? "demoUser@12"),
               trailing: Obx(
-                () => Checkbox(
-                  onChanged: (value) {
-                    c.togglePlayer(
-                        value: value, user: c.availablePlayer[index]);
-                  },
-                  value: c.selectedTeamPlayer.any(
-                    (e) => e.username == c.availablePlayer[index].username,
+                () => SizedBox(
+                  height: 22,
+                  width: 22,
+                  child: Checkbox(
+                    onChanged: (value) {
+                      c.togglePlayer(
+                          value: value, user: c.availablePlayer[index]);
+                    },
+                    value: c.selectedTeamPlayer.any(
+                      (e) => e.username == c.availablePlayer[index].username,
+                    ),
                   ),
                 ),
               ),

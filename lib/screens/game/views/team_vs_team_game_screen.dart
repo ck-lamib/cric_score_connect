@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
+import 'package:cric_score_connect/screens/game/views/pickplayer/select_opening_player.dart';
+import 'package:cric_score_connect/screens/game/views/selectplayer/team_vs_team_select_player.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_game_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -73,6 +75,7 @@ class TeamVsTeamGameScreen extends StatelessWidget {
                             if (c.homeTeamController.text.trim().isNotEmpty ||
                                 c.awayTeamController.text.trim().isNotEmpty) {
                               Get.toNamed(TeamVsTeamCreateGame.routeName);
+                              // Get.toNamed(SelectOpeningPlayerScreen.routeName);
                             }
                           }
                         },
