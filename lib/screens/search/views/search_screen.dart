@@ -18,7 +18,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size(0, 0),
+        preferredSize: const Size(0, 0),
         child: Container(
           color: AppColors.backGroundColor,
         ),
@@ -49,11 +49,25 @@ class SearchScreen extends StatelessWidget {
           ],
           body: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                FriendTile(),
-              ],
+            child: Obx(
+              () => c.isSearching.value
+                  ? const Center(
+                      child: Text("loading..."),
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: c.searchedUser.length,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 20,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        return FriendTile(
+                          user: c.searchedUser[index],
+                        );
+                      },
+                    ),
             ),
           ),
         ),

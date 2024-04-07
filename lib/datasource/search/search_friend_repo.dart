@@ -8,7 +8,7 @@ import 'package:cric_score_connect/utils/routes/api.dart';
 import 'package:http/http.dart' as http;
 
 class SearchFriendRepo {
-  static Future<void> register({
+  static Future<void> searchFriend({
     required String query,
     required Function(List<User> userList) onSuccess,
     required Function(String message) onError,
@@ -16,21 +16,17 @@ class SearchFriendRepo {
     try {
       var headers = {
         "Accept": "application/json",
-      };
-
-      var body = {
         "query": query,
       };
 
       CustomLogger.trace(Api.searchUrl);
-      CustomLogger.trace(json.encode(body));
 
-      http.Response response = await HttpRequest.post(
+      http.Response response = await HttpRequest.get(
         Uri.parse(
           Api.searchUrl,
         ),
         headers: headers,
-        body: body,
+        // body: body,
       );
 
       var responseData = jsonDecode(response.body);

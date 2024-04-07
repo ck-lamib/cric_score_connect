@@ -1,3 +1,4 @@
+import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
@@ -6,12 +7,15 @@ import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class FriendTile extends StatelessWidget {
+  final User? user;
   const FriendTile({
     super.key,
+    this.user,
   });
 
   @override
   Widget build(BuildContext context) {
+    print(user?.profilePhotoPath);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
       decoration: BoxDecoration(
@@ -30,22 +34,38 @@ class FriendTile extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: AppColors.backGroundColor,
-                  width: 1,
-                ),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Image.asset(
-                ImagePath.defaultAvatar,
-                fit: BoxFit.cover,
-              ),
-            ),
+            child: user?.profilePhotoPath != null
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: AppColors.backGroundColor,
+                        width: 1,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.network(
+                      user!.profilePhotoPath!,
+                    ),
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: AppColors.backGroundColor,
+                        width: 1,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.asset(
+                      ImagePath.defaultAvatar,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
           ),
           SizeConfig.getSpace(
             width: 20,
@@ -58,13 +78,13 @@ class FriendTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Bimal khatri",
+                  user?.name ?? "Demo User",
                   style: CustomTextStyles.f18W600(
                       // color: AppColors.primaryColor,
                       ),
                 ),
                 Text(
-                  "@bimal123",
+                  user?.username ?? "@demo123",
                   style: CustomTextStyles.f14W500(
                     color: AppColors.hintTextColor,
                   ),
