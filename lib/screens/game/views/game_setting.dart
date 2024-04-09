@@ -49,7 +49,19 @@ class GameSettingScreen extends StatelessWidget {
                     preIconPath: const Icon(
                       Icons.group,
                     ),
-                    validator: Validators.checkFieldEmpty,
+                    validator: (contentField) {
+                      // var value = Validators.checkFieldEmpty(contentField);
+                      // if (value != null) {
+                      //   return value;
+                      // } else {
+                      //   var intValue = int.parse(contentField!);
+                      //   if (intValue >= 4 && intValue <= 11) {
+                      //     return null;
+                      //   } else {
+                      //     return "Player should be between 4 and 11";
+                      //   }
+                      // }
+                    },
                   ),
                   SizeConfig.getSpace(),
                   Row(
@@ -107,65 +119,55 @@ class GameSettingScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Obx(
-                                      () => !(c.hasNoBallReball.value)
-                                          ? const SizedBox.shrink()
-                                          : Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 3,
-                                                  child: Text(
-                                                    "No Ball Run",
-                                                    style: CustomTextStyles
-                                                        .f18W600(),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      bottom: 10,
-                                                      left: 10,
-                                                      right: 10,
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller:
-                                                          c.noBallRunController,
-                                                      inputFormatters: [
-                                                        FilteringTextInputFormatter
-                                                            .allow(RegExp(
-                                                                r'[0-9]')),
-                                                      ],
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      onTapOutside: (event) =>
-                                                          FocusManager.instance
-                                                              .primaryFocus
-                                                              ?.unfocus(),
-                                                      validator: Validators
-                                                          .checkFieldEmpty,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 20,
-                                                        ),
-                                                        fillColor: Colors.white,
-                                                        filled: true,
-                                                        hintText: "1",
-                                                        hintStyle: CustomTextStyles
-                                                            .f16W400(
-                                                                color: AppColors
-                                                                    .hintTextColor),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            "No Ball Run",
+                                            style: CustomTextStyles.f18W600(),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                              bottom: 10,
+                                              left: 10,
+                                              right: 10,
                                             ),
-                                    )
+                                            child: TextFormField(
+                                              controller: c.noBallRunController,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9]')),
+                                              ],
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              onTapOutside: (event) =>
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus(),
+                                              validator:
+                                                  Validators.checkFieldEmpty,
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 20,
+                                                ),
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                                hintText: "1",
+                                                hintStyle:
+                                                    CustomTextStyles.f16W400(
+                                                        color: AppColors
+                                                            .hintTextColor),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -229,65 +231,57 @@ class GameSettingScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Obx(
-                                      () => !(c.hasWideBallReball.value)
-                                          ? const SizedBox.shrink()
-                                          : Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 3,
-                                                  child: Text(
-                                                    "Wide Ball Run",
-                                                    style: CustomTextStyles
-                                                        .f18W600(),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                      bottom: 10,
-                                                      left: 10,
-                                                      right: 10,
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller: c
-                                                          .wideBallRunController,
-                                                      inputFormatters: [
-                                                        FilteringTextInputFormatter
-                                                            .allow(
-                                                          RegExp(r'[0-9]'),
-                                                        ),
-                                                      ],
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      onTapOutside: (event) =>
-                                                          FocusManager.instance
-                                                              .primaryFocus
-                                                              ?.unfocus(),
-                                                      validator: Validators
-                                                          .checkFieldEmpty,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 20,
-                                                        ),
-                                                        fillColor: Colors.white,
-                                                        filled: true,
-                                                        hintText: "1",
-                                                        hintStyle: CustomTextStyles
-                                                            .f16W400(
-                                                                color: AppColors
-                                                                    .hintTextColor),
-                                                      ),
-                                                    ),
-                                                  ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            "Wide Ball Run",
+                                            style: CustomTextStyles.f18W600(),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                              bottom: 10,
+                                              left: 10,
+                                              right: 10,
+                                            ),
+                                            child: TextFormField(
+                                              controller:
+                                                  c.wideBallRunController,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(
+                                                  RegExp(r'[0-9]'),
                                                 ),
                                               ],
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              onTapOutside: (event) =>
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus(),
+                                              validator:
+                                                  Validators.checkFieldEmpty,
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 20,
+                                                ),
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                                hintText: "1",
+                                                hintStyle:
+                                                    CustomTextStyles.f16W400(
+                                                        color: AppColors
+                                                            .hintTextColor),
+                                              ),
                                             ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

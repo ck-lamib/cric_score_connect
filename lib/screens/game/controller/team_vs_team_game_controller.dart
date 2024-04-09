@@ -1,14 +1,11 @@
 import 'package:cric_score_connect/models/overs.dart';
 import 'package:cric_score_connect/models/user.dart';
-import 'package:cric_score_connect/screens/game/views/gaming/fall_of_wicket.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/next_over.dart';
-import 'package:cric_score_connect/screens/game/widgets/gaming/fall_of_wicket_app_bar.dart';
 import 'package:cric_score_connect/screens/match/batting_stats.dart';
 import 'package:cric_score_connect/screens/match/bowling_stats.dart';
 import 'package:cric_score_connect/screens/match/delivery.dart';
 import 'package:cric_score_connect/screens/match/enums/extra.dart';
 import 'package:cric_score_connect/screens/match/enums/out.dart';
-import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -429,81 +426,35 @@ class TeamVsTeamGameController extends GetxController {
     // print("===> over is completed");
 
     // if wicket then get reason and next player
-    if (delivery.out != Out.none) {
-      //check out
+
+    addRuns(delivery);
+    _addWicket(delivery);
+    incrementBalls(delivery);
+    if (delivery.runs % 2 == 1 &&
+        !delivery.isBonus() &&
+        !delivery.isPenalty()) {
+      _changeStrike();
+    }
+    lastSevenDeliveries.add(delivery.shortSummary());
+    if (Over.finished(currentBalls.value) && isOverInProgress.value) {
+      lastSevenDeliveries.add('|');
       var result = await showDialog(
           context: Get.context!,
           builder: (context) {
-            // return NextOverScreen(
-            //   bowlingTeam: bowlingTeam,
-            //   currentBowler: bowler.value!,
-            // );
-            return FallOfWicketScreen();
+            return NextOverScreen(
+              bowlingTeam: bowlingTeam,
+              currentBowler: bowler.value!,
+            );
           });
-      if (result != null) {
-        addRuns(delivery);
-        incrementBalls(delivery);
-        _addWicket(delivery);
-        if (delivery.runs % 2 == 1 &&
-            !delivery.isBonus() &&
-            !delivery.isPenalty()) {
-          _changeStrike();
-        }
-        lastSevenDeliveries.add(delivery.shortSummary());
-        if (Over.finished(currentBalls.value) && isOverInProgress.value) {
-          lastSevenDeliveries.add('|');
-          var result = await showDialog(
-              context: Get.context!,
-              builder: (context) {
-                return NextOverScreen(
-                  bowlingTeam: bowlingTeam,
-                  currentBowler: bowler.value!,
-                );
-              });
-          if (result != null && result is User) {
-            concludeOver(result);
-          }
-        }
-        while (lastSevenDeliveries.length > 7) {
-          lastSevenDeliveries.removeAt(0);
-        }
-      } else {
-        CustomSnackBar.error(
-          title: "Missing wicket reason",
-          message: "Please add wickets reason.",
-        );
-
-        return;
-      }
-    } else {
-      addRuns(delivery);
-      incrementBalls(delivery);
-      _addWicket(delivery);
-      if (delivery.runs % 2 == 1 &&
-          !delivery.isBonus() &&
-          !delivery.isPenalty()) {
-        _changeStrike();
-      }
-      lastSevenDeliveries.add(delivery.shortSummary());
-      if (Over.finished(currentBalls.value) && isOverInProgress.value) {
-        lastSevenDeliveries.add('|');
-        var result = await showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return NextOverScreen(
-                bowlingTeam: bowlingTeam,
-                currentBowler: bowler.value!,
-              );
-            });
-        if (result != null && result is User) {
-          concludeOver(result);
-        }
-      }
-      while (lastSevenDeliveries.length > 7) {
-        lastSevenDeliveries.removeAt(0);
+      if (result != null && result is User) {
+        concludeOver(result);
       }
     }
+    while (lastSevenDeliveries.length > 7) {
+      lastSevenDeliveries.removeAt(0);
+    }
 
+    update();
     delivery.reset();
     update();
   }

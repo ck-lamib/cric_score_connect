@@ -911,21 +911,32 @@ class GamingScreen extends StatelessWidget {
                           AddRunTile(
                             run: 0,
                             onTap: () {
-                              Delivery delivery = Delivery()..addRuns(0);
-                              if (c.isWideSelected.value) {
-                                delivery.addExtra(Extra.wide);
+                              if (c.isWicketsSelected.value) {
+                                // get wicket reason and new batter;
+
+                                //
+                              } else {
+                                Delivery delivery = Delivery()..addRuns(0);
+                                if (c.isWideSelected.value) {
+                                  delivery.addExtra(Extra.wide);
+                                }
+                                if (c.isNoBallSelected.value) {
+                                  delivery.addExtra(Extra.noBall);
+                                }
+                                if (c.isByesSelected.value) {
+                                  delivery.addExtra(Extra.bye);
+                                }
+                                if (c.isLegByesSelected.value) {
+                                  delivery.addExtra(Extra.legBye);
+                                }
+                                print(delivery);
+                                c.recordDelivery(delivery);
                               }
-                              if (c.isNoBallSelected.value) {
-                                delivery.addExtra(Extra.noBall);
-                              }
-                              if (c.isByesSelected.value) {
-                                delivery.addExtra(Extra.bye);
-                              }
-                              if (c.isLegByesSelected.value) {
-                                delivery.addExtra(Extra.legBye);
-                              }
-                              print(delivery);
-                              c.recordDelivery(delivery);
+
+                              // CustomSnackBar.error(
+                              //   title: "Missi g",
+                              //   message: "Please add wickets reason.",
+                              // );
                             },
                           ),
                           AddRunTile(

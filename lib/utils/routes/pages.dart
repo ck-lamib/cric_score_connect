@@ -174,15 +174,15 @@ var pages = [
       },
     ),
   ),
-  GetPage(
-    name: FallOfWicketScreen.routeName,
-    page: () => const FallOfWicketScreen(),
-    binding: BindingsBuilder(
-      () {
-        Get.lazyPut(() => GamingController());
-      },
-    ),
-  ),
+  // GetPage(
+  //   name: FallOfWicketScreen.routeName,
+  //   page: () => FallOfWicketScreen(),
+  //   binding: BindingsBuilder(
+  //     () {
+  //       Get.lazyPut(() => GamingController());
+  //     },
+  //   ),
+  // ),
   // GetPage(
   //   name: NextOverScreen.routeName,
   //   page: () => NextOverScreen(),
