@@ -364,7 +364,12 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                       }
                                     }
                                     Get.toNamed(
-                                        SelectOpeningPlayerScreen.routeName);
+                                      SelectOpeningPlayerScreen.routeName,
+                                      arguments: SelectOpeningPlayerArgument(
+                                        battingTeam: c.battingTeam,
+                                        bowlingTeam: c.bowlingTeam,
+                                      ),
+                                    );
                                   }
                                 }
                               }

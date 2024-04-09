@@ -7,7 +7,7 @@ class NextOverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CommonSilverAppBar(
-      hasLeading: true,
+      hasLeading: false,
       title: "Next Over",
       hasNotification: false,
       scrolledUnderElevation: 0,

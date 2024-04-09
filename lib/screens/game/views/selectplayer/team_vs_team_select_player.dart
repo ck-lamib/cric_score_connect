@@ -41,6 +41,14 @@ class SelectPlayer extends StatelessWidget {
             textAlign: TextAlign.center,
             style: CustomTextStyles.f18W600(),
           ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                c.onDone();
+              },
+              child: Text("Done"),
+            )
+          ],
         ),
         body: ListView.separated(
           separatorBuilder: (context, index) => const SizedBox(

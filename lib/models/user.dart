@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:cric_score_connect/screens/match/batting_stats.dart';
+import 'package:cric_score_connect/screens/match/bowling_stats.dart';
+
 List<User> userFromJson(List<dynamic> userJsons) =>
     userJsons.map((userJson) => User.fromJson(userJson)).toList();
 
@@ -13,6 +16,8 @@ class User {
   final String? address;
   final String? profilePhotoPath;
   final String? playerType;
+  final MatchBowlingStats? matchBowlingStats;
+  final MatchBattingStats? matchBattingStats;
 
   User({
     this.id,
@@ -24,6 +29,8 @@ class User {
     this.address,
     this.profilePhotoPath,
     this.playerType,
+    this.matchBattingStats,
+    this.matchBowlingStats,
   });
 
   User copyWith({
@@ -36,6 +43,8 @@ class User {
     String? address,
     String? profilePhotoPath,
     String? playerType,
+    MatchBowlingStats? matchBowlingStats,
+    MatchBattingStats? matchBattingStats,
   }) =>
       User(
         id: id ?? this.id,
@@ -47,6 +56,8 @@ class User {
         address: address ?? this.address,
         profilePhotoPath: profilePhotoPath ?? this.profilePhotoPath,
         playerType: playerType ?? this.playerType,
+        matchBattingStats: matchBattingStats ?? this.matchBattingStats,
+        matchBowlingStats: matchBowlingStats ?? this.matchBowlingStats,
       );
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));

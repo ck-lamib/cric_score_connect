@@ -3,6 +3,7 @@ import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart
 import 'package:cric_score_connect/screens/friend/controller/friend_screen_controller.dart';
 import 'package:cric_score_connect/screens/friend/views/friend_screen.dart';
 import 'package:cric_score_connect/screens/game/controller/gaming/gaming_controller.dart';
+import 'package:cric_score_connect/screens/game/controller/pickplayer/select_opening_player_controller.dart';
 import 'package:cric_score_connect/screens/game/controller/selectplayer/select_player_controller.dart';
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
@@ -159,7 +160,7 @@ var pages = [
     page: () => SelectOpeningPlayerScreen(),
     binding: BindingsBuilder(
       () {
-        Get.lazyPut(() => TeamVsTeamGameController());
+        Get.lazyPut(() => SelectOpeningPlayerController());
       },
     ),
   ),
@@ -169,6 +170,7 @@ var pages = [
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => GamingController());
+        Get.lazyPut(() => TeamVsTeamGameController());
       },
     ),
   ),
@@ -181,13 +183,13 @@ var pages = [
       },
     ),
   ),
-  GetPage(
-    name: NextOverScreen.routeName,
-    page: () => const NextOverScreen(),
-    binding: BindingsBuilder(
-      () {
-        Get.lazyPut(() => GamingController());
-      },
-    ),
-  ),
+  // GetPage(
+  //   name: NextOverScreen.routeName,
+  //   page: () => NextOverScreen(),
+  //   binding: BindingsBuilder(
+  //     () {
+  //       Get.lazyPut(() => GamingController());
+  //     },
+  //   ),
+  // ),
 ];

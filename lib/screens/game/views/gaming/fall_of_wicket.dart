@@ -1,16 +1,10 @@
-import 'dart:io';
-
 import 'package:cric_score_connect/screens/game/widgets/gaming/fall_of_wicket_app_bar.dart';
-import 'package:cric_score_connect/screens/game/widgets/gaming/gaming_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/datas.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
-import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_dropdown_textfield.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class FallOfWicketScreen extends StatelessWidget {
   static const String routeName = "/fall-of-wicket-screen";
@@ -28,7 +22,7 @@ class FallOfWicketScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            FallOfWicketAppBar(),
+            const FallOfWicketAppBar(),
             SliverToBoxAdapter(
               child: Container(
                 margin:

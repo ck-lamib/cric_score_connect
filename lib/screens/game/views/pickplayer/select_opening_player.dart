@@ -1,4 +1,6 @@
 import 'package:cric_score_connect/common/common_app_bar.dart';
+import 'package:cric_score_connect/models/user.dart';
+import 'package:cric_score_connect/screens/game/controller/pickplayer/select_opening_player_controller.dart';
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -12,7 +14,10 @@ import 'package:get/get.dart';
 class SelectOpeningPlayerScreen extends StatelessWidget {
   static const String routeName = "/select-opening-player-screen";
   SelectOpeningPlayerScreen({super.key});
-  final TeamVsTeamGameController c = Get.find<TeamVsTeamGameController>();
+  final SelectOpeningPlayerController c =
+      Get.find<SelectOpeningPlayerController>();
+  final TeamVsTeamGameController teamVsTeamGameController =
+      Get.find<TeamVsTeamGameController>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,33 +75,36 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
                                           )))
                                       .toList());
 
-                          if (c.striker != null &&
+                          if (c.openingStriker.value != null &&
                               !strikerDropddownItemList.any((item) =>
-                                  item.value == c.striker!.username)) {
+                                  item.value ==
+                                  c.openingStriker.value?.username)) {
                             strikerDropddownItemList.insert(
                                 0,
                                 DropdownMenuItem(
-                                  value: c.striker!.username,
+                                  value: c.openingStriker.value?.username,
                                   child: Text(
-                                    "${c.striker!.name?.split(" ").first} (${c.striker!.username})",
+                                    "${c.openingStriker.value?.name?.split(" ").first} (${c.openingStriker.value?.username})",
                                     style: CustomTextStyles.f16W400(
                                       color: AppColors.backGroundColor,
                                     ),
                                   ),
                                 ));
                           }
-                          if (c.nonStriker != null &&
+                          if (c.openingNonStriker.value != null &&
                               strikerDropddownItemList.any((item) =>
-                                  item.value == c.nonStriker!.username)) {
+                                  item.value ==
+                                  c.openingNonStriker.value?.username)) {
                             strikerDropddownItemList.removeWhere((element) =>
-                                element.value == c.nonStriker!.username);
+                                element.value ==
+                                c.openingNonStriker.value?.username);
                           }
 
                           return CustomDropdownTextField(
                             key: UniqueKey(),
                             hint: "Striker",
                             labelText: "Striker",
-                            itemValue: c.striker?.username,
+                            itemValue: c.openingStriker.value?.username,
                             onValueChange: c.onChangeStrikerBatter,
                             dropDownItemLists: strikerDropddownItemList,
                           );
@@ -127,32 +135,35 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
                                             ),
                                           )))
                                       .toList());
-                          if (c.nonStriker != null &&
+                          if (c.openingNonStriker.value != null &&
                               !nonStrikerDropdownItemList.any((item) =>
-                                  item.value == c.nonStriker!.username)) {
+                                  item.value ==
+                                  c.openingNonStriker.value?.username)) {
                             nonStrikerDropdownItemList.insert(
                                 0,
                                 DropdownMenuItem(
-                                  value: c.nonStriker!.username,
+                                  value: c.openingNonStriker.value?.username,
                                   child: Text(
-                                    "${c.nonStriker!.name?.split(" ").first} (${c.nonStriker!.username})",
+                                    "${c.openingNonStriker.value?.name?.split(" ").first} (${c.openingNonStriker.value?.username})",
                                     style: CustomTextStyles.f16W400(
                                       color: AppColors.backGroundColor,
                                     ),
                                   ),
                                 ));
                           }
-                          if (c.striker != null &&
+                          if (c.openingStriker.value != null &&
                               nonStrikerDropdownItemList.any((item) =>
-                                  item.value == c.striker!.username)) {
+                                  item.value ==
+                                  c.openingStriker.value?.username)) {
                             nonStrikerDropdownItemList.removeWhere((element) =>
-                                element.value == c.striker!.username);
+                                element.value ==
+                                c.openingStriker.value?.username);
                           }
                           return CustomDropdownTextField(
                             key: UniqueKey(),
                             hint: "Non-Striker",
                             labelText: "Non-Striker",
-                            itemValue: c.nonStriker?.username,
+                            itemValue: c.openingNonStriker.value?.username,
                             onValueChange: c.onChangeNonStrikerBatter,
                             dropDownItemLists: nonStrikerDropdownItemList,
                           );
@@ -163,7 +174,7 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
                         hint: "Opening Bowler",
                         labelText: "Opening Bowler",
                         onValueChange: c.onChangeOpeningBolwer,
-                        itemValue: c.bowler?.username,
+                        itemValue: c.openingBowler.value?.username,
                         dropDownItemLists: c.bowlingTeam
                             .map((element) => DropdownMenuItem(
                                 value: element.username,
@@ -179,7 +190,11 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
                       CustomElevatedButton(
                         title: "Next",
                         onTap: () {
-                          Get.toNamed(GamingScreen.routeName);
+                          teamVsTeamGameController.bowler = c.openingBowler;
+                          teamVsTeamGameController.striker = c.openingStriker;
+                          teamVsTeamGameController.nonStriker =
+                              c.openingNonStriker;
+                          Get.offAndToNamed(GamingScreen.routeName);
                         },
                       ),
                       SizeConfig.getSpace(height: 10),
@@ -193,4 +208,14 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class SelectOpeningPlayerArgument {
+  final List<User> battingTeam;
+  final List<User> bowlingTeam;
+
+  SelectOpeningPlayerArgument({
+    required this.battingTeam,
+    required this.bowlingTeam,
+  });
 }
