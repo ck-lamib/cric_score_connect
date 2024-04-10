@@ -34,7 +34,7 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
             const CommonSilverAppBar(
-              hasLeading: true,
+              hasLeading: false,
               title: "Select opening player",
               hasNotification: false,
               scrolledUnderElevation: 0,

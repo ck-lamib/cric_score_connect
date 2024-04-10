@@ -10,6 +10,7 @@ class ImagePath {
   static const String noShows = "$baseImagePath/no_shows.png";
   static const String khaltiLogo = "$baseImagePath/khalti_logo.png";
   static const String defaultAvatar = "$baseImagePath/default_avatar.jpeg";
+  static const String splashLogo = "$baseImagePath/splash_logo.png";
 
   static const String baseSvgPath = "assets/svg";
   static const String forgetPasswordUIImagePath =

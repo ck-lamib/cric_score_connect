@@ -18,10 +18,8 @@ import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class GamingScreen extends StatelessWidget {
@@ -185,21 +183,67 @@ class GamingScreen extends StatelessWidget {
                       Obx(
                         () => GamingRatingStat(
                           title: "Target",
-                          stat: c.target.value.toString(),
+                          stat: matchController.getInningDetail.isFirstInning ==
+                                  true
+                              ? "--:--"
+                              : c.target.value.toString(),
                         ),
                       ),
                       Obx(
                         () => GamingRatingStat(
-                          title: "C.R.R",
-                          stat: matchController.getInningDetail.crr.value
-                              .toString(),
-                        ),
+                            title: "C.R.R",
+                            stat: (matchController.getInningDetail
+                                        .totalRunTillNow.value ==
+                                    0
+                                ? "0.00"
+                                : (matchController.getInningDetail
+                                            .totalRunTillNow.value /
+                                        (matchController.getInningDetail
+                                                .currentBalls.value /
+                                            6))
+                                    .toStringAsFixed(2))),
                       ),
                       Obx(
-                        () => GamingRatingStat(
-                          title: "R.R.R",
-                          stat: c.target.value.toString(),
-                        ),
+                        () {
+                          // Calculate the runs required to win
+                          int runsRequired = c.target.value.toInt() -
+                              matchController
+                                  .getInningDetail.totalRunTillNow.value;
+
+                          double noOfOvers = (double.tryParse(
+                                  c.numberOfOversController.text) ??
+                              6);
+                          double currentOver = double.parse(
+                              matchController.getInningDetail.overs());
+                          var oversRemaining = noOfOvers - currentOver;
+
+                          // If overs remaining is 0, return a default value
+                          if (oversRemaining == 0.0) {
+                            return GamingRatingStat(
+                              title: "R.R.R",
+                              stat: matchController
+                                          .getInningDetail.isFirstInning ==
+                                      true
+                                  ? "--:--"
+                                  : "0",
+                            );
+                          }
+
+                          // Calculate the required run rate
+                          double requiredRunRate = ((runsRequired.toDouble() /
+                                      oversRemaining.toDouble()) *
+                                  6) /
+                              6;
+
+                          return GamingRatingStat(
+                            title: "R.R.R",
+                            stat:
+                                matchController.getInningDetail.isFirstInning ==
+                                        true
+                                    ? "--:--"
+                                    : requiredRunRate.toStringAsFixed(2),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -356,15 +400,36 @@ class GamingScreen extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            flex: 1,
-                            child: Text(
-                              "100",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
+                              flex: 1,
+                              child: Obx(() {
+                                int? strikerRuns = matchController
+                                        .getInningDetail
+                                        .striker
+                                        .value
+                                        ?.matchBattingStats
+                                        ?.runs
+                                        .value ??
+                                    0;
+                                int strikerBalls = matchController
+                                        .getInningDetail
+                                        .striker
+                                        .value
+                                        ?.matchBattingStats
+                                        ?.balls
+                                        .value ??
+                                    0;
+
+                                return Text(
+                                  strikerBalls == 0 && strikerRuns == 0
+                                      ? "0.0"
+                                      : ((strikerRuns / strikerBalls) * 100)
+                                          .toStringAsFixed(0),
+                                  textAlign: TextAlign.center,
+                                  style: CustomTextStyles.f14W500(
+                                    color: AppColors.hintTextColor,
+                                  ),
+                                );
+                              })),
                         ],
                       ),
                       SizeConfig.getSpace(height: 5),
@@ -438,13 +503,38 @@ class GamingScreen extends StatelessWidget {
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: Text(
-                                      "100",
-                                      textAlign: TextAlign.center,
-                                      style: CustomTextStyles.f14W500(
-                                        color: AppColors.hintTextColor,
-                                      ),
-                                    ),
+                                    child: Obx(() {
+                                      int? nonStrikerRuns = matchController
+                                              .getInningDetail
+                                              .nonStriker
+                                              .value
+                                              ?.matchBattingStats
+                                              ?.runs
+                                              .value ??
+                                          0;
+                                      int nonStrikerBalls = matchController
+                                              .getInningDetail
+                                              .nonStriker
+                                              .value
+                                              ?.matchBattingStats
+                                              ?.balls
+                                              .value ??
+                                          0;
+
+                                      return Text(
+                                        nonStrikerBalls == 0 &&
+                                                nonStrikerRuns == 0
+                                            ? "0.0"
+                                            : ((nonStrikerRuns /
+                                                        nonStrikerBalls) *
+                                                    100)
+                                                .toStringAsFixed(0),
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
+                                      );
+                                    }),
                                   ),
                                 ],
                               ),
@@ -598,13 +688,38 @@ class GamingScreen extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              "100",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
+                            child: Obx(() {
+                              double? totalRunsConceded = matchController
+                                      .getInningDetail
+                                      .bowler
+                                      .value
+                                      ?.matchBowlingStats
+                                      ?.runs
+                                      .value
+                                      .toDouble() ??
+                                  0.0;
+                              double totalOversBowled = double.parse(
+                                Over.overs(matchController
+                                        .getInningDetail
+                                        .bowler
+                                        .value
+                                        ?.matchBowlingStats
+                                        ?.balls
+                                        .value ??
+                                    0),
+                              );
+
+                              return Text(
+                                totalRunsConceded == 0 && totalOversBowled == 0
+                                    ? "0.0"
+                                    : ((totalRunsConceded / totalOversBowled))
+                                        .toStringAsFixed(0),
+                                textAlign: TextAlign.center,
+                                style: CustomTextStyles.f14W500(
+                                  color: AppColors.hintTextColor,
+                                ),
+                              );
+                            }),
                           ),
                         ],
                       ),
