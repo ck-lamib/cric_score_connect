@@ -1,8 +1,4 @@
-import 'dart:io';
-
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
-import 'package:cric_score_connect/screens/game/views/pickplayer/select_opening_player.dart';
-import 'package:cric_score_connect/screens/game/views/selectplayer/team_vs_team_select_player.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_game_app_bar.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -19,6 +15,7 @@ class TeamVsTeamGameScreen extends StatelessWidget {
   static const String routeName = "/teamvsteam-game-screen";
   TeamVsTeamGameScreen({super.key});
   final TeamVsTeamGameController c = Get.find<TeamVsTeamGameController>();
+  final MatchController matchController = Get.put(MatchController());
 
   @override
   Widget build(BuildContext context) {

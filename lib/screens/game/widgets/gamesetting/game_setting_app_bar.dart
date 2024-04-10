@@ -7,7 +7,7 @@ class GameSettingAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CommonSilverAppBar(
-      hasLeading: true,
+      hasLeading: false,
       title: "Match Setting",
       hasNotification: false,
       scrolledUnderElevation: 0,

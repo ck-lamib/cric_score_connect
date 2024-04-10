@@ -1,6 +1,5 @@
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
-import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/game/views/pickplayer/select_opening_player.dart';
 import 'package:cric_score_connect/screens/game/views/selectplayer/team_vs_team_select_player.dart';
 import 'package:cric_score_connect/screens/game/widgets/team_vs_team_create_game_app_bar.dart';
@@ -17,12 +16,14 @@ import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_outline_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class TeamVsTeamCreateGame extends StatelessWidget {
   static const String routeName = "/teamvsteam-create-game-";
   TeamVsTeamCreateGame({super.key});
   final TeamVsTeamGameController c = Get.find<TeamVsTeamGameController>();
+  final MatchController matchController = Get.find<MatchController>();
 
   @override
   Widget build(BuildContext context) {
@@ -222,24 +223,35 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                     validator: Validators.checkFieldEmpty,
                   ),
                   SizeConfig.getSpace(),
-                  CustomDropdownTextField(
-                    hint: "Number of overs",
+                  // CustomDropdownTextField(
+                  //   hint: "Number of overs",
+                  //   labelText: "Number of overs",
+                  // itemValue: c.numberOfOvers,
+                  //   onValueChange: (value) => c.numberOfOvers = value,
+                  //   dropDownItemLists: noOfOverData
+                  //       .map(
+                  //         (e) => DropdownMenuItem(
+                  //           value: e,
+                  //           child: Text(
+                  //             e,
+                  //             style: CustomTextStyles.f16W400(
+                  //               color: AppColors.backGroundColor,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       )
+                  //       .toList(),
+                  // ),
+                  CustomTextField(
+                    controller: c.numberOfOversController,
                     labelText: "Number of overs",
-                    itemValue: c.numberOfOvers,
-                    onValueChange: (value) => c.numberOfOvers = value,
-                    dropDownItemLists: noOfOverData
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(
-                              e,
-                              style: CustomTextStyles.f16W400(
-                                color: AppColors.backGroundColor,
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList(),
+                    hint: "5",
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                    textInputType: TextInputType.number,
+                    validator: Validators.checkFieldEmpty,
                   ),
                   SizeConfig.getSpace(),
                   CustomDropdownTextField(
@@ -328,7 +340,9 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                     message:
                                         "${c.awayTeamController.text}'s player count should be $totalNumberOfPlayerCount. But you have $homeTeamPlayerCount.");
                               } else {
-                                if (c.numberOfOvers == null) {
+                                if (c.numberOfOversController.text
+                                    .trim()
+                                    .isEmpty) {
                                   CustomSnackBar.info(
                                       message: "Please add number of overs.");
                                 } else if (c.tossWinner == null) {
@@ -338,8 +352,9 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                   CustomSnackBar.info(
                                       message: "Please add opted to.");
                                 } else {
-                                  if (c.numberOfOvers != null &&
-                                      c.numberOfOvers!.trim().isNotEmpty &&
+                                  if (c.numberOfOversController.text
+                                          .trim()
+                                          .isNotEmpty &&
                                       c.tossWinner != null &&
                                       c.tossWinner!.trim().isNotEmpty &&
                                       c.optedTo != null &&
@@ -348,26 +363,66 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                     if (c.tossWinner ==
                                         c.homeTeamController.text) {
                                       if (c.optedTo == "Bat") {
-                                        c.battingTeam = c.homeTeamPlayer;
-                                        c.bowlingTeam = c.awayTeamPlayer;
+                                        matchController.start(
+                                          tossWinnerr:
+                                              c.homeTeamController.text,
+                                          optedToo: "Bat",
+                                          battingT: c.homeTeamPlayer,
+                                          bowlingT: c.awayTeamPlayer,
+                                        );
+
+                                        // c.getInningDetail.battingTeam =
+                                        //     c.homeTeamPlayer;
+                                        // c.getInningDetail.bowlingTeam =
+                                        //     c.awayTeamPlayer;
                                       } else {
-                                        c.bowlingTeam = c.homeTeamPlayer;
-                                        c.battingTeam = c.awayTeamPlayer;
+                                        // c.getInningDetail.bowlingTeam =
+                                        //     c.homeTeamPlayer;
+                                        // c.getInningDetail.battingTeam =
+                                        //     c.awayTeamPlayer;
+                                        matchController.start(
+                                          tossWinnerr:
+                                              c.homeTeamController.text,
+                                          optedToo: "Bowl",
+                                          battingT: c.awayTeamPlayer,
+                                          bowlingT: c.homeTeamPlayer,
+                                        );
                                       }
                                     } else {
                                       if (c.optedTo == "Bat") {
-                                        c.battingTeam = c.awayTeamPlayer;
-                                        c.bowlingTeam = c.homeTeamPlayer;
+                                        matchController.start(
+                                          tossWinnerr:
+                                              c.awayTeamController.text,
+                                          optedToo: "Bat",
+                                          battingT: c.awayTeamPlayer,
+                                          bowlingT: c.homeTeamPlayer,
+                                        );
+                                        // c.getInningDetail.battingTeam =
+                                        //     c.awayTeamPlayer;
+                                        // c.getInningDetail.bowlingTeam =
+                                        //     c.homeTeamPlayer;
                                       } else {
-                                        c.battingTeam = c.homeTeamPlayer;
-                                        c.bowlingTeam = c.awayTeamPlayer;
+                                        matchController.start(
+                                          tossWinnerr:
+                                              c.awayTeamController.text,
+                                          optedToo: "Bowl",
+                                          battingT: c.homeTeamPlayer,
+                                          bowlingT: c.awayTeamPlayer,
+                                        );
+
+                                        // c.getInningDetail.battingTeam =
+                                        //     c.homeTeamPlayer;
+                                        // c.getInningDetail.bowlingTeam =
+                                        //     c.awayTeamPlayer;
                                       }
                                     }
                                     Get.toNamed(
                                       SelectOpeningPlayerScreen.routeName,
                                       arguments: SelectOpeningPlayerArgument(
-                                        battingTeam: c.battingTeam,
-                                        bowlingTeam: c.bowlingTeam,
+                                        battingTeam: matchController
+                                            .getInningDetail.battingTeam,
+                                        bowlingTeam: matchController
+                                            .getInningDetail.bowlingTeam,
                                       ),
                                     );
                                   }

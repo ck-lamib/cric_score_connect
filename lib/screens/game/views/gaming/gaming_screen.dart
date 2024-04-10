@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cric_score_connect/models/user.dart';
+import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/fall_of_wicket.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/next_over.dart';
@@ -8,12 +9,18 @@ import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_s
 import 'package:cric_score_connect/screens/game/widgets/gaming/gaming_app_bar.dart';
 import 'package:cric_score_connect/screens/match/delivery.dart';
 import 'package:cric_score_connect/screens/match/enums/extra.dart';
+import 'package:cric_score_connect/screens/match/enums/out.dart';
+import 'package:cric_score_connect/screens/match/overs.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
+import 'package:cric_score_connect/utils/constants/validators.dart';
+import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
+import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -21,9 +28,29 @@ class GamingScreen extends StatelessWidget {
   static const String routeName = "/game-screen";
   GamingScreen({super.key});
   final TeamVsTeamGameController c = Get.find<TeamVsTeamGameController>();
+  final MatchController matchController = Get.find<MatchController>();
 
   @override
   Widget build(BuildContext context) {
+    String battingTeam = "";
+    String bowlingTeam = "";
+
+    if (matchController.optedTo == "Bat") {
+      battingTeam = matchController.tossWinner == c.homeTeamController.text
+          ? c.homeTeamController.text
+          : c.awayTeamController.text;
+      bowlingTeam = matchController.tossWinner == c.homeTeamController.text
+          ? c.awayTeamController.text
+          : c.homeTeamController.text;
+    } else if (matchController.optedTo == "Bowl") {
+      battingTeam = matchController.tossWinner == c.homeTeamController.text
+          ? c.awayTeamController.text
+          : c.homeTeamController.text;
+      bowlingTeam = matchController.tossWinner == c.homeTeamController.text
+          ? c.homeTeamController.text
+          : c.awayTeamController.text;
+    }
+
     var width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: PreferredSize(
@@ -54,16 +81,32 @@ class GamingScreen extends StatelessWidget {
                       horizontal: 12,
                       vertical: 12,
                     ),
-                    child: Obx(
-                      () => Text(
-                        // "Away Team needs 89 runs from 48 balls.",
-                        "${c.isOverInProgress.value}",
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyles.f14W500(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                    ),
+                    child: Obx(() {
+                      var noOfOvers =
+                          (int.tryParse(c.numberOfOversController.text) ?? 6);
+                      var totalNoOfBalls = noOfOvers * 6;
+
+                      var noOfBalls = totalNoOfBalls -
+                          matchController.getInningDetail.totalRunTillNow.value;
+                      return (matchController.isFirstInnings == false &&
+                                  matchController.isSecondInnings == true)
+                              .obs
+                              .value
+                          ? Text(
+                              "$bowlingTeam needs ${c.target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from ${noOfBalls} balls.",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.primaryColor,
+                              ),
+                            )
+                          : Text(
+                              "$battingTeam is Batting against $bowlingTeam",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.primaryColor,
+                              ),
+                            );
+                    }),
                   ),
                 ),
                 SizeConfig.getSpace(
@@ -77,13 +120,14 @@ class GamingScreen extends StatelessWidget {
                       () => RichText(
                         text: TextSpan(
                           text:
-                              "${c.totalRunTillNow.value}-${c.totalWicketTillNow.value}",
+                              "${matchController.getInningDetail.totalRunTillNow.value}-${matchController.getInningDetail.totalWicketTillNow.value}",
                           style: CustomTextStyles.f32W600(
                             color: AppColors.backGroundColor,
                           ),
                           children: [
                             TextSpan(
-                              text: "(${c.overs()})",
+                              text:
+                                  "(${matchController.getInningDetail.overs()})",
                               style: CustomTextStyles.f18W600(
                                 color: AppColors.hintTextColor,
                               ),
@@ -147,7 +191,8 @@ class GamingScreen extends StatelessWidget {
                       Obx(
                         () => GamingRatingStat(
                           title: "C.R.R",
-                          stat: c.crr.value.toString(),
+                          stat: matchController.getInningDetail.crr.value
+                              .toString(),
                         ),
                       ),
                       Obx(
@@ -251,7 +296,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 2,
                             child: Obx(
                               () => Text(
-                                "* ${c.striker.value?.username}",
+                                "* ${matchController.getInningDetail.striker.value?.username}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
@@ -266,7 +311,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.striker.value?.matchBattingStats?.runs.value ?? 0}",
+                                "${matchController.getInningDetail.striker.value?.matchBattingStats?.runs.value ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -278,7 +323,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.striker.value?.matchBattingStats?.balls.value ?? 0}",
+                                "${matchController.getInningDetail.striker.value?.matchBattingStats?.balls.value ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -290,7 +335,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.striker.value?.matchBattingStats?.fours.value ?? 0}",
+                                "${matchController.getInningDetail.striker.value?.matchBattingStats?.fours.value ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -302,7 +347,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.striker.value?.matchBattingStats?.sixes.value ?? 0}",
+                                "${matchController.getInningDetail.striker.value?.matchBattingStats?.sixes.value ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -323,80 +368,87 @@ class GamingScreen extends StatelessWidget {
                         ],
                       ),
                       SizeConfig.getSpace(height: 5),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Obx(
-                              () => Text(
-                                "${c.nonStriker.value?.username}",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(),
+                      Obx(
+                        () => matchController
+                                    .getInningDetail.striker.value?.username ==
+                                matchController
+                                    .getInningDetail.nonStriker.value?.username
+                            ? const SizedBox.shrink()
+                            : Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Obx(
+                                      () => Text(
+                                        "${matchController.getInningDetail.nonStriker.value?.username}",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Obx(
+                                      () => Text(
+                                        "${matchController.getInningDetail.nonStriker.value?.matchBattingStats?.runs ?? 0}",
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Obx(
+                                      () => Text(
+                                        "${matchController.getInningDetail.nonStriker.value?.matchBattingStats?.balls ?? 0}",
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Obx(
+                                      () => Text(
+                                        "${matchController.getInningDetail.nonStriker.value?.matchBattingStats?.fours ?? 0}",
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Obx(
+                                      () => Text(
+                                        "${matchController.getInningDetail.nonStriker.value?.matchBattingStats?.sixes ?? 0}",
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      "100",
+                                      textAlign: TextAlign.center,
+                                      style: CustomTextStyles.f14W500(
+                                        color: AppColors.hintTextColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Obx(
-                              () => Text(
-                                "${c.nonStriker.value?.matchBattingStats?.runs ?? 0}",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Obx(
-                              () => Text(
-                                "${c.nonStriker.value?.matchBattingStats?.balls ?? 0}",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Obx(
-                              () => Text(
-                                "${c.nonStriker.value?.matchBattingStats?.fours ?? 0}",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Obx(
-                              () => Text(
-                                "${c.nonStriker.value?.matchBattingStats?.sixes ?? 0}",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "100",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -490,7 +542,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 2,
                             child: Obx(
                               () => Text(
-                                "${c.bowler.value?.username}",
+                                "${matchController.getInningDetail.bowler.value?.username}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(),
                               ),
@@ -500,7 +552,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.bowler.value?.matchBowlingStats?.oversBowled ?? 0}",
+                                "${matchController.getInningDetail.bowler.value?.matchBowlingStats?.oversBowled ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -512,7 +564,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.bowler.value?.matchBowlingStats?.runs.value ?? 0}",
+                                "${matchController.getInningDetail.bowler.value?.matchBowlingStats?.runs.value ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -524,7 +576,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.bowler.value?.matchBowlingStats?.wickets.value ?? 0}",
+                                "${matchController.getInningDetail.bowler.value?.matchBowlingStats?.wickets.value ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -536,7 +588,7 @@ class GamingScreen extends StatelessWidget {
                             flex: 1,
                             child: Obx(
                               () => Text(
-                                "${c.bowler.value?.matchBowlingStats?.maidens.value ?? 0}",
+                                "${matchController.getInningDetail.bowler.value?.matchBowlingStats?.maidens.value ?? 0}",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -665,9 +717,193 @@ class GamingScreen extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: CustomElevatedButton(
-                                title: "Retire",
+                                title: "Extra",
                                 onTap: () {
-                                  Get.toNamed(NextOverScreen.routeName);
+                                  // Get.toNamed(NextOverScreen.routeName);
+                                  showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        margin: const EdgeInsets.fromLTRB(
+                                          12,
+                                          20,
+                                          12,
+                                          50,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              'Extras',
+                                              style: CustomTextStyles.f18W600(),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "Byes",
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "Leg-Byes",
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "Wide",
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "No-Ball",
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "Penalty",
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    matchController
+                                                        .getInningDetail
+                                                        .currentByes
+                                                        .value
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    matchController
+                                                        .getInningDetail
+                                                        .currentLegByes
+                                                        .value
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    matchController
+                                                        .getInningDetail
+                                                        .currentWides
+                                                        .value
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    matchController
+                                                        .getInningDetail
+                                                        .currentNoBalls
+                                                        .value
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    matchController
+                                                        .getInningDetail
+                                                        .currentPenalty
+                                                        .value
+                                                        .toString(),
+                                                    textAlign: TextAlign.center,
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .hintTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 height: 30,
                                 padding:
@@ -684,7 +920,10 @@ class GamingScreen extends StatelessWidget {
                               flex: 2,
                               child: CustomElevatedButton(
                                 title: "Swap Batsman",
-                                onTap: () {},
+                                onTap: () {
+                                  matchController.getInningDetail
+                                      .changeStrike();
+                                },
                                 height: 30,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 0),
@@ -698,188 +937,6 @@ class GamingScreen extends StatelessWidget {
                       )
                     ],
                   ),
-
-                  // Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: [
-                  //     Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       children: [
-                  //         Expanded(
-                  //           flex: 1,
-                  //           child: Row(
-                  //             mainAxisSize: MainAxisSize.min,
-                  //             children: [
-                  //               SizedBox(
-                  //                 height: 20,
-                  //                 width: 20,
-                  //                 child: Obx(
-                  //                   () => Checkbox(
-                  //                     value: c.isWideSelected.value,
-                  //                     materialTapTargetSize:
-                  //                         MaterialTapTargetSize.shrinkWrap,
-                  //                     onChanged: c.toggleIsWideSelected,
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 5,
-                  //               ),
-                  //               Text(
-                  //                 "Wide",
-                  //                 maxLines: 1,
-                  //                 textAlign: TextAlign.center,
-                  //                 style: CustomTextStyles.f12W600(),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         Expanded(
-                  //           flex: 1,
-                  //           child: Row(
-                  //             mainAxisSize: MainAxisSize.min,
-                  //             children: [
-                  //               SizedBox(
-                  //                 height: 10,
-                  //                 width: 10,
-                  //                 child: Obx(
-                  //                   () => Checkbox(
-                  //                     value: c.isNoBallSelected.value,
-                  //                     // materialTapTargetSize:
-                  //                     //     MaterialTapTargetSize.shrinkWrap,
-                  //                     onChanged: c.toggleIsNoBallSelected,
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 15,
-                  //               ),
-                  //               Text(
-                  //                 "No Ball",
-                  //                 textAlign: TextAlign.center,
-                  //                 style: CustomTextStyles.f12W600(),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         Expanded(
-                  //           flex: 1,
-                  //           child: Row(
-                  //             mainAxisSize: MainAxisSize.min,
-                  //             children: [
-                  //               SizedBox(
-                  //                 height: 10,
-                  //                 width: 10,
-                  //                 child: Obx(
-                  //                   () => Checkbox(
-                  //                     value: c.isByesSelected.value,
-                  //                     materialTapTargetSize:
-                  //                         MaterialTapTargetSize.shrinkWrap,
-                  //                     onChanged: c.toggleIsByesSelected,
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 15,
-                  //               ),
-                  //               Text(
-                  //                 "Byes",
-                  //                 textAlign: TextAlign.center,
-                  //                 style: CustomTextStyles.f12W600(),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         Expanded(
-                  //           flex: 1,
-                  //           child: Row(
-                  //             mainAxisSize: MainAxisSize.min,
-                  //             children: [
-                  //               SizedBox(
-                  //                 height: 10,
-                  //                 width: 10,
-                  //                 child: Obx(
-                  //                   () => Checkbox(
-                  //                     materialTapTargetSize:
-                  //                         MaterialTapTargetSize.shrinkWrap,
-                  //                     value: c.isLegByesSelected.value,
-                  //                     onChanged: c.toggleIsLegByesSelected,
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //               const SizedBox(
-                  //                 width: 15,
-                  //               ),
-                  //               Text(
-                  //                 "Leg Byes",
-                  //                 textAlign: TextAlign.center,
-                  //                 style: CustomTextStyles.f12W600(),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         )
-                  //       ],
-                  //     ),
-                  //     const SizedBox(
-                  //       height: 5,
-                  //     ),
-                  //     Row(
-                  //       children: [
-                  //         Expanded(
-                  //           flex: 2,
-                  //           child: CustomElevatedButton(
-                  //             title: "Wicket",
-                  //             onTap: () {
-                  //               Get.toNamed(FallOfWicketScreen.routeName);
-                  //             },
-                  //             height: 30,
-                  //             padding:
-                  //                 const EdgeInsets.symmetric(horizontal: 0),
-                  //             textStyle: CustomTextStyles.f12W600(
-                  //               color: AppColors.primaryColor,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         const SizedBox(
-                  //           width: 5,
-                  //         ),
-                  //         Expanded(
-                  //           flex: 2,
-                  //           child: CustomElevatedButton(
-                  //             title: "Retire",
-                  //             onTap: () {
-                  //               Get.toNamed(NextOverScreen.routeName);
-                  //             },
-                  //             height: 30,
-                  //             padding:
-                  //                 const EdgeInsets.symmetric(horizontal: 0),
-                  //             textStyle: CustomTextStyles.f12W600(
-                  //               color: AppColors.primaryColor,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         const SizedBox(
-                  //           width: 5,
-                  //         ),
-                  //         Expanded(
-                  //           flex: 2,
-                  //           child: CustomElevatedButton(
-                  //             title: "Swap Batsman",
-                  //             onTap: () {},
-                  //             height: 30,
-                  //             padding:
-                  //                 const EdgeInsets.symmetric(horizontal: 0),
-                  //             textStyle: CustomTextStyles.f12W600(
-                  //               color: AppColors.primaryColor,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     )
-                  //   ],
-                  // ),
                 ),
                 SizeConfig.getSpace(),
                 Container(
@@ -910,193 +967,129 @@ class GamingScreen extends StatelessWidget {
                         children: [
                           AddRunTile(
                             run: 0,
-                            onTap: () {
-                              if (c.isWicketsSelected.value) {
-                                // get wicket reason and new batter;
-
-                                //
-                              } else {
-                                Delivery delivery = Delivery()..addRuns(0);
-                                if (c.isWideSelected.value) {
-                                  delivery.addExtra(Extra.wide);
-                                }
-                                if (c.isNoBallSelected.value) {
-                                  delivery.addExtra(Extra.noBall);
-                                }
-                                if (c.isByesSelected.value) {
-                                  delivery.addExtra(Extra.bye);
-                                }
-                                if (c.isLegByesSelected.value) {
-                                  delivery.addExtra(Extra.legBye);
-                                }
-                                print(delivery);
-                                c.recordDelivery(delivery);
-                              }
-
-                              // CustomSnackBar.error(
-                              //   title: "Missi g",
-                              //   message: "Please add wickets reason.",
-                              // );
-                            },
+                            c: c,
+                            matchController: matchController,
                           ),
                           AddRunTile(
                             run: 1,
-                            onTap: () {
-                              Delivery delivery = Delivery()..addRuns(1);
-                              if (c.isWideSelected.value) {
-                                delivery.addExtra(Extra.wide);
-                              }
-                              if (c.isNoBallSelected.value) {
-                                delivery.addExtra(Extra.noBall);
-                              }
-                              if (c.isByesSelected.value) {
-                                delivery.addExtra(Extra.bye);
-                              }
-                              if (c.isLegByesSelected.value) {
-                                delivery.addExtra(Extra.legBye);
-                              }
-
-                              print(delivery);
-
-                              c.recordDelivery(delivery);
-                            },
+                            c: c,
+                            matchController: matchController,
                           ),
                           AddRunTile(
                             run: 2,
-                            onTap: () {
-                              Delivery delivery = Delivery()..addRuns(2);
-                              if (c.isWideSelected.value) {
-                                delivery.addExtra(Extra.wide);
-                              }
-                              if (c.isNoBallSelected.value) {
-                                delivery.addExtra(Extra.noBall);
-                              }
-                              if (c.isByesSelected.value) {
-                                delivery.addExtra(Extra.bye);
-                              }
-                              if (c.isLegByesSelected.value) {
-                                delivery.addExtra(Extra.legBye);
-                              }
-
-                              print(delivery);
-
-                              c.recordDelivery(delivery);
-                            },
+                            c: c,
+                            matchController: matchController,
                           ),
                           AddRunTile(
                             run: 3,
-                            onTap: () {
-                              Delivery delivery = Delivery()..addRuns(3);
-                              if (c.isWideSelected.value) {
-                                delivery.addExtra(Extra.wide);
-                              }
-                              if (c.isNoBallSelected.value) {
-                                delivery.addExtra(Extra.noBall);
-                              }
-                              if (c.isByesSelected.value) {
-                                delivery.addExtra(Extra.bye);
-                              }
-                              if (c.isLegByesSelected.value) {
-                                delivery.addExtra(Extra.legBye);
-                              }
-
-                              print(delivery);
-
-                              c.recordDelivery(delivery);
-                            },
+                            c: c,
+                            matchController: matchController,
                           ),
                           AddRunTile(
                             run: 4,
-                            onTap: () {
-                              Delivery delivery = Delivery()..addRuns(4);
-                              if (c.isWideSelected.value) {
-                                delivery.addExtra(Extra.wide);
-                              }
-                              if (c.isNoBallSelected.value) {
-                                delivery.addExtra(Extra.noBall);
-                              }
-                              if (c.isByesSelected.value) {
-                                delivery.addExtra(Extra.bye);
-                              }
-                              if (c.isLegByesSelected.value) {
-                                delivery.addExtra(Extra.legBye);
-                              }
-
-                              print(delivery);
-
-                              c.recordDelivery(delivery);
-                            },
+                            c: c,
+                            matchController: matchController,
                           ),
                           AddRunTile(
                             run: 5,
-                            onTap: () {
-                              Delivery delivery = Delivery()..addRuns(5);
-                              if (c.isWideSelected.value) {
-                                delivery.addExtra(Extra.wide);
-                              }
-                              if (c.isNoBallSelected.value) {
-                                delivery.addExtra(Extra.noBall);
-                              }
-                              if (c.isByesSelected.value) {
-                                delivery.addExtra(Extra.bye);
-                              }
-                              if (c.isLegByesSelected.value) {
-                                delivery.addExtra(Extra.legBye);
-                              }
-
-                              print(delivery);
-
-                              c.recordDelivery(delivery);
-                            },
+                            c: c,
+                            matchController: matchController,
                           ),
                           AddRunTile(
                             run: 6,
-                            onTap: () {
-                              Delivery delivery = Delivery()..addRuns(6);
-                              if (c.isWideSelected.value) {
-                                delivery.addExtra(Extra.wide);
-                              }
-                              if (c.isNoBallSelected.value) {
-                                delivery.addExtra(Extra.noBall);
-                              }
-                              if (c.isByesSelected.value) {
-                                delivery.addExtra(Extra.bye);
-                              }
-                              if (c.isLegByesSelected.value) {
-                                delivery.addExtra(Extra.legBye);
-                              }
-
-                              print(delivery);
-
-                              c.recordDelivery(delivery);
-                            },
+                            c: c,
+                            matchController: matchController,
                           ),
-                          Container(
-                            height: 50,
-                            width: 50,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                              vertical: 5,
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                              vertical: 5,
-                            ),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: AppColors.backGroundColor,
-                                width: 1,
+                          GestureDetector(
+                            onTap: () async {
+                              TextEditingController runEditingController =
+                                  TextEditingController(text: "0");
+                              var result = await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Penalty runs?"),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CustomTextField(
+                                            controller: runEditingController,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            textInputType: TextInputType.number,
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp(r'[0-9]')),
+                                            ],
+                                            labelText: "Penalty runs",
+                                            hint: "0",
+                                            validator:
+                                                Validators.checkFieldEmpty,
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back(result: false);
+                                          },
+                                          child: const Text(
+                                            "Cancel",
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back(result: true);
+                                          },
+                                          child: const Text(
+                                            "Ok",
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                              if (result != null && result) {
+                                int? runs =
+                                    int.tryParse(runEditingController.text);
+                                Delivery delivery = Delivery()
+                                  ..addRuns(runs ?? 0);
+
+                                matchController.getInningDetail
+                                    .addPenalty(delivery);
+                                c.checkBoxReset();
+                                //call the method here
+                              }
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                                vertical: 5,
                               ),
-                            ),
-                            child: Text(
-                              "...",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f24W600(
-                                color: AppColors.backGroundColor,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                                vertical: 5,
+                              ),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: AppColors.backGroundColor,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                "...",
+                                textAlign: TextAlign.center,
+                                style: CustomTextStyles.f24W600(
+                                  color: AppColors.backGroundColor,
+                                ),
                               ),
                             ),
                           )
@@ -1132,7 +1125,40 @@ class GamingScreen extends StatelessWidget {
                             flex: 2,
                             child: CustomElevatedButton(
                               title: "Cancel Match",
-                              onTap: () {},
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text("Cancel the match!"),
+                                        content: const Text(
+                                            "Are you sure you want to cancel the match?"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: const Text(
+                                              "No",
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Get.offNamedUntil(
+                                                  DashboardScreen.routeName,
+                                                  (route) => false);
+                                            },
+                                            child: const Text(
+                                              "Yes",
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
                               height: 30,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 0),
@@ -1159,16 +1185,89 @@ class AddRunTile extends StatelessWidget {
   const AddRunTile({
     super.key,
     required this.run,
-    this.onTap,
+    required this.c,
+    required this.matchController,
   });
 
   final int run;
-  final VoidCallback? onTap;
+  final TeamVsTeamGameController c;
+  final MatchController matchController;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () async {
+        if (c.isWicketsSelected.value) {
+          // get wicket reason and new batter;
+          var result = await showDialog(
+            context: context,
+            builder: (context) {
+              return FallOfWicketScreen(
+                battingTeam: matchController.getInningDetail.battingTeam,
+                currentBatters: [
+                  matchController.getInningDetail.striker.value!,
+                  matchController.getInningDetail.nonStriker.value!
+                ].obs,
+                outBattingTeam: matchController.getInningDetail.outBattingTeam,
+              );
+            },
+          );
+
+          if (result != null && result is FallOfWicketPopArgument) {
+            Delivery delivery = Delivery()..addRuns(run);
+            matchController.getInningDetail.nextBatsman.value =
+                result.nextBatter;
+            delivery.out = result.wicketReason;
+            if (delivery.out.requiresBatter()) {
+              delivery.batter = result.batterForWicket;
+              if (delivery.batter == null) {
+                delivery.out = Out.none;
+              }
+            }
+            if (delivery.out != Out.none) {
+              delivery.finshAddOut();
+            }
+            if (c.isWideSelected.value) {
+              delivery.addExtra(Extra.wide);
+            }
+            if (c.isNoBallSelected.value) {
+              delivery.addExtra(Extra.noBall);
+            }
+            if (c.isByesSelected.value) {
+              delivery.addExtra(Extra.bye);
+            }
+            if (c.isLegByesSelected.value) {
+              delivery.addExtra(Extra.legBye);
+            }
+            print(delivery);
+            matchController.getInningDetail.recordDelivery(delivery);
+            c.checkBoxReset();
+          } else {
+            CustomSnackBar.error(
+              title: "Missing fields",
+              message: "Please add wickets reason.",
+            );
+            return;
+          }
+        } else {
+          Delivery delivery = Delivery()..addRuns(run);
+          if (c.isWideSelected.value) {
+            delivery.addExtra(Extra.wide);
+          }
+          if (c.isNoBallSelected.value) {
+            delivery.addExtra(Extra.noBall);
+          }
+          if (c.isByesSelected.value) {
+            delivery.addExtra(Extra.bye);
+          }
+          if (c.isLegByesSelected.value) {
+            delivery.addExtra(Extra.legBye);
+          }
+          print(delivery);
+          matchController.getInningDetail.recordDelivery(delivery);
+          c.checkBoxReset();
+        }
+      },
       child: Container(
         height: 50,
         width: 50,

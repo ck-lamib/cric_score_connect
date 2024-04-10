@@ -2,7 +2,6 @@ import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/screens/game/widgets/gaming/fall_of_wicket_app_bar.dart';
 import 'package:cric_score_connect/screens/match/enums/out.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
-import 'package:cric_score_connect/utils/constants/datas.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
@@ -31,6 +30,23 @@ class FallOfWicketScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var filteredBattingTeam = battingTeam.where((player) {
+      // Check if the player is in currentBatters
+      if (currentBatters
+          .any((currentPlayer) => currentPlayer.username == player.username)) {
+        return false; // Exclude currently batting player
+      }
+      // Check if the player is in outBattingTeam
+      if (outBattingTeam
+          .any((outPlayer) => outPlayer.username == player.username)) {
+        // If the player is in outBattingTeam, check if their out reason is not "out.retired"
+        if (player.matchBattingStats != null &&
+            player.matchBattingStats!.outReason.value != Out.retired) {
+          return false; // Exclude this player from the filtered list
+        }
+      }
+      return true; // Include all other players
+    }).toList();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(0, 0),
@@ -112,6 +128,10 @@ class FallOfWicketScreen extends StatelessWidget {
                                 hintStyle: CustomTextStyles.f16W400(
                                   color: AppColors.backGroundColor,
                                 ),
+                                onValueChange: (value) {
+                                  outBatsManValue = value;
+                                },
+                                itemValue: outBatsManValue,
                                 dropDownItemLists: currentBatters
                                     .map((element) => DropdownMenuItem(
                                         value: element.username,
@@ -133,60 +153,31 @@ class FallOfWicketScreen extends StatelessWidget {
                       }
                     }),
                     SizeConfig.getSpace(),
-                    Obx(
-                      () {
-                        var filteredBattingTeam = battingTeam.where((player) {
-                          // Check if the player is in the outBattingTeam
-                          if (outBattingTeam.any((outPlayer) =>
-                              outPlayer.username == player.username)) {
-                            // If the player is in outBattingTeam, check if their out reason is not "out.retired"
-                            if (player.matchBattingStats != null &&
-                                player.matchBattingStats!.outReason.value !=
-                                    Out.retired) {
-                              return false; // Exclude this player from the filtered list
-                            }
-                          }
-                          return true; // Include all other players
-                        }).toList();
-                        var batterDropdownItemList = filteredBattingTeam
-                            .map(
-                              (element) => DropdownMenuItem(
-                                value: element.username,
-                                child: Text(
-                                  "${element.name?.split(" ").first} (${element.username})",
-                                  style: CustomTextStyles.f16W400(
-                                    color: AppColors.backGroundColor,
-                                  ),
+                    // Filter battingTeam based on conditions
+                    CustomDropdownTextField(
+                      hint: "New Batsman",
+                      labelText: "New Batsman",
+                      itemValue: newBatsManValue,
+                      onValueChange: (value) {
+                        newBatsManValue = value;
+                      },
+                      hintStyle: CustomTextStyles.f16W400(
+                        color: AppColors.backGroundColor,
+                      ),
+                      dropDownItemLists: filteredBattingTeam
+                          .map(
+                            (element) => DropdownMenuItem(
+                              value: element.username,
+                              child: Text(
+                                "${element.name?.split(" ").first} (${element.username})",
+                                style: CustomTextStyles.f16W400(
+                                  color: AppColors.backGroundColor,
                                 ),
                               ),
-                            )
-                            .toList();
-
-                        battingTeam.removeWhere(
-                            (element) => element.username == outBatsManValue);
-
-                        return CustomDropdownTextField(
-                          hint: "New Batsman",
-                          labelText: "New Batsman",
-                          hintStyle: CustomTextStyles.f16W400(
-                            color: AppColors.backGroundColor,
-                          ),
-                          dropDownItemLists: battingTeam
-                              .map(
-                                (element) => DropdownMenuItem(
-                                  value: element.username,
-                                  child: Text(
-                                    "${element.name?.split(" ").first} (${element.username})",
-                                    style: CustomTextStyles.f16W400(
-                                      color: AppColors.backGroundColor,
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-                      },
-                    )
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ],
                 ),
               ),
@@ -196,7 +187,7 @@ class FallOfWicketScreen extends StatelessWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           child: CustomElevatedButton(
             title: "Done",
             onTap: () {
@@ -206,13 +197,59 @@ class FallOfWicketScreen extends StatelessWidget {
               if (outReason.value == null || outReason.value!.isEmpty) {
                 CustomSnackBar.info(message: "Please select wicket reason.");
                 return;
+              } else if (filteredBattingTeam.isEmpty) {
+                //here only 2 batting member exist.
+                User? outBatsman;
+                try {
+                  outBatsman = battingTeam.firstWhere(
+                      (element) => element.username == outBatsManValue);
+                } catch (_) {}
+
+                Out outR = Out.values
+                    .firstWhere((element) => element.name == outReason.value);
+                if (outR.requiresBatter() && outBatsman == null) {
+                  CustomSnackBar.info(message: "Please select out batsman.");
+                  return;
+                } else if (!(outR.requiresBatter())) {
+                  outBatsman = null;
+                }
+
+                Get.back(
+                  result: FallOfWicketPopArgument(
+                    batterForWicket: outBatsman,
+                    wicketReason: outR,
+                    nextBatter: null,
+                  ),
+                );
               } else if (newBatsManValue == null || newBatsManValue!.isEmpty) {
                 CustomSnackBar.info(message: "Please select new batsman.");
+                return;
               } else {
                 // print(itemValue);
-                // User user = bowlingTeam
-                //     .firstWhere((element) => element.username == itemValue);
-                // Get.back(result: user);
+                User? outBatsman;
+                try {
+                  outBatsman = battingTeam.firstWhere(
+                      (element) => element.username == outBatsManValue);
+                } catch (e) {}
+
+                Out outR = Out.values
+                    .firstWhere((element) => element.name == outReason.value);
+                if (outR.requiresBatter() && outBatsman == null) {
+                  CustomSnackBar.info(message: "Please select out batsman.");
+                  return;
+                } else if (!(outR.requiresBatter())) {
+                  outBatsman = null;
+                }
+
+                User nextbatterr = battingTeam.firstWhere(
+                    (element) => element.username == newBatsManValue);
+                Get.back(
+                  result: FallOfWicketPopArgument(
+                    batterForWicket: outBatsman,
+                    wicketReason: outR,
+                    nextBatter: nextbatterr,
+                  ),
+                );
               }
             },
           ),
@@ -223,13 +260,13 @@ class FallOfWicketScreen extends StatelessWidget {
 }
 
 class FallOfWicketPopArgument {
-  final User batterForWicket;
+  final User? batterForWicket;
   final Out wicketReason;
-  final User nextBatter;
+  final User? nextBatter;
 
   FallOfWicketPopArgument({
-    required this.batterForWicket,
+    this.batterForWicket,
     required this.wicketReason,
-    required this.nextBatter,
+    this.nextBatter,
   });
 }

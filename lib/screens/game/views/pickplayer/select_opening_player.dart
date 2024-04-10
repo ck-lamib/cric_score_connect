@@ -18,6 +18,7 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
       Get.find<SelectOpeningPlayerController>();
   final TeamVsTeamGameController teamVsTeamGameController =
       Get.find<TeamVsTeamGameController>();
+  final MatchController matchController = Get.find<MatchController>();
 
   @override
   Widget build(BuildContext context) {
@@ -190,10 +191,13 @@ class SelectOpeningPlayerScreen extends StatelessWidget {
                       CustomElevatedButton(
                         title: "Next",
                         onTap: () {
-                          teamVsTeamGameController.bowler = c.openingBowler;
-                          teamVsTeamGameController.striker = c.openingStriker;
-                          teamVsTeamGameController.nonStriker =
-                              c.openingNonStriker;
+                          matchController.getInningDetail.bowler.value =
+                              c.openingBowler.value;
+                          matchController.getInningDetail.striker.value =
+                              c.openingStriker.value;
+                          matchController.getInningDetail.nonStriker.value =
+                              c.openingNonStriker.value;
+
                           Get.offAndToNamed(GamingScreen.routeName);
                         },
                       ),
