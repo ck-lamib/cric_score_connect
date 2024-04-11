@@ -181,13 +181,17 @@ class GamingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Obx(
-                        () => GamingRatingStat(
-                          title: "Target",
-                          stat: matchController.getInningDetail.isFirstInning ==
-                                  true
-                              ? "--:--"
-                              : c.target.value.toString(),
-                        ),
+                        () {
+                          var target = c.target.value;
+                          return GamingRatingStat(
+                            title: "Target",
+                            stat:
+                                matchController.getInningDetail.isFirstInning ==
+                                        true
+                                    ? "--:--"
+                                    : target.toString(),
+                          );
+                        },
                       ),
                       Obx(
                         () => GamingRatingStat(
