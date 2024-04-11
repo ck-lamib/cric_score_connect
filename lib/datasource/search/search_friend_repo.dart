@@ -16,17 +16,18 @@ class SearchFriendRepo {
     try {
       var headers = {
         "Accept": "application/json",
-        "query": query,
       };
 
       CustomLogger.trace(Api.searchUrl);
-
-      http.Response response = await HttpRequest.get(
+      var body = {
+        "query": query,
+      };
+      http.Response response = await HttpRequest.post(
         Uri.parse(
           Api.searchUrl,
         ),
         headers: headers,
-        // body: body,
+        body: body,
       );
 
       var responseData = jsonDecode(response.body);
