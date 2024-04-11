@@ -304,6 +304,23 @@ class GameSettingScreen extends StatelessWidget {
                             ),
                     ),
                     SizeConfig.getSpace(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Last Man Stand",
+                            style: CustomTextStyles.f18W600(),
+                          ),
+                        ),
+                        Obx(
+                          () => Switch(
+                            value: c.hasLastManStand.value,
+                            onChanged: c.toggleHasLastManStand,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizeConfig.getSpace(),
                     CustomElevatedButton(
                       title: "Save Setting",
                       onTap: () {

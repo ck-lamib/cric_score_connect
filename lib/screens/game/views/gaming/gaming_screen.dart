@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/fall_of_wicket.dart';
-import 'package:cric_score_connect/screens/game/views/gaming/next_over.dart';
-import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_screen.dart';
 import 'package:cric_score_connect/screens/game/widgets/gaming/gaming_app_bar.dart';
 import 'package:cric_score_connect/screens/match/delivery.dart';
 import 'package:cric_score_connect/screens/match/enums/extra.dart';
@@ -21,6 +17,7 @@ import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class GamingScreen extends StatelessWidget {
   static const String routeName = "/game-screen";
@@ -85,13 +82,13 @@ class GamingScreen extends StatelessWidget {
                       var totalNoOfBalls = noOfOvers * 6;
 
                       var noOfBalls = totalNoOfBalls -
-                          matchController.getInningDetail.totalRunTillNow.value;
+                          matchController.getInningDetail.currentBalls.value;
                       return (matchController.isFirstInnings == false &&
                                   matchController.isSecondInnings == true)
                               .obs
                               .value
                           ? Text(
-                              "$bowlingTeam needs ${c.target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from ${noOfBalls} balls.",
+                              "$bowlingTeam needs ${c.target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from $noOfBalls balls to win against ${matchController.firstInningBattingTeamName}.",
                               textAlign: TextAlign.center,
                               style: CustomTextStyles.f14W500(
                                 color: AppColors.primaryColor,
@@ -795,18 +792,22 @@ class GamingScreen extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     children: [
                       Obx(
-                        () => CheckBoxTile(
-                          checkBoxTitle: "Wide",
-                          checkBoxValue: c.isWideSelected.value,
-                          onToggleCheckBox: c.toggleIsWideSelected,
-                        ),
+                        () => c.hasWideBall.value
+                            ? CheckBoxTile(
+                                checkBoxTitle: "Wide",
+                                checkBoxValue: c.isWideSelected.value,
+                                onToggleCheckBox: c.toggleIsWideSelected,
+                              )
+                            : const SizedBox.shrink(),
                       ),
                       Obx(
-                        () => CheckBoxTile(
-                          checkBoxTitle: "No Ball",
-                          checkBoxValue: c.isNoBallSelected.value,
-                          onToggleCheckBox: c.toggleIsNoBallSelected,
-                        ),
+                        () => c.hasNoBall.value
+                            ? CheckBoxTile(
+                                checkBoxTitle: "No Ball",
+                                checkBoxValue: c.isNoBallSelected.value,
+                                onToggleCheckBox: c.toggleIsNoBallSelected,
+                              )
+                            : const SizedBox.shrink(),
                       ),
                       Obx(
                         () => CheckBoxTile(

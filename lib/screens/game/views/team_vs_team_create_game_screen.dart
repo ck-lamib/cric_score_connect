@@ -369,6 +369,10 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                           optedToo: "Bat",
                                           battingT: c.homeTeamPlayer,
                                           bowlingT: c.awayTeamPlayer,
+                                          firstInningBattingTeam:
+                                              c.homeTeamController.text,
+                                          firstInningBowlingTeam:
+                                              c.awayTeamController.text,
                                         );
 
                                         // c.getInningDetail.battingTeam =
@@ -386,6 +390,10 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                           optedToo: "Bowl",
                                           battingT: c.awayTeamPlayer,
                                           bowlingT: c.homeTeamPlayer,
+                                          firstInningBattingTeam:
+                                              c.awayTeamController.text,
+                                          firstInningBowlingTeam:
+                                              c.homeTeamController.text,
                                         );
                                       }
                                     } else {
@@ -396,6 +404,10 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                           optedToo: "Bat",
                                           battingT: c.awayTeamPlayer,
                                           bowlingT: c.homeTeamPlayer,
+                                          firstInningBattingTeam:
+                                              c.awayTeamController.text,
+                                          firstInningBowlingTeam:
+                                              c.homeTeamController.text,
                                         );
                                         // c.getInningDetail.battingTeam =
                                         //     c.awayTeamPlayer;
@@ -408,12 +420,11 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                           optedToo: "Bowl",
                                           battingT: c.homeTeamPlayer,
                                           bowlingT: c.awayTeamPlayer,
+                                          firstInningBattingTeam:
+                                              c.homeTeamController.text,
+                                          firstInningBowlingTeam:
+                                              c.awayTeamController.text,
                                         );
-
-                                        // c.getInningDetail.battingTeam =
-                                        //     c.homeTeamPlayer;
-                                        // c.getInningDetail.bowlingTeam =
-                                        //     c.awayTeamPlayer;
                                       }
                                     }
                                     Get.toNamed(

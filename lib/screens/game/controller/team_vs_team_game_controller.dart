@@ -40,6 +40,7 @@ class TeamVsTeamGameController extends GetxController {
   }
 
   TextEditingController noBallRunController = TextEditingController(text: "1");
+
   var hasWideBall = true.obs;
   toggleHasWideBall(bool value) {
     hasWideBall.value = value;
@@ -50,8 +51,18 @@ class TeamVsTeamGameController extends GetxController {
     hasWideBallReball.value = value;
   }
 
+  var hasLastManStand = false.obs;
+  toggleHasLastManStand(bool value) {
+    hasLastManStand.value = value;
+  }
+
   TextEditingController wideBallRunController =
       TextEditingController(text: "1");
+
+  int get getWideRun =>
+      hasWideBall.value ? (int.tryParse(wideBallRunController.text) ?? 0) : 0;
+  int get getNoBallRun =>
+      hasNoBall.value ? (int.tryParse(noBallRunController.text) ?? 0) : 0;
 
   //create game
   GlobalKey<FormState> createGameFormKey = GlobalKey<FormState>();
@@ -59,7 +70,7 @@ class TeamVsTeamGameController extends GetxController {
   RxList<User> allAvailablePlayers = RxList(
     [
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username1",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -69,7 +80,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username2",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -79,7 +90,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username3",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -89,7 +100,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username4",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -99,7 +110,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username5",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -109,7 +120,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username6",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -119,7 +130,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username7",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -129,7 +140,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username8",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -139,7 +150,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username9",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -149,7 +160,7 @@ class TeamVsTeamGameController extends GetxController {
         matchBowlingStats: MatchBowlingStats(),
       ),
       User(
-        name: "Bimal khatri",
+        name: "Bibek khatri",
         username: "username10",
         email: "email@gmail.com",
         address: "Pokhara",
@@ -163,7 +174,7 @@ class TeamVsTeamGameController extends GetxController {
 
   RxList<User> homeTeamPlayer = RxList([
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username1",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -173,7 +184,7 @@ class TeamVsTeamGameController extends GetxController {
       matchBowlingStats: MatchBowlingStats(),
     ),
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username2",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -183,7 +194,7 @@ class TeamVsTeamGameController extends GetxController {
       matchBowlingStats: MatchBowlingStats(),
     ),
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username3",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -193,7 +204,7 @@ class TeamVsTeamGameController extends GetxController {
       matchBowlingStats: MatchBowlingStats(),
     ),
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username4",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -205,7 +216,7 @@ class TeamVsTeamGameController extends GetxController {
   ]);
   RxList<User> awayTeamPlayer = RxList([
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username5",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -215,7 +226,7 @@ class TeamVsTeamGameController extends GetxController {
       matchBowlingStats: MatchBowlingStats(),
     ),
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username6",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -225,7 +236,7 @@ class TeamVsTeamGameController extends GetxController {
       matchBowlingStats: MatchBowlingStats(),
     ),
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username7",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -235,7 +246,7 @@ class TeamVsTeamGameController extends GetxController {
       matchBowlingStats: MatchBowlingStats(),
     ),
     User(
-      name: "Bimal khatri",
+      name: "Bibek khatri",
       username: "username8",
       email: "email@gmail.com",
       address: "Pokhara",
@@ -246,244 +257,20 @@ class TeamVsTeamGameController extends GetxController {
     ),
   ]);
 
-  TextEditingController selectDateController = TextEditingController();
-  TextEditingController selectTimeController = TextEditingController();
-  TextEditingController venueController = TextEditingController();
-  TextEditingController numberOfOversController = TextEditingController();
+  TextEditingController selectDateController =
+      TextEditingController(text: "2002-02-02");
+  TextEditingController selectTimeController =
+      TextEditingController(text: "2:30");
+  TextEditingController venueController =
+      TextEditingController(text: "pokhara");
+  TextEditingController numberOfOversController =
+      TextEditingController(text: "1");
   String? tossWinner;
   String? optedTo;
 
 //select opening player
 
   GlobalKey<FormState> selectOpeningPlayerFormKey = GlobalKey<FormState>();
-
-//first inning;
-  // Rxn<User?> firstInningOpeningBowler = Rxn(
-  //   User(
-  //     name: "Bimal khatri",
-  //     username: "username5",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  // );
-  // Rxn<User?> firstInningStriker = Rxn(
-  //   User(
-  //     name: "Bimal khatri",
-  //     username: "username1",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  // );
-  // Rxn<User?> firstInningNonStriker = Rxn(
-  //   User(
-  //     name: "Bimal khatri",
-  //     username: "username2",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  // );
-
-  // late InningDetail firstInning;
-  // initFirstInning() {
-  //   firstInning = InningDetail(
-  //     isFirstInning: true,
-  //     battingTeam: RxList([
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username1",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username2",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username3",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username4",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //     ]),
-  //     bowlingTeam: RxList(
-  //       [
-  //         User(
-  //           name: "Bimal khatri",
-  //           username: "username5",
-  //           email: "email@gmail.com",
-  //           address: "Pokhara",
-  //           dob: "2002-07-07",
-  //           phone: "98677743236",
-  //           matchBattingStats: MatchBattingStats(),
-  //           matchBowlingStats: MatchBowlingStats(),
-  //         ),
-  //         User(
-  //           name: "Bimal khatri",
-  //           username: "username6",
-  //           email: "email@gmail.com",
-  //           address: "Pokhara",
-  //           dob: "2002-07-07",
-  //           phone: "98677743236",
-  //           matchBattingStats: MatchBattingStats(),
-  //           matchBowlingStats: MatchBowlingStats(),
-  //         ),
-  //         User(
-  //           name: "Bimal khatri",
-  //           username: "username7",
-  //           email: "email@gmail.com",
-  //           address: "Pokhara",
-  //           dob: "2002-07-07",
-  //           phone: "98677743236",
-  //           matchBattingStats: MatchBattingStats(),
-  //           matchBowlingStats: MatchBowlingStats(),
-  //         ),
-  //         User(
-  //           name: "Bimal khatri",
-  //           username: "username8",
-  //           email: "email@gmail.com",
-  //           address: "Pokhara",
-  //           dob: "2002-07-07",
-  //           phone: "98677743236",
-  //           matchBattingStats: MatchBattingStats(),
-  //           matchBowlingStats: MatchBowlingStats(),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-//second inning;
-  // late InningDetail secondInning;
-  // initSecondInning() {
-  //   secondInning = InningDetail(
-  //     isFirstInning: false,
-  //     battingTeam: RxList([
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username5",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username6",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username7",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username8",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //     ]),
-  //     bowlingTeam: RxList([
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username1",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username2",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username3",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //       User(
-  //         name: "Bimal khatri",
-  //         username: "username4",
-  //         email: "email@gmail.com",
-  //         address: "Pokhara",
-  //         dob: "2002-07-07",
-  //         phone: "98677743236",
-  //         matchBattingStats: MatchBattingStats(),
-  //         matchBowlingStats: MatchBowlingStats(),
-  //       ),
-  //     ]),
-  //     // bowler: firstInningOpeningBowler,
-  //     // striker: firstInningStriker,
-  //     // nonStriker: firstInningNonStriker,
-  //   );
-  // }
-
-  // InningDetail get getInningDetail => firstInning;
 
 //buttons
   var isWideSelected = false.obs;
@@ -571,22 +358,26 @@ class InningDetail extends GetxController {
   });
 
   void addRuns(Delivery delivery) {
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
     isCurrentMaiden.value = false;
     if (delivery.extras[0] == Extra.none) {
+      //
       _addRunsForBatter(delivery.runs);
       _addRunsAgainstBowler(delivery.runs);
       totalRunTillNow.value += delivery.runs;
       return;
     }
     if (delivery.isWide()) {
-      totalRunTillNow.value += delivery.runs + 1;
+      totalRunTillNow.value += delivery.runs + teamGameController.getWideRun;
       currentWides.value += delivery.runs + 1;
-      _addRunsAgainstBowler(delivery.runs + 1);
+      _addRunsAgainstBowler(delivery.runs + teamGameController.getWideRun);
     }
     if (delivery.isNoBall()) {
-      totalRunTillNow.value++;
+      totalRunTillNow.value =
+          totalRunTillNow.value + teamGameController.getNoBallRun;
       currentNoBalls.value++;
-      _addRunsAgainstBowler(1);
+      _addRunsAgainstBowler(teamGameController.getNoBallRun);
       if (delivery.runs > 0 && !delivery.isLegBye() && !delivery.isBye()) {
         totalRunTillNow.value += delivery.runs;
         _addRunsForBatter(delivery.runs);
@@ -661,14 +452,35 @@ class InningDetail extends GetxController {
   }
 
   void incrementBalls(Delivery delivery) {
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
     if (delivery.extras.isLegitBall()) {
       isOverInProgress.value = true;
       currentBalls.value++;
       striker.value?.matchBattingStats?.balls.value++;
       bowler.value?.matchBowlingStats?.balls.value++;
     }
+
+    if (delivery.isWide()) {
+      if (teamGameController.hasWideBall.value &&
+          !(teamGameController.hasWideBallReball.value)) {
+        isOverInProgress.value = true;
+        currentBalls.value++;
+        striker.value?.matchBattingStats?.balls.value++;
+        bowler.value?.matchBowlingStats?.balls.value++;
+      }
+    }
+
     if (delivery.isNoBall()) {
-      striker.value?.matchBattingStats?.balls++;
+      if (teamGameController.hasNoBall.value &&
+          (!teamGameController.hasNoBallReball.value)) {
+        isOverInProgress.value = true;
+        currentBalls.value++;
+        striker.value?.matchBattingStats?.balls++;
+        bowler.value?.matchBowlingStats?.balls.value++;
+      } else {
+        striker.value?.matchBattingStats?.balls++;
+      }
     }
   }
 
@@ -699,21 +511,185 @@ class InningDetail extends GetxController {
     bowler.value?.matchBowlingStats?.balls.value++;
   }
 
-  void recordDelivery(Delivery delivery) async {
+  checkAllOut() async {
     MatchController matchController = Get.find<MatchController>();
     print(matchController.getInningDetail.isFirstInning);
-    if (outBattingTeam.length == battingTeam.length) {
-      TeamVsTeamGameController teamGameController =
-          Get.find<TeamVsTeamGameController>();
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
 
+    if (teamGameController.hasLastManStand.value) {
+      if (outBattingTeam.length == battingTeam.length) {
+//get frist batter team name  wins by
+
+        //by run
+        // second beam
+        //target run and scored run
+        if (matchController.getInningDetail.isFirstInning == false) {
+          await showDialog(
+              context: Get.context!,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("End of Game"),
+                  content: Text(
+                    "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.offNamedUntil(
+                            DashboardScreen.routeName, (route) => false);
+                      },
+                      child: const Text(
+                        "Continue",
+                      ),
+                    ),
+                  ],
+                );
+              });
+        } else {
+          await showDialog(
+              context: Get.context!,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("End of First inning."),
+                  content: const Text(
+                      "End of first inning due to all-out. Press continue for second inning."),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        matchController.endFirstInnings();
+                        teamGameController.target.value = matchController
+                                .firstInningDetail.totalRunTillNow.value
+                                .toDouble() +
+                            1;
+                        Get.offAndToNamed(
+                          SelectOpeningPlayerScreen.routeName,
+                          arguments: SelectOpeningPlayerArgument(
+                            battingTeam:
+                                matchController.getInningDetail.battingTeam,
+                            bowlingTeam:
+                                matchController.getInningDetail.bowlingTeam,
+                          ),
+                        );
+
+                        // Get.back();
+                        // Get.offNamedUntil(
+                        //     DashboardScreen.routeName, (route) => false);
+                      },
+                      child: const Text(
+                        "Continue",
+                      ),
+                    ),
+                  ],
+                );
+              });
+        }
+        return;
+      }
+    } else {
+      if (outBattingTeam.length - 1 == battingTeam.length) {
+//get frist batter team name  wins by
+
+        //by run
+        // second beam
+        //target run and scored run
+        if (matchController.getInningDetail.isFirstInning == false) {
+          await showDialog(
+              context: Get.context!,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("End of Game"),
+                  content: Text(
+                    "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.offNamedUntil(
+                            DashboardScreen.routeName, (route) => false);
+                      },
+                      child: const Text(
+                        "Continue",
+                      ),
+                    ),
+                  ],
+                );
+              });
+        } else {
+          await showDialog(
+              context: Get.context!,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("End of First inning."),
+                  content: const Text(
+                      "End of first inning due to all-out. Press continue for second inning."),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        matchController.endFirstInnings();
+                        teamGameController.target.value = matchController
+                                .firstInningDetail.totalRunTillNow.value
+                                .toDouble() +
+                            1;
+                        Get.offAndToNamed(
+                          SelectOpeningPlayerScreen.routeName,
+                          arguments: SelectOpeningPlayerArgument(
+                            battingTeam:
+                                matchController.getInningDetail.battingTeam,
+                            bowlingTeam:
+                                matchController.getInningDetail.bowlingTeam,
+                          ),
+                        );
+
+                        // Get.back();
+                        // Get.offNamedUntil(
+                        //     DashboardScreen.routeName, (route) => false);
+                      },
+                      child: const Text(
+                        "Continue",
+                      ),
+                    ),
+                  ],
+                );
+              });
+        }
+        return;
+      }
+    }
+  }
+
+  checkOverFinish() async {
+    MatchController matchController = Get.find<MatchController>();
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
+
+    int totalNoOfBalls =
+        ((double.tryParse(teamGameController.numberOfOversController.text) ??
+                    6) *
+                6)
+            .toInt();
+    int currentBall = matchController.getInningDetail.currentBalls.value + 1;
+    print("total ball $totalNoOfBalls");
+    print("current ball $currentBall");
+
+    if (currentBall > totalNoOfBalls) {
       if (matchController.getInningDetail.isFirstInning == false) {
+        //first team wins the run by run
+
+        // "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
         await showDialog(
             context: Get.context!,
             barrierDismissible: false,
             builder: (context) {
               return AlertDialog(
-                title: const Text("End of Game"),
-                content: const Text("Press continue to end game."),
+                title: const Text("End of Game."),
+                content: Text(
+                  "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                ),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -734,14 +710,16 @@ class InningDetail extends GetxController {
             builder: (context) {
               return AlertDialog(
                 title: const Text("End of First inning."),
-                content: const Text("Press continue for second inning."),
+                content: const Text(
+                    "Total no. of over is finished. Press continue for second inning."),
                 actions: [
                   TextButton(
                     onPressed: () {
                       matchController.endFirstInnings();
                       teamGameController.target.value = matchController
-                          .firstInningDetail.totalRunTillNow.value
-                          .toDouble();
+                              .firstInningDetail.totalRunTillNow.value
+                              .toDouble() +
+                          1;
                       Get.offAndToNamed(
                         SelectOpeningPlayerScreen.routeName,
                         arguments: SelectOpeningPlayerArgument(
@@ -765,15 +743,66 @@ class InningDetail extends GetxController {
             });
       }
       return;
-      // matchController.start(
-      //                                     tossWinnerr:
-      //                                         c.homeTeamController.text,
-      //                                     optedToo: "Bat",
-      //                                     battingT: c.homeTeamPlayer,
-      //                                     bowlingT: c.awayTeamPlayer,
-      //                                   );
     }
+  }
 
+  checkRunScoreOver() async {
+    MatchController matchController = Get.find<MatchController>();
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
+
+    double targetRun = teamGameController.target.value;
+
+    int currentRun = matchController.getInningDetail.totalRunTillNow.value;
+    print("total ball $targetRun");
+    print("current ball $currentRun");
+
+    if (currentRun >= targetRun) {
+      if (matchController.getInningDetail.isFirstInning == false) {
+        //run le jity by wicket
+        // "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+        await showDialog(
+            context: Get.context!,
+            barrierDismissible: false,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("End of Game."),
+                content: Text(
+                  "${matchController.firstInningBowlingTeamName} wins by ${(teamGameController.hasLastManStand.value ? matchController.getInningDetail.battingTeam.length : matchController.getInningDetail.battingTeam.length - 1) - (matchController.getInningDetail.outBattingTeam.length)} wicket.",
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.offNamedUntil(
+                          DashboardScreen.routeName, (route) => false);
+                    },
+                    child: const Text(
+                      "Continue",
+                    ),
+                  ),
+                ],
+              );
+            });
+      } else {
+        return;
+      }
+      return;
+    }
+  }
+
+  void recordDelivery(Delivery delivery) async {
+    MatchController matchController = Get.find<MatchController>();
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
+
+    int totalNoOfBalls =
+        ((double.tryParse(teamGameController.numberOfOversController.text) ??
+                    6) *
+                6)
+            .toInt();
+    int currentBall = matchController.getInningDetail.currentBalls.value + 1;
+    bool endGameByOver = currentBall > totalNoOfBalls;
+    //check all out
     // print("===> over is completed");
 
     // if wicket then get reason and next player
@@ -786,7 +815,9 @@ class InningDetail extends GetxController {
       _changeStrike();
     }
     lastSevenDeliveries.add(delivery.shortSummary());
-    if (Over.finished(currentBalls.value) && isOverInProgress.value) {
+    if (Over.finished(currentBalls.value) &&
+        isOverInProgress.value &&
+        endGameByOver) {
       lastSevenDeliveries.add('|');
       var result = await showDialog(
           context: Get.context!,
@@ -804,6 +835,9 @@ class InningDetail extends GetxController {
       lastSevenDeliveries.removeAt(0);
     }
     _addWicket(delivery);
+    await checkAllOut();
+    await checkRunScoreOver();
+    await checkOverFinish();
 
     delivery.reset();
     // checkBoxReset();
@@ -850,6 +884,8 @@ class MatchController extends GetxController {
 
   RxList<User> battingTeam = RxList();
   RxList<User> bowlingTeam = RxList();
+  String? firstInningBattingTeamName;
+  String? firstInningBowlingTeamName;
   late InningDetail firstInningDetail;
   late InningDetail secondInningDetail;
 
@@ -880,6 +916,8 @@ class MatchController extends GetxController {
     required String optedToo,
     required RxList<User> battingT,
     required RxList<User> bowlingT,
+    required String firstInningBattingTeam,
+    required String firstInningBowlingTeam,
   }) {
     isFirstInnings = true;
     isSecondInnings = false;
@@ -887,6 +925,8 @@ class MatchController extends GetxController {
     optedTo = optedToo;
     battingTeam = battingT;
     bowlingTeam = bowlingT;
+    firstInningBattingTeamName = firstInningBattingTeam;
+    firstInningBowlingTeamName = firstInningBowlingTeam;
     firstInningDetail = InningDetail(
       isFirstInning: true,
       battingTeam: battingTeam,
