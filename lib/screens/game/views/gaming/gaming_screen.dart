@@ -17,7 +17,6 @@ import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class GamingScreen extends StatelessWidget {
   static const String routeName = "/game-screen";
@@ -198,11 +197,18 @@ class GamingScreen extends StatelessWidget {
                                     0
                                 ? "0.00"
                                 : (matchController.getInningDetail
-                                            .totalRunTillNow.value /
-                                        (matchController.getInningDetail
-                                                .currentBalls.value /
-                                            6))
-                                    .toStringAsFixed(2))),
+                                                .totalRunTillNow.value /
+                                            (matchController.getInningDetail
+                                                    .currentBalls.value /
+                                                6))
+                                        .isFinite
+                                    ? (matchController.getInningDetail
+                                                .totalRunTillNow.value /
+                                            (matchController.getInningDetail
+                                                    .currentBalls.value /
+                                                6))
+                                        .toStringAsFixed(2)
+                                    : "0.00")),
                       ),
                       Obx(
                         () {
@@ -714,7 +720,11 @@ class GamingScreen extends StatelessWidget {
                                 totalRunsConceded == 0 && totalOversBowled == 0
                                     ? "0.0"
                                     : ((totalRunsConceded / totalOversBowled))
-                                        .toStringAsFixed(0),
+                                            .isFinite
+                                        ? ((totalRunsConceded /
+                                                totalOversBowled))
+                                            .toStringAsFixed(0)
+                                        : "0",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f14W500(
                                   color: AppColors.hintTextColor,
@@ -744,27 +754,95 @@ class GamingScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Text(
-                        "This Over:",
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyles.f14W500(),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          "This Over:",
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyles.f14W500(),
+                        ),
                       ),
-                      ...List.filled(
-                        6,
-                        Container(
-                          height: 15,
-                          width: 15,
-                          margin: const EdgeInsets.only(
-                            left: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: AppColors.backGroundColor,
-                              width: 1,
-                            ),
+                      Expanded(
+                        flex: 4,
+                        child: SizedBox(
+                          height: 70,
+                          child: Obx(
+                            () {
+                              return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: matchController
+                                    .getInningDetail.lastSevenDeliveries.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 30,
+                                          width: 30,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: matchController
+                                                            .getInningDetail
+                                                            .lastSevenDeliveries[
+                                                        index][2] !=
+                                                    ""
+                                                ? AppColors.errorColor
+                                                : AppColors.primaryColor,
+                                            shape: BoxShape.circle,
+                                            // borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color: matchController
+                                                              .getInningDetail
+                                                              .lastSevenDeliveries[
+                                                          index][2] !=
+                                                      ""
+                                                  ? AppColors.errorColor
+                                                  : AppColors.hintTextColor,
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            matchController.getInningDetail
+                                                            .lastSevenDeliveries[
+                                                        index][2] !=
+                                                    ""
+                                                ? "${matchController.getInningDetail.lastSevenDeliveries[index][2]}"
+                                                : "${matchController.getInningDetail.lastSevenDeliveries[index][0]}",
+                                            style: CustomTextStyles.f10W400(
+                                              color: matchController
+                                                              .getInningDetail
+                                                              .lastSevenDeliveries[
+                                                          index][2] !=
+                                                      ""
+                                                  ? AppColors.primaryColor
+                                                  : AppColors.hintTextColor,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          matchController.getInningDetail
+                                                          .lastSevenDeliveries[
+                                                      index][2] !=
+                                                  ""
+                                              ? "${matchController.getInningDetail.lastSevenDeliveries[index][0]}-${matchController.getInningDetail.lastSevenDeliveries[index][1]}"
+                                              : "${matchController.getInningDetail.lastSevenDeliveries[index][1]}",
+                                          style: CustomTextStyles.f12W400(
+                                            color: AppColors.hintTextColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ),
                       ),

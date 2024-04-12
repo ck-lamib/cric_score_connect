@@ -73,6 +73,23 @@ class Delivery extends GetxController {
     return true;
   }
 
+  // String shortSummary() {
+  //   var wicket = '';
+  //   if (out != Out.none) {
+  //     wicket = 'W';
+  //   }
+  //   var ext = '';
+  //   if (extras[0] != Extra.none) {
+  //     ext = extras.map((e) => e.shortCode()).join('+');
+  //   }
+  //   var tail = [wicket, ext].where((t) => t != '').join('+');
+  //   if (tail != '' && runs == 0) {
+  //     return tail;
+  //   }
+  //   return '$runs,$tail';
+  // }
+
+  //"run,extras,wicket"
   String shortSummary() {
     var wicket = '';
     if (out != Out.none) {
@@ -80,13 +97,15 @@ class Delivery extends GetxController {
     }
     var ext = '';
     if (extras[0] != Extra.none) {
-      ext = extras.map((e) => e.shortCode()).join('+');
+      ext = extras.map((e) => e.shortCode().toUpperCase()).join('-');
     }
-    var tail = [wicket, ext].where((t) => t != '').join('+');
+    var tail = [ext].where((t) => t != '').join('-');
+    var result = '';
     if (tail != '' && runs == 0) {
-      return tail;
+      result = "0,$tail,$wicket";
     }
-    return '$runs$tail';
+    result = '$runs,$tail,$wicket';
+    return result;
   }
 
   void reset() {

@@ -801,7 +801,7 @@ class InningDetail extends GetxController {
                 6)
             .toInt();
     int currentBall = matchController.getInningDetail.currentBalls.value + 1;
-    bool endGameByOver = currentBall > totalNoOfBalls;
+    // bool endGameByOver = currentBall > totalNoOfBalls;
     //check all out
     // print("===> over is completed");
 
@@ -814,11 +814,9 @@ class InningDetail extends GetxController {
         !delivery.isPenalty()) {
       _changeStrike();
     }
-    lastSevenDeliveries.add(delivery.shortSummary());
-    if (Over.finished(currentBalls.value) &&
-        isOverInProgress.value &&
-        endGameByOver) {
-      lastSevenDeliveries.add('|');
+    lastSevenDeliveries.add(delivery.shortSummary().split(','));
+    if (Over.finished(currentBalls.value) && isOverInProgress.value) {
+      lastSevenDeliveries.value = [];
       var result = await showDialog(
           context: Get.context!,
           builder: (context) {
@@ -831,9 +829,10 @@ class InningDetail extends GetxController {
         concludeOver(result);
       }
     }
-    while (lastSevenDeliveries.length > 7) {
-      lastSevenDeliveries.removeAt(0);
-    }
+    // while (lastSevenDeliveries.length > 7) {
+    //   lastSevenDeliveries.removeAt(0);
+    // }
+    print(lastSevenDeliveries);
     _addWicket(delivery);
     await checkAllOut();
     await checkRunScoreOver();
