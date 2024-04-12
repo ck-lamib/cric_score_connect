@@ -390,10 +390,11 @@ class InningDetail extends GetxController {
     }
     if (delivery.isBye()) {
       currentByes.value += delivery.runs;
+
       totalRunTillNow.value += delivery.runs;
     }
     if (delivery.isPenalty()) {
-      totalRunTillNow.value -= delivery.runs;
+      totalRunTillNow.value += delivery.runs;
       currentPenalty.value += delivery.runs;
     }
     if (delivery.isBonus()) {
@@ -504,12 +505,14 @@ class InningDetail extends GetxController {
     update();
   }
 
-  addPenalty(Delivery delivery) {
-    totalRunTillNow.value += delivery.runs;
-    currentPenalty.value += delivery.runs;
-    currentBalls.value++;
-    bowler.value?.matchBowlingStats?.balls.value++;
-  }
+  // addPenalty(Delivery delivery) {
+  //   delivery.addExtra(Extra.penalty);
+  //   lastSevenDeliveries.add(delivery.shortSummary().split(','));
+  //   totalRunTillNow.value += delivery.runs;
+  //   currentPenalty.value += delivery.runs;
+  //   currentBalls.value++;
+  //   bowler.value?.matchBowlingStats?.balls.value++;
+  // }
 
   checkAllOut() async {
     MatchController matchController = Get.find<MatchController>();

@@ -831,7 +831,12 @@ class GamingScreen extends StatelessWidget {
                                                           .lastSevenDeliveries[
                                                       index][2] !=
                                                   ""
-                                              ? "${matchController.getInningDetail.lastSevenDeliveries[index][0]}-${matchController.getInningDetail.lastSevenDeliveries[index][1]}"
+                                              ? matchController.getInningDetail
+                                                              .lastSevenDeliveries[
+                                                          index][1] ==
+                                                      ""
+                                                  ? "${matchController.getInningDetail.lastSevenDeliveries[index][0]}"
+                                                  : "${matchController.getInningDetail.lastSevenDeliveries[index][0]}-${matchController.getInningDetail.lastSevenDeliveries[index][1]}"
                                               : "${matchController.getInningDetail.lastSevenDeliveries[index][1]}",
                                           style: CustomTextStyles.f12W400(
                                             color: AppColors.hintTextColor,
@@ -1254,9 +1259,9 @@ class GamingScreen extends StatelessWidget {
                                     int.tryParse(runEditingController.text);
                                 Delivery delivery = Delivery()
                                   ..addRuns(runs ?? 0);
-
+                                delivery.addExtra(Extra.penalty);
                                 matchController.getInningDetail
-                                    .addPenalty(delivery);
+                                    .recordDelivery(delivery);
                                 c.checkBoxReset();
                                 //call the method here
                               }
