@@ -11,7 +11,7 @@ class GamingAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonSilverAppBar(
-      hasLeading: true,
+      hasLeading: false,
       title: "${c.homeTeamController.text} Vs ${c.awayTeamController.text}",
       hasNotification: false,
       scrolledUnderElevation: 0,

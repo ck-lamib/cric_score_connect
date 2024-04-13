@@ -48,14 +48,6 @@ class BowlingStatsTabView extends StatelessWidget {
           data: bowlingStats.wickets,
         ),
         UserGameStatsTile(
-          title: "NO BALLS",
-          data: bowlingStats.noBalls,
-        ),
-        UserGameStatsTile(
-          title: "DOTS BALLS",
-          data: bowlingStats.dotsBalls,
-        ),
-        UserGameStatsTile(
           title: "B. BOWLING",
           data: bowlingStats.bBowling,
         ),

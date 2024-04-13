@@ -820,16 +820,31 @@ class InningDetail extends GetxController {
     lastSevenDeliveries.add(delivery.shortSummary().split(','));
     if (Over.finished(currentBalls.value) && isOverInProgress.value) {
       lastSevenDeliveries.value = [];
-      var result = await showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return NextOverScreen(
-              bowlingTeam: bowlingTeam,
-              currentBowler: bowler.value!,
-            );
-          });
-      if (result != null && result is User) {
-        concludeOver(result);
+
+//for calculating team game controller
+      TeamVsTeamGameController teamGameController =
+          Get.find<TeamVsTeamGameController>();
+
+      int totalNoOfBalls =
+          ((double.tryParse(teamGameController.numberOfOversController.text) ??
+                      6) *
+                  6)
+              .toInt();
+      int currentBall = matchController.getInningDetail.currentBalls.value + 1;
+
+      if (currentBall > totalNoOfBalls) {
+      } else {
+        var result = await showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return NextOverScreen(
+                bowlingTeam: bowlingTeam,
+                currentBowler: bowler.value!,
+              );
+            });
+        if (result != null && result is User) {
+          concludeOver(result);
+        }
       }
     }
     // while (lastSevenDeliveries.length > 7) {

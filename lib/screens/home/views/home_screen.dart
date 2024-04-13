@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
@@ -57,11 +58,33 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Obx(
                         () => cc.currentUser.value?.profilePhotoPath != null
-                            ? const CircleAvatar(
-                                backgroundColor: AppColors.primaryColor,
-                                backgroundImage: NetworkImage(
-                                    "https://bimalkhatri.com.np/img/hell.png"),
-                                radius: 25,
+                            ? Container(
+                                // backgroundColor:
+                                //     AppColors.primaryColor,
+                                // backgroundImage: const NetworkImage(
+                                //     "https://bimalkhatri.com.np/img/hell.png"),
+                                // radius: 55,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                height: 50,
+                                width: 50,
+                                clipBehavior: Clip.antiAlias,
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      cc.currentUser.value!.profilePhotoPath!,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          Image.asset(
+                                    ImagePath.defaultAvatar,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    ImagePath.defaultAvatar,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               )
                             : const CircleAvatar(
                                 backgroundColor: AppColors.primaryColor,

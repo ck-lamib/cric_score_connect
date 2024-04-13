@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:cric_score_connect/screens/friend/widgets/friend_screen_app_bar.dart';
-import 'package:cric_score_connect/screens/friend/widgets/friend_tabbaar_view.dart';
+import 'package:cric_score_connect/screens/friend/widgets/accepted_friend_tabbaar_view.dart';
+import 'package:cric_score_connect/screens/friend/widgets/pending_friend_tabbaar_view%20copy.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +95,7 @@ class _FriendScreenState extends State<FriendScreen>
           body: TabBarView(
             controller: _tabController,
             children: [
-              FriendTabbarView(),
+              PendingFriendTabbarView(),
               FriendTabbarView(),
             ],
           ),

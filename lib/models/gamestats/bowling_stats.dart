@@ -8,8 +8,6 @@ class BowlingStats {
   final String? strikeRate;
   final String? maidens;
   final String? wickets;
-  final String? noBalls;
-  final String? dotsBalls;
   final String? bBowling;
   final String? ecoRate;
 
@@ -21,8 +19,6 @@ class BowlingStats {
     this.strikeRate,
     this.maidens,
     this.wickets,
-    this.noBalls,
-    this.dotsBalls,
     this.bBowling,
     this.ecoRate,
   });
@@ -35,8 +31,6 @@ class BowlingStats {
     String? strikeRate,
     String? maidens,
     String? wickets,
-    String? noBalls,
-    String? dotsBalls,
     String? bBowling,
     String? ecoRate,
   }) =>
@@ -48,8 +42,6 @@ class BowlingStats {
         strikeRate: strikeRate ?? this.strikeRate,
         maidens: maidens ?? this.maidens,
         wickets: wickets ?? this.wickets,
-        noBalls: noBalls ?? this.noBalls,
-        dotsBalls: dotsBalls ?? this.dotsBalls,
         bBowling: bBowling ?? this.bBowling,
         ecoRate: ecoRate ?? this.ecoRate,
       );
@@ -67,8 +59,6 @@ class BowlingStats {
         strikeRate: json["strikeRate"],
         maidens: json["maidens"],
         wickets: json["wickets"],
-        noBalls: json["noBalls"],
-        dotsBalls: json["dotsBalls"],
         bBowling: json["bBowling"],
         ecoRate: json["ecoRate"],
       );
@@ -81,8 +71,6 @@ class BowlingStats {
         "strikeRate": strikeRate,
         "maidens": maidens,
         "wickets": wickets,
-        "noBalls": noBalls,
-        "dotsBalls": dotsBalls,
         "bBowling": bBowling,
         "ecoRate": ecoRate,
       };

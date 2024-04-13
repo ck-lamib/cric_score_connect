@@ -1,18 +1,25 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cric_score_connect/core/core_controller.dart';
+import 'package:cric_score_connect/datasource/user/edit_user_repo.dart';
+import 'package:cric_score_connect/screens/profile/controller/profile_controller.dart';
+import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/datas.dart';
+import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/helpers/pick_image_helper.dart';
+import 'package:cric_score_connect/utils/helpers/request_loader.dart';
+import 'package:cric_score_connect/utils/helpers/storage_helper.dart';
+import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class PersonalInfoController extends GetxController {
   late CoreController cc;
   final formKey = GlobalKey<FormState>();
-  final loading = SimpleFontelicoProgressDialog(
-      context: Get.context!, barrierDimisable: false);
 
   late TextEditingController fullNameController;
   late TextEditingController userNameController;
@@ -40,8 +47,7 @@ class PersonalInfoController extends GetxController {
       addressController =
           TextEditingController(text: cc.currentUser.value!.address);
 
-      playerTypeValue =
-          cc.currentUser.value!.playerType?.toString().capitalizeFirst;
+      playerTypeValue = cc.currentUser.value!.playerType?.toString();
       userAvatar = cc.currentUser.value!.profilePhotoPath;
     } else {
       fullNameController = TextEditingController();
@@ -61,30 +67,37 @@ class PersonalInfoController extends GetxController {
   }
 
   onSubmit() async {
+    RequestLoader requestLoader = RequestLoader();
+    CoreController cc = Get.find<CoreController>();
+    var userId = cc.currentUser.value!.id;
+
     if (formKey.currentState!.validate()) {}
-    // {
-    //   loading.show(message: "PLease wiat ..");
-    //   await RegisterRepo.register(
-    //     name: "${nameController.text} ${lastNameController.text}",
-    //     email: emailController.text,
-    //     password: passwordController.text,
-    //     onSuccess: (user, token) async {
-    //       loading.hide();
-    //       final box = GetStorage();
-    //       await box.write(
-    //           StorageKeys.ACCESS_TOKEN, json.encode(token.toJson()));
-    //       await box.write(StorageKeys.USER, json.encode(user.toJson()));
-    //       Get.find<CoreController>().loadCurrentUser();
-    //       Get.offAllNamed(DashScreen.routeName);
-    //       CustomSnackBar.success(
-    //           title: "Sign up", message: "User registered succesfully");
-    //     },
-    //     onError: (message) {
-    //       loading.hide();
-    //       CustomSnackBar.error(title: "Sign up", message: message);
-    //     },
-    //   );
-    // }
+    {
+      requestLoader.show();
+      await UserRepo.editProfile(
+        id: userId!,
+        name: fullNameController.text,
+        phone: phoneController.text,
+        playerType: playerTypeValue!,
+        profilePhotoPath: pickedFile,
+        address: addressController.text,
+        dob: birthdayController.text,
+        onSuccess: (user, message) async {
+          requestLoader.hide();
+          final box = GetStorage();
+          await box.write(StorageKeys.USER, jsonEncode(user.toJson()));
+          await Get.find<CoreController>().loadCurrentUser();
+          Get.back();
+          CustomSnackBar.success(
+              title: "Edit profile",
+              message: "User profile edited succesfully");
+        },
+        onError: (message) {
+          requestLoader.hide();
+          CustomSnackBar.error(title: "Edit profile", message: message);
+        },
+      );
+    }
   }
 
   final RxBool _isEditTap = false.obs;
@@ -98,7 +111,10 @@ class PersonalInfoController extends GetxController {
       .map(
         (e) => DropdownMenuItem(
           value: e,
-          child: Text(e),
+          child: Text(
+            e,
+            style: CustomTextStyles.f16W400(color: AppColors.backGroundColor),
+          ),
         ),
       )
       .toList();
@@ -112,9 +128,9 @@ class PersonalInfoController extends GetxController {
   File? get pickedFile => _pickedImage.value;
 
   onPickImageTap(ImageSource source) async {
-    File? pickedfile = await PickImageHelper().pickAndCropImage(source);
-    if (pickedfile != null) {
-      _pickedImage.value = pickedfile;
+    File? pickedfilee = await PickImageHelper().pickAndCropImage(source);
+    if (pickedfilee != null) {
+      _pickedImage.value = pickedfilee;
     }
   }
 }

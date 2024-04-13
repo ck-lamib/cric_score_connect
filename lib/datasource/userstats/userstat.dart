@@ -7,9 +7,9 @@ import 'package:cric_score_connect/utils/helpers/http_request.dart';
 import 'package:cric_score_connect/utils/routes/api.dart';
 import 'package:http/http.dart' as http;
 
-class SearchFriendRepo {
-  static Future<void> searchFriend({
-    required String query,
+class UserStatsRepo {
+  static Future<void> getUserStat({
+    required String userId,
     required Function(List<User> userList) onSuccess,
     required Function(String message) onError,
   }) async {
@@ -18,23 +18,20 @@ class SearchFriendRepo {
         "Accept": "application/json",
       };
 
-      CustomLogger.trace(Api.searchUrl);
-      var body = {
-        "query": query,
-      };
+      CustomLogger.trace(Api.getUserStatUrl(userId));
+      var body = {};
       http.Response response = await HttpRequest.post(
         Uri.parse(
-          Api.searchUrl,
+          Api.getUserStatUrl(userId),
         ),
         headers: headers,
         body: body,
       );
 
       var responseData = jsonDecode(response.body);
-      CustomLogger.trace("register decoded response : -> $responseData");
+      CustomLogger.trace("user stats decoded response : -> $responseData");
       //check status code
       if (response.statusCode == 200) {
-        CustomLogger.trace(response.body);
         List<User> users = userFromJson(responseData);
         onSuccess(users);
       } else {

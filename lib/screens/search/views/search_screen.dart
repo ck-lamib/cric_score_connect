@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cric_score_connect/datasource/search/search_friend_repo.dart';
-import 'package:cric_score_connect/screens/friend/widgets/friend_tile.dart';
+import 'package:cric_score_connect/screens/friend/widgets/accepted_friend_tile.dart';
 import 'package:cric_score_connect/screens/search/controller/search_controller.dart';
 import 'package:cric_score_connect/screens/search/widgets/search_friend_tile.dart';
 import 'package:cric_score_connect/screens/search/widgets/search_screen_app_bar.dart';
@@ -94,7 +94,7 @@ class SearchScreen extends StatelessWidget {
                               ),
                               SizeConfig.getSpace(),
                               Text(
-                                "Players not found. \nPlease! search for user",
+                                "Search user by Username, Email\n and Full name.",
                                 textAlign: TextAlign.center,
                                 style: CustomTextStyles.f16W600(),
                               ),

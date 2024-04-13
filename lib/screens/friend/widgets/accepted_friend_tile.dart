@@ -1,4 +1,6 @@
-import 'package:cric_score_connect/models/user.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cric_score_connect/models/friend_request_user.dart';
+
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
@@ -6,16 +8,15 @@ import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
-class FriendTile extends StatelessWidget {
-  final User? user;
-  const FriendTile({
+class AcceptedFriendTile extends StatelessWidget {
+  final FriendRequestUser? user;
+  const AcceptedFriendTile({
     super.key,
     this.user,
   });
 
   @override
   Widget build(BuildContext context) {
-    print(user?.profilePhotoPath);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
       decoration: BoxDecoration(
@@ -46,10 +47,18 @@ class FriendTile extends StatelessWidget {
                       ),
                     ),
                     clipBehavior: Clip.antiAlias,
-                    child: Image.network(
-                      user!.profilePhotoPath!,
-                    ),
-                  )
+                    child: CachedNetworkImage(
+                      imageUrl: user!.profilePhotoPath!,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Image.asset(
+                        ImagePath.defaultAvatar,
+                        fit: BoxFit.cover,
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        ImagePath.defaultAvatar,
+                        fit: BoxFit.cover,
+                      ),
+                    ))
                 : Container(
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
@@ -78,42 +87,24 @@ class FriendTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  user?.name ?? "Demo User",
+                  user?.senderName ?? "Demo User",
                   style: CustomTextStyles.f18W600(
                       // color: AppColors.primaryColor,
                       ),
                 ),
                 Text(
-                  user?.username ?? "@demo123",
+                  user?.senderUsername ?? "@demo123",
                   style: CustomTextStyles.f14W500(
                     color: AppColors.hintTextColor,
                   ),
                 ),
                 SizeConfig.getSpace(height: 5),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomElevatedButton(
-                        title: "Confirm",
-                        padding: EdgeInsets.zero,
-                        backGroundColor: Colors.blue,
-                        height: 40,
-                        onTap: () {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: CustomElevatedButton(
-                        title: "Reject",
-                        backGroundColor: AppColors.errorColor,
-                        padding: EdgeInsets.zero,
-                        height: 40,
-                        onTap: () {},
-                      ),
-                    ),
-                  ],
+                CustomElevatedButton(
+                  title: "View Profile",
+                  padding: EdgeInsets.zero,
+                  backGroundColor: Colors.blue,
+                  height: 40,
+                  onTap: () {},
                 ),
               ],
             ),

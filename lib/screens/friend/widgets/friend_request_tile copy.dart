@@ -1,26 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cric_score_connect/models/user.dart';
-import 'package:cric_score_connect/screens/search/controller/search_controller.dart';
+import 'package:cric_score_connect/models/friend_request_user.dart';
+
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
-import 'package:cric_score_connect/widgets/custom/custom_outline_button.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class SearchFriendTile extends StatelessWidget {
-  final User? user;
-  SearchFriendTile({
+class FriendRequestTile extends StatelessWidget {
+  final FriendRequestUser? user;
+  const FriendRequestTile({
     super.key,
     this.user,
   });
-  SearchScreenController c = Get.find<SearchScreenController>();
 
   @override
   Widget build(BuildContext context) {
-    print(user!.profilePhotoPath!);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
       decoration: BoxDecoration(
@@ -62,8 +58,7 @@ class SearchFriendTile extends StatelessWidget {
                         ImagePath.defaultAvatar,
                         fit: BoxFit.cover,
                       ),
-                    ),
-                  )
+                    ))
                 : Container(
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
@@ -92,13 +87,13 @@ class SearchFriendTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  user?.name ?? "Demo User",
+                  user?.senderName ?? "Demo User",
                   style: CustomTextStyles.f18W600(
                       // color: AppColors.primaryColor,
                       ),
                 ),
                 Text(
-                  user?.username ?? "@demo123",
+                  user?.senderUsername ?? "@demo123",
                   style: CustomTextStyles.f14W500(
                     color: AppColors.hintTextColor,
                   ),
@@ -108,22 +103,20 @@ class SearchFriendTile extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomElevatedButton(
-                        title: "Add Friend",
+                        title: "Confirm",
                         padding: EdgeInsets.zero,
                         backGroundColor: Colors.blue,
                         height: 40,
-                        onTap: () {
-                          c.addFriend(user!);
-                        },
+                        onTap: () {},
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 15,
                     ),
                     Expanded(
-                      child: CustomOutlineButton(
-                        title: "View Profile",
-                        // backGroundColor: AppColors.errorColor,
+                      child: CustomElevatedButton(
+                        title: "Reject",
+                        backGroundColor: AppColors.errorColor,
                         padding: EdgeInsets.zero,
                         height: 40,
                         onTap: () {},
