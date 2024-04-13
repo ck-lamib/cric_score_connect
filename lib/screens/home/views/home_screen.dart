@@ -4,6 +4,7 @@ import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
+import 'package:cric_score_connect/screens/livematch/views/live_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
@@ -149,7 +150,9 @@ class HomeScreen extends StatelessWidget {
                         height: 50,
                       ),
                       CustomElevatedButton(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(LiveScreen.routeName);
+                        },
                         title: "Join Live Match",
                       ),
                     ],

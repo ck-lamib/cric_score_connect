@@ -24,7 +24,7 @@ class _GameProfileScreenState extends State<GameProfileScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 1, vsync: this);
   }
 
   @override
@@ -92,12 +92,6 @@ class _GameProfileScreenState extends State<GameProfileScreen>
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Tab(
-                                    child: Text(
-                                      'Individual',
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
                                 ]),
                           ),
                         ),
@@ -119,10 +113,6 @@ class _GameProfileScreenState extends State<GameProfileScreen>
                                         batBowlStat:
                                             c.gameStats.value!.teamVsteam!,
                                       ),
-                                      BattingBowlingStatsTab(
-                                        batBowlStat:
-                                            c.gameStats.value!.individual!,
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -140,29 +130,6 @@ class _GameProfileScreenState extends State<GameProfileScreen>
                                   child: TabBarView(
                                     controller: _tabController,
                                     children: [
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 12),
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.1,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primaryColor,
-                                          shape: BoxShape.rectangle,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border: Border.all(
-                                            color: AppColors.backGroundColor,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        child: const Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      ),
                                       Container(
                                         margin: const EdgeInsets.symmetric(
                                           horizontal: 12,

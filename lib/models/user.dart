@@ -72,7 +72,7 @@ class User {
         dob: json["dob"],
         phone: json["phone"],
         address: json["address"],
-        profilePhotoPath: json["profile_photo_path"],
+        profilePhotoPath: json["profile_photo_url"],
         playerType: json["playerType"],
       );
 
@@ -84,7 +84,7 @@ class User {
         "dob": dob,
         "phone": phone,
         "address": address,
-        "profile_photo_path": profilePhotoPath,
+        "profile_photo_url": profilePhotoPath,
         "playerType": playerType,
       };
 }

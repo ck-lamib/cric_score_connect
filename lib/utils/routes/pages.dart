@@ -17,6 +17,8 @@ import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.d
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
+import 'package:cric_score_connect/screens/livematch/controller/live_screen_controller.dart';
+import 'package:cric_score_connect/screens/livematch/views/live_screen.dart';
 import 'package:cric_score_connect/screens/login/controller/login_controller.dart';
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/screens/password/controller/change_password_controller.dart';
@@ -174,6 +176,17 @@ var pages = [
       },
     ),
   ),
+  GetPage(
+    name: LiveScreen.routeName,
+    page: () => LiveScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => LiveScreen());
+        Get.lazyPut(() => LiveScreenController());
+      },
+    ),
+  ),
+
   // GetPage(
   //   name: FallOfWicketScreen.routeName,
   //   page: () => FallOfWicketScreen(),

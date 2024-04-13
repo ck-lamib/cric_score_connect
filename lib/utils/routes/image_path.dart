@@ -17,4 +17,6 @@ class ImagePath {
       "$baseSvgPath/forgot_password.svg";
   static const String changePasswordUIImagePath =
       "$baseSvgPath/change_password.svg";
+  static const String notFoundImagePath = "$baseSvgPath/not_found.svg";
+  static const String searchingImagePath = "$baseSvgPath/searching.svg";
 }
