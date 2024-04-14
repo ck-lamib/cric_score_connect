@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/datasource/auth/register_repo.dart';
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
+import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:cric_score_connect/utils/helpers/storage_helper.dart';
@@ -46,16 +47,14 @@ class SignupController extends GetxController {
         phone: phoneController.text,
         address: addressController.text,
         password: passwordController.text,
-        onSuccess: (user, token) async {
+        onSuccess: (message) async {
           requestLoader.hide();
-          final box = GetStorage();
-          await box.write(StorageKeys.ACCESS_TOKEN, jsonEncode(token.toJson()));
-          await box.write(StorageKeys.USER, jsonEncode(user.toJson()));
-          Get.find<CoreController>().loadCurrentUser();
-          Get.offAllNamed(DashboardScreen.routeName);
+          Get.offAllNamed(LoginScreen.routeName);
           CustomSnackBar.success(
-              title: "Sign up", message: "User Registered Successfull");
-          TextInput.finishAutofillContext();
+            title: "Sign up",
+            message:
+                "User Registered Successfull. Please verify your account to continue.",
+          );
         },
         onError: (message) {
           requestLoader.hide();

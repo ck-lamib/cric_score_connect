@@ -17,7 +17,7 @@ class RegisterRepo {
     required String phone,
     required String address,
     required String password,
-    required Function(User user, AccessToken token) onSuccess,
+    required Function(String message) onSuccess,
     required Function(String message) onError,
   }) async {
     try {
@@ -58,13 +58,9 @@ class RegisterRepo {
       var responseData = jsonDecode(response.body);
       CustomLogger.trace("register decoded response : -> $responseData");
       //check status code
-      if (response.statusCode == 200) {
-        if (responseData.toString().contains("token")) {
-          AccessToken token = AccessToken.fromJson(responseData);
-          User user = User.fromJson(
-            responseData["user"],
-          );
-          onSuccess(user, token);
+      if (response.statusCode == 403) {
+        if (responseData.toString().contains("Email verification required")) {
+          onSuccess("Email verification required");
         } else {
           onError("Invalid data available");
         }
@@ -72,13 +68,17 @@ class RegisterRepo {
         if (responseData.toString().contains("error")) {
           onError(responseData["error"]);
         } else {
-          onError("Sorry something went wrong");
+          if (response.statusCode == 500) {
+            onSuccess("Email verification required");
+          } else {
+            onError("Sorry something went wrong");
+          }
         }
       }
     } catch (e, s) {
       log(e.toString());
       log(s.toString());
-      onError("Sorry something went wrong");
+      onError("Sorry something went wrongg");
     }
   }
 }

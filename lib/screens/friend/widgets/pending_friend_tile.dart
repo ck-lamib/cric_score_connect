@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cric_score_connect/models/friend_request_user.dart';
+import 'package:cric_score_connect/screens/friend/controller/friend_screen_controller.dart';
 
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
@@ -7,13 +8,19 @@ import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FriendRequestTile extends StatelessWidget {
   final FriendRequestUser? user;
-  const FriendRequestTile({
+  FriendRequestTile({
     super.key,
     this.user,
+    this.onRejectTap,
+    this.onConfirmTap,
   });
+  FriendScreenController c = Get.find<FriendScreenController>();
+  final VoidCallback? onRejectTap;
+  final VoidCallback? onConfirmTap;
 
   @override
   Widget build(BuildContext context) {
@@ -107,10 +114,14 @@ class FriendRequestTile extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         backGroundColor: Colors.blue,
                         height: 40,
-                        onTap: () {},
+                        onTap: () {
+                          if (user?.id != null) {
+                            c.confirmFriendRequest(user!.id!);
+                          }
+                        },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     Expanded(
@@ -119,7 +130,11 @@ class FriendRequestTile extends StatelessWidget {
                         backGroundColor: AppColors.errorColor,
                         padding: EdgeInsets.zero,
                         height: 40,
-                        onTap: () {},
+                        onTap: () {
+                          if (user?.id != null) {
+                            c.rejectFriendRequest(user!.id!);
+                          }
+                        },
                       ),
                     ),
                   ],

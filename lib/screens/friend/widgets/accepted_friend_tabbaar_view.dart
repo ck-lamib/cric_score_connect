@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-class FriendTabbarView extends StatelessWidget {
-  FriendTabbarView({
+class AcceptedFriendTabbarView extends StatelessWidget {
+  AcceptedFriendTabbarView({
     super.key,
   });
   final FriendScreenController c = Get.find<FriendScreenController>();
@@ -26,7 +26,7 @@ class FriendTabbarView extends StatelessWidget {
       ),
       child: RefreshIndicator(
         onRefresh: () async {
-          await c.getFriendRequest();
+          await c.getAllAcceptedFriend();
         },
         child: Column(
           children: [
@@ -45,7 +45,7 @@ class FriendTabbarView extends StatelessWidget {
             ),
             Expanded(
               child: Obx(
-                () => c.isPendingFriendLoading.value
+                () => c.isGetAllFriendLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -55,10 +55,10 @@ class FriendTabbarView extends StatelessWidget {
                             height: 20,
                           );
                         },
-                        itemCount: c.friendRequestUser.length,
+                        itemCount: c.friendList.length,
                         itemBuilder: (context, index) {
                           return AcceptedFriendTile(
-                            user: c.friendRequestUser[index],
+                            user: c.friendList[index],
                           );
                         },
                       ),

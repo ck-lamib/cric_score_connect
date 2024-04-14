@@ -1,10 +1,8 @@
 import 'package:cric_score_connect/screens/friend/controller/friend_screen_controller.dart';
-import 'package:cric_score_connect/screens/friend/widgets/accepted_friend_tile.dart';
-import 'package:cric_score_connect/screens/friend/widgets/friend_request_tile%20copy.dart';
+import 'package:cric_score_connect/screens/friend/widgets/pending_friend_tile.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class PendingFriendTabbarView extends StatelessWidget {
@@ -36,10 +34,11 @@ class PendingFriendTabbarView extends StatelessWidget {
                 top: 10,
                 bottom: 20,
               ),
-              child: const CustomTextField(
+              child: CustomTextField(
                 textInputAction: TextInputAction.done,
                 textInputType: TextInputType.name,
-                preIconPath: Icon(Icons.search_rounded),
+                preIconPath: const Icon(Icons.search_rounded),
+                onValueChange: c.searchPendingFriends,
                 labelText: "Search by username",
                 hint: "Search by username",
               ),
@@ -56,10 +55,10 @@ class PendingFriendTabbarView extends StatelessWidget {
                             height: 20,
                           );
                         },
-                        itemCount: c.friendRequestUser.length,
+                        itemCount: c.finalPendingFriendRequestUser.length,
                         itemBuilder: (context, index) {
                           return FriendRequestTile(
-                            user: c.friendRequestUser[index],
+                            user: c.finalPendingFriendRequestUser[index],
                           );
                         },
                       ),

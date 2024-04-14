@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -34,11 +35,30 @@ class GameProfileUserDetailCard extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: c.user?.profilePhotoPath != null
-                  ? const CircleAvatar(
-                      backgroundColor: AppColors.onBackGroundColor,
-                      backgroundImage: NetworkImage(
-                          "https://bimalkhatri.com.np/img/hell.png"),
-                      radius: 55,
+                  ? Container(
+                      // backgroundColor:
+                      //     AppColors.primaryColor,
+                      // backgroundImage: const NetworkImage(
+                      //     "https://bimalkhatri.com.np/img/hell.png"),
+                      // radius: 55,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      height: 120,
+                      width: 120,
+                      clipBehavior: Clip.antiAlias,
+                      child: CachedNetworkImage(
+                        imageUrl: cc.currentUser.value!.profilePhotoPath!,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Image.asset(
+                          ImagePath.defaultAvatar,
+                          fit: BoxFit.cover,
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          ImagePath.defaultAvatar,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     )
                   : const CircleAvatar(
                       backgroundColor: AppColors.onBackGroundColor,

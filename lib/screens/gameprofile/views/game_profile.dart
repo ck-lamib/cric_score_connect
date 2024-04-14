@@ -88,7 +88,7 @@ class _GameProfileScreenState extends State<GameProfileScreen>
                                 tabs: const [
                                   Tab(
                                     child: Text(
-                                      'Team Vs Team',
+                                      'Match Stats',
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),

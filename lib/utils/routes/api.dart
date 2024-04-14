@@ -13,4 +13,10 @@ class Api {
   static editProfileUrl(int id) => "$baseUrl/users/$id";
   static const friendRequestUrl = "$baseUrl/friend-requests";
   static const pendingRequestUrl = "$baseUrl/friend-requests/pending";
+  static rejectFriendRequestUrl(int id) =>
+      "$baseUrl/friend-requests/$id/reject";
+  static confirmFriendRequestUrl(int id) =>
+      "$baseUrl/friend-requests/$id/confirm";
+
+  static getAllFriendUrl(int id) => "$baseUrl/users/$id/friends";
 }

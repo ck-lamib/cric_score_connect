@@ -5,8 +5,8 @@ List<FriendRequestUser> friendRequestUserFromJson(List<dynamic> userJsons) =>
 
 class FriendRequestUser {
   final int? id;
-  final int? senderId;
-  final int? receiverId;
+  final String? senderId;
+  final String? receiverId;
   final String? status;
   final String? createdAt;
   final String? updatedAt;
@@ -28,8 +28,8 @@ class FriendRequestUser {
 
   FriendRequestUser copyWith({
     int? id,
-    int? senderId,
-    int? receiverId,
+    String? senderId,
+    String? receiverId,
     String? status,
     String? createdAt,
     String? updatedAt,

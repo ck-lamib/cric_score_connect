@@ -41,8 +41,8 @@ class ProfileUserDetailCard extends StatelessWidget {
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        height: 110,
-                        width: 110,
+                        height: 120,
+                        width: 120,
                         clipBehavior: Clip.antiAlias,
                         child: CachedNetworkImage(
                           imageUrl: cc.currentUser.value!.profilePhotoPath!,

@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/datasource/friend/friends_repo.dart';
 import 'package:cric_score_connect/datasource/search/search_friend_repo.dart';
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
-import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +13,7 @@ class SearchScreenController extends GetxController {
   TextEditingController searchTextController = TextEditingController();
   var isSearching = false.obs;
 
-  List<User> searchedUser = [];
+  RxList searchedUser = [].obs;
   Timer? _debounce;
   onSearchFriend(String value) {
     isSearching.value = true;
@@ -26,7 +24,7 @@ class SearchScreenController extends GetxController {
         SearchFriendRepo.searchFriend(
           query: value,
           onSuccess: (users) {
-            searchedUser = users;
+            searchedUser.value = users;
             isSearching.value = false;
           },
           onError: (message) {
@@ -55,6 +53,7 @@ class SearchScreenController extends GetxController {
       senderId: senderId,
       onSuccess: (message) async {
         searchedUser.removeWhere((element) => element.id == user.id);
+        searchedUser.refresh();
         requestLoader.hide();
         CustomSnackBar.success(
             title: "Friend Request",

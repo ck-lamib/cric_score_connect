@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cric_score_connect/models/friend_request_user.dart';
+import 'package:cric_score_connect/models/user.dart';
 
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
@@ -9,7 +10,7 @@ import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class AcceptedFriendTile extends StatelessWidget {
-  final FriendRequestUser? user;
+  final User? user;
   const AcceptedFriendTile({
     super.key,
     this.user,
@@ -87,13 +88,13 @@ class AcceptedFriendTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  user?.senderName ?? "Demo User",
+                  user?.name ?? "Demo User",
                   style: CustomTextStyles.f18W600(
                       // color: AppColors.primaryColor,
                       ),
                 ),
                 Text(
-                  user?.senderUsername ?? "@demo123",
+                  user?.username ?? "@demo123",
                   style: CustomTextStyles.f14W500(
                     color: AppColors.hintTextColor,
                   ),

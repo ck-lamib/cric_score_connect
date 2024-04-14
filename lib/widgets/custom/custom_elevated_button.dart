@@ -12,6 +12,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Size? fixedSize;
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? padding;
+  final bool isLoading;
   const CustomElevatedButton({
     super.key,
     required this.title,
@@ -23,25 +24,35 @@ class CustomElevatedButton extends StatelessWidget {
     this.fixedSize,
     this.textStyle,
     this.padding,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          padding: padding,
-          backgroundColor: backGroundColor,
-          minimumSize: Size.fromHeight(height),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          fixedSize: fixedSize,
+      style: ElevatedButton.styleFrom(
+        padding: padding,
+        backgroundColor: backGroundColor,
+        minimumSize: Size.fromHeight(height),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
         ),
-        onPressed: isDisabled ? null : onTap,
-        child: Text(
-          title,
-          style: textStyle ??
-              CustomTextStyles.f16W600(color: textColor ?? Colors.white),
-        ));
+        fixedSize: fixedSize,
+      ),
+      onPressed: isDisabled ? null : onTap,
+      child: isLoading
+          ? const Center(
+              child: SizedBox(
+                height: 22,
+                width: 22,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Text(
+              title,
+              style: textStyle ??
+                  CustomTextStyles.f16W600(color: textColor ?? Colors.white),
+            ),
+    );
   }
 }
