@@ -11,6 +11,7 @@ import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
@@ -1494,6 +1495,7 @@ class AddRunTile extends StatelessWidget {
             }
             print(delivery);
             matchController.getInningDetail.recordDelivery(delivery);
+
             c.checkBoxReset();
           } else {
             CustomSnackBar.error(
@@ -1518,6 +1520,7 @@ class AddRunTile extends StatelessWidget {
           }
           print(delivery);
           matchController.getInningDetail.recordDelivery(delivery);
+
           c.checkBoxReset();
         }
       },

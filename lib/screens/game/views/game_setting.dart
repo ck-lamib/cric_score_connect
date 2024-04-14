@@ -65,7 +65,7 @@ class GameSettingScreen extends StatelessWidget {
                           return value;
                         } else {
                           var intValue = int.parse(contentField!);
-                          if (intValue >= 2 && intValue <= 11) {
+                          if (intValue >= 4 && intValue <= 11) {
                             return null;
                           } else {
                             return "Player should be between 4 and 11";
