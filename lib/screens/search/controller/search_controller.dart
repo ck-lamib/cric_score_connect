@@ -16,6 +16,7 @@ class SearchScreenController extends GetxController {
   RxList searchedUser = [].obs;
   Timer? _debounce;
   onSearchFriend(String value) {
+    CoreController cc = Get.find<CoreController>();
     isSearching.value = true;
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(
@@ -23,6 +24,7 @@ class SearchScreenController extends GetxController {
       () {
         SearchFriendRepo.searchFriend(
           query: value,
+          id: cc.currentUser.value!.id!.toString(),
           onSuccess: (users) {
             searchedUser.value = users;
             isSearching.value = false;

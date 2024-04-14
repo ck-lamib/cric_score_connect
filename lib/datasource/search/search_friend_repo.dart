@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 class SearchFriendRepo {
   static Future<void> searchFriend({
     required String query,
+    required String id,
     required Function(List<User> userList) onSuccess,
     required Function(String message) onError,
   }) async {
@@ -21,6 +22,7 @@ class SearchFriendRepo {
       CustomLogger.trace(Api.searchUrl);
       var body = {
         "query": query,
+        "user_id": id,
       };
       http.Response response = await HttpRequest.post(
         Uri.parse(
