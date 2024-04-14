@@ -2,23 +2,67 @@ import 'dart:convert';
 
 import 'package:cric_score_connect/models/gamestats/batting_stats.dart';
 import 'package:cric_score_connect/models/gamestats/bowling_stats.dart';
+import 'package:cric_score_connect/models/user.dart';
+
+// class BattingBowlingStat {
+//   final BattingStats? batting;
+//   final BowlingStats? bowling;
+
+//   BattingBowlingStat({
+//     this.batting,
+//     this.bowling,
+//   });
+
+//   BattingBowlingStat copyWith({
+//     BattingStats? batting,
+//     BowlingStats? bowling,
+//   }) =>
+//       BattingBowlingStat(
+//         batting: batting ?? this.batting,
+//         bowling: bowling ?? this.bowling,
+//       );
+
+//   factory BattingBowlingStat.fromRawJson(String str) =>
+//       BattingBowlingStat.fromJson(json.decode(str));
+
+//   String toRawJson() => json.encode(toJson());
+
+//   factory BattingBowlingStat.fromJson(Map<String, dynamic> json) =>
+//       BattingBowlingStat(
+//         batting: json["batting"] == null
+//             ? null
+//             : BattingStats.fromJson(json["batting"]),
+//         bowling: json["bowling"] == null
+//             ? null
+//             : BowlingStats.fromJson(json["bowling"]),
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "batting": batting?.toJson(),
+//         "bowling": bowling?.toJson(),
+//       };
+// }
 
 class GameStats {
-  final BattingBowlingStat? teamVsteam;
-  final BattingBowlingStat? individual;
+  final User? user;
+  final BattingStats? batting;
+  final BowlingStats? bowling;
 
   GameStats({
-    this.teamVsteam,
-    this.individual,
+    this.user,
+    this.batting,
+    this.bowling,
   });
 
   GameStats copyWith({
-    BattingBowlingStat? teamVsteam,
-    BattingBowlingStat? individual,
+    User? user,
+    BattingStats? batting,
+    BowlingStats? bowling,
   }) =>
       GameStats(
-        teamVsteam: teamVsteam ?? this.teamVsteam,
-        individual: individual ?? this.individual,
+        user: user ?? this.user,
+        batting: batting ?? this.batting,
+        bowling: bowling ?? this.bowling,
       );
 
   factory GameStats.fromRawJson(String str) =>
@@ -27,45 +71,7 @@ class GameStats {
   String toRawJson() => json.encode(toJson());
 
   factory GameStats.fromJson(Map<String, dynamic> json) => GameStats(
-        teamVsteam: json["teamVsteam"] == null
-            ? null
-            : BattingBowlingStat.fromJson(json["teamVsteam"]),
-        individual: json["individual"] == null
-            ? null
-            : BattingBowlingStat.fromJson(json["individual"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "teamVsteam": teamVsteam?.toJson(),
-        "individual": individual?.toJson(),
-      };
-}
-
-class BattingBowlingStat {
-  final BattingStats? batting;
-  final BowlingStats? bowling;
-
-  BattingBowlingStat({
-    this.batting,
-    this.bowling,
-  });
-
-  BattingBowlingStat copyWith({
-    BattingStats? batting,
-    BowlingStats? bowling,
-  }) =>
-      BattingBowlingStat(
-        batting: batting ?? this.batting,
-        bowling: bowling ?? this.bowling,
-      );
-
-  factory BattingBowlingStat.fromRawJson(String str) =>
-      BattingBowlingStat.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory BattingBowlingStat.fromJson(Map<String, dynamic> json) =>
-      BattingBowlingStat(
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         batting: json["batting"] == null
             ? null
             : BattingStats.fromJson(json["batting"]),
@@ -75,6 +81,7 @@ class BattingBowlingStat {
       );
 
   Map<String, dynamic> toJson() => {
+        "user": user?.toJson(),
         "batting": batting?.toJson(),
         "bowling": bowling?.toJson(),
       };

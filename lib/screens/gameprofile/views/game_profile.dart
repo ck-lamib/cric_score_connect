@@ -110,8 +110,7 @@ class _GameProfileScreenState extends State<GameProfileScreen>
                                     controller: _tabController,
                                     children: [
                                       BattingBowlingStatsTab(
-                                        batBowlStat:
-                                            c.gameStats.value!.teamVsteam!,
+                                        batBowlStat: c.gameStats.value!,
                                       ),
                                     ],
                                   ),

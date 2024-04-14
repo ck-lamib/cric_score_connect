@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
-import 'package:cric_score_connect/utils/helpers/http_request.dart';
 import 'package:cric_score_connect/utils/routes/api.dart';
 import 'package:http/http.dart' as http;
 

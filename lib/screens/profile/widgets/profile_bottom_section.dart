@@ -1,4 +1,6 @@
 import 'package:cric_score_connect/core/core_controller.dart';
+import 'package:cric_score_connect/models/gamestats/game_stats.dart';
+import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/screens/password/views/change_passowrd_screen.dart';
@@ -52,8 +54,17 @@ class ProfileBottomSection extends StatelessWidget {
               color: AppColors.backGroundColor,
             ),
             title: 'Game Information',
-            onTap: () =>
-                Navigator.of(context).pushNamed(GameProfileScreen.routeName),
+            onTap: () async {
+              GameStats? gameStats = await GetGameProfileStat.getGameStats(
+                  userId: cc.currentUser.value!.id!);
+              if (gameStats != null && context.mounted) {
+                Navigator.of(context).pushNamed(GameProfileScreen.routeName,
+                    arguments: GameProfileArgument(
+                      gameStats: gameStats,
+                      showAddFriend: false,
+                    ));
+              }
+            },
           ),
           ProfileListTile(
             leadingWidget: const Icon(

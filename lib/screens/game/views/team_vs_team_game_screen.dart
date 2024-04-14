@@ -59,7 +59,7 @@ class TeamVsTeamGameScreen extends StatelessWidget {
                         textInputType: TextInputType.name,
                         labelText: "Away Team",
                         hint: "Away Team",
-                        preIconPath: Icon(
+                        preIconPath: const Icon(
                           Icons.diversity_2_rounded,
                         ),
                         validator: Validators.checkFieldEmpty,
@@ -67,11 +67,15 @@ class TeamVsTeamGameScreen extends StatelessWidget {
                       SizeConfig.getSpace(),
                       CustomElevatedButton(
                         title: "Next",
-                        onTap: () {
+                        onTap: () async {
                           if (c.formKey.currentState!.validate()) {
                             if (c.homeTeamController.text.trim().isNotEmpty ||
                                 c.awayTeamController.text.trim().isNotEmpty) {
-                              Get.toNamed(TeamVsTeamCreateGame.routeName);
+                              bool getUsers = await c.getAllFriend();
+                              if (getUsers) {
+                                Get.toNamed(TeamVsTeamCreateGame.routeName);
+                              }
+
                               // Get.toNamed(SelectOpeningPlayerScreen.routeName);
                             }
                           }

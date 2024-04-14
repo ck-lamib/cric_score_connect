@@ -14,7 +14,6 @@ class GameProfileUserDetailCard extends StatelessWidget {
     super.key,
   });
 
-  final CoreController cc = Get.find<CoreController>();
   final GameProfileController c = Get.find<GameProfileController>();
 
   @override
@@ -34,7 +33,7 @@ class GameProfileUserDetailCard extends StatelessWidget {
                 ),
                 shape: BoxShape.circle,
               ),
-              child: c.user?.profilePhotoPath != null
+              child: c.gameStats.value?.user?.profilePhotoPath != null
                   ? Container(
                       // backgroundColor:
                       //     AppColors.primaryColor,
@@ -48,7 +47,8 @@ class GameProfileUserDetailCard extends StatelessWidget {
                       width: 120,
                       clipBehavior: Clip.antiAlias,
                       child: CachedNetworkImage(
-                        imageUrl: cc.currentUser.value!.profilePhotoPath!,
+                        imageUrl: c.gameStats.value!.user!.profilePhotoPath!,
+                        fit: BoxFit.cover,
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) => Image.asset(
                           ImagePath.defaultAvatar,
@@ -84,7 +84,7 @@ class GameProfileUserDetailCard extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "@${c.user?.username}",
+                  "@${c.gameStats.value?.user?.username}",
                   style: CustomTextStyles.f12W400(
                     color: AppColors.primaryColor,
                   ),
@@ -97,34 +97,44 @@ class GameProfileUserDetailCard extends StatelessWidget {
           height: 10,
         ),
         Text(
-          "${c.user?.name}",
+          "${c.gameStats.value?.user?.name}",
           style: CustomTextStyles.f18W600(
             color: AppColors.primaryColor,
           ),
         ),
         Text(
-          "${c.user?.email}",
+          "${c.gameStats.value?.user?.email}",
           style: CustomTextStyles.f16W300(
             color: AppColors.primaryColor,
           ),
         ),
-        c.user?.username == cc.currentUser.value?.username
-            ? const SizedBox.shrink()
-            : Column(
-                children: [
-                  SizeConfig.getSpace(),
-                  SizedBox(
-                    width: 150,
-                    height: 40,
-                    child: CustomElevatedButton(
-                      title: "Add Friend",
-                      backGroundColor: Colors.blue,
-                      onTap: () {},
+        Obx(
+          () => c.showAddFriend.value
+              ? Column(
+                  children: [
+                    SizeConfig.getSpace(),
+                    SizedBox(
+                      width: 150,
+                      height: 40,
+                      child: Obx(() => c.isAddFriendSuccess.value
+                          ? CustomElevatedButton(
+                              title: "Request Sent",
+                              backGroundColor: Colors.blue.withOpacity(0.5),
+                              onTap: () {},
+                            )
+                          : CustomElevatedButton(
+                              title: "Add Friend",
+                              backGroundColor: Colors.blue,
+                              onTap: () async {
+                                await c.addFriend(c.gameStats.value!.user!);
+                              },
+                            )),
                     ),
-                  ),
-                  SizeConfig.getSpace(),
-                ],
-              ),
+                    SizeConfig.getSpace(),
+                  ],
+                )
+              : const SizedBox.shrink(),
+        ),
       ],
     );
   }

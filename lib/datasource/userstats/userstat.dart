@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cric_score_connect/models/user.dart';
+import 'package:cric_score_connect/models/gamestats/game_stats.dart';
 import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/http_request.dart';
 import 'package:cric_score_connect/utils/routes/api.dart';
@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 
 class UserStatsRepo {
   static Future<void> getUserStat({
-    required String userId,
-    required Function(List<User> userList) onSuccess,
+    required int userId,
+    required Function(GameStats gameStats) onSuccess,
     required Function(String message) onError,
   }) async {
     try {
@@ -19,21 +19,20 @@ class UserStatsRepo {
       };
 
       CustomLogger.trace(Api.getUserStatUrl(userId));
-      var body = {};
-      http.Response response = await HttpRequest.post(
+
+      http.Response response = await HttpRequest.get(
         Uri.parse(
           Api.getUserStatUrl(userId),
         ),
         headers: headers,
-        body: body,
       );
 
       var responseData = jsonDecode(response.body);
       CustomLogger.trace("user stats decoded response : -> $responseData");
       //check status code
       if (response.statusCode == 200) {
-        List<User> users = userFromJson(responseData);
-        onSuccess(users);
+        GameStats gameStats = GameStats.fromJson(responseData);
+        onSuccess(gameStats);
       } else {
         if (responseData.toString().contains("error")) {
           onError(responseData["error"]);

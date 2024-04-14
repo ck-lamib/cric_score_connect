@@ -82,6 +82,7 @@ class PersonalInfoScreen extends StatelessWidget {
                                           clipBehavior: Clip.antiAlias,
                                           child: CachedNetworkImage(
                                             imageUrl: c.userAvatar!,
+                                            fit: BoxFit.cover,
                                             progressIndicatorBuilder: (context,
                                                     url, downloadProgress) =>
                                                 Image.asset(

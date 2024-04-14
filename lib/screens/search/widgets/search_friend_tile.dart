@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cric_score_connect/models/gamestats/game_stats.dart';
 import 'package:cric_score_connect/models/user.dart';
+import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
+import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 import 'package:cric_score_connect/screens/search/controller/search_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
@@ -16,7 +19,7 @@ class SearchFriendTile extends StatelessWidget {
     super.key,
     this.user,
   });
-  SearchScreenController c = Get.find<SearchScreenController>();
+  final SearchScreenController c = Get.find<SearchScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,7 @@ class SearchFriendTile extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     child: CachedNetworkImage(
                       imageUrl: user!.profilePhotoPath!,
+                      fit: BoxFit.cover,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) => Image.asset(
                         ImagePath.defaultAvatar,
@@ -126,7 +130,19 @@ class SearchFriendTile extends StatelessWidget {
                         // backGroundColor: AppColors.errorColor,
                         padding: EdgeInsets.zero,
                         height: 40,
-                        onTap: () {},
+                        onTap: () async {
+                          GameStats? gameStats =
+                              await GetGameProfileStat.getGameStats(
+                                  userId: user!.id!);
+                          if (gameStats != null && context.mounted) {
+                            Navigator.of(context)
+                                .pushNamed(GameProfileScreen.routeName,
+                                    arguments: GameProfileArgument(
+                                      gameStats: gameStats,
+                                      showAddFriend: true,
+                                    ));
+                          }
+                        },
                       ),
                     ),
                   ],

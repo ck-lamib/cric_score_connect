@@ -56,6 +56,7 @@ class FriendRequestTile extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     child: CachedNetworkImage(
                       imageUrl: user!.profilePhotoPath!,
+                      fit: BoxFit.cover,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) => Image.asset(
                         ImagePath.defaultAvatar,

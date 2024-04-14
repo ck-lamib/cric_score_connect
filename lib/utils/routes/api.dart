@@ -8,9 +8,9 @@ class Api {
 
   static const searchUrl = "$baseUrl/users/search";
 
-  static getUserStatUrl(String userId) => "$baseUrl/user/$userId/stats";
+  static getUserStatUrl(int userId) => "$baseUrl/user/stats/$userId";
 
-  static editProfileUrl(int id) => "$baseUrl/users/$id";
+  static editProfileUrl(int id) => "$baseUrl/users/$id/edit";
   static const friendRequestUrl = "$baseUrl/friend-requests";
   static const pendingRequestUrl = "$baseUrl/friend-requests/pending";
   static rejectFriendRequestUrl(int id) =>

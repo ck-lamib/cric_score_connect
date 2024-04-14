@@ -11,7 +11,7 @@ class BattingBowlingStatsTab extends StatefulWidget {
     required this.batBowlStat,
   });
 
-  final BattingBowlingStat batBowlStat;
+  final GameStats batBowlStat;
 
   @override
   State<BattingBowlingStatsTab> createState() => _BattingBowlingStatsTabState();

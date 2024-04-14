@@ -73,6 +73,7 @@ class HomeScreen extends StatelessWidget {
                                 child: CachedNetworkImage(
                                   imageUrl:
                                       cc.currentUser.value!.profilePhotoPath!,
+                                  fit: BoxFit.cover,
                                   progressIndicatorBuilder:
                                       (context, url, downloadProgress) =>
                                           Image.asset(

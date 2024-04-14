@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cric_score_connect/models/friend_request_user.dart';
+import 'package:cric_score_connect/models/gamestats/game_stats.dart';
 import 'package:cric_score_connect/models/user.dart';
+import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
+import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
@@ -50,6 +53,7 @@ class AcceptedFriendTile extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     child: CachedNetworkImage(
                       imageUrl: user!.profilePhotoPath!,
+                      fit: BoxFit.cover,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) => Image.asset(
                         ImagePath.defaultAvatar,
@@ -105,7 +109,19 @@ class AcceptedFriendTile extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   backGroundColor: Colors.blue,
                   height: 40,
-                  onTap: () {},
+                  onTap: () async {
+                    GameStats? gameStats =
+                        await GetGameProfileStat.getGameStats(
+                            userId: user!.id!);
+                    if (gameStats != null && context.mounted) {
+                      Navigator.of(context)
+                          .pushNamed(GameProfileScreen.routeName,
+                              arguments: GameProfileArgument(
+                                gameStats: gameStats,
+                                showAddFriend: false,
+                              ));
+                    }
+                  },
                 ),
               ],
             ),
