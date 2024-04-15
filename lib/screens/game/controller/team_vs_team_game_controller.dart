@@ -6,13 +6,17 @@ import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/next_over.dart';
 import 'package:cric_score_connect/screens/game/views/pickplayer/select_opening_player.dart';
+import 'package:cric_score_connect/screens/match/batting_stats.dart';
+import 'package:cric_score_connect/screens/match/bowling_stats.dart';
 import 'package:cric_score_connect/screens/match/delivery.dart';
 import 'package:cric_score_connect/screens/match/enums/extra.dart';
 import 'package:cric_score_connect/screens/match/enums/out.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class TeamVsTeamGameController extends GetxController {
   @override
@@ -30,7 +34,12 @@ class TeamVsTeamGameController extends GetxController {
       userId: userId,
       onSuccess: (users) async {
         requestLoader.hide();
-        allAvailablePlayers.value = users;
+        for (var eachUser in users) {
+          allAvailablePlayers.add(eachUser.copyWith(
+            matchBattingStats: MatchBattingStats(),
+            matchBowlingStats: MatchBowlingStats(),
+          ));
+        }
         result = true;
       },
       onError: (message) {
@@ -458,6 +467,7 @@ class InningDetail extends GetxController {
     _changeBowler(newBowler);
     isCurrentMaiden.value = true;
     isOverInProgress.value = false;
+    deliveryHistory.clear();
   }
 
   void changeStrike() {
@@ -759,6 +769,8 @@ class InningDetail extends GetxController {
   }
 
   void recordDelivery(Delivery delivery) async {
+    recordDeliveryHistory(delivery);
+    print("hello $deliveryHistory");
     MatchController matchController = Get.find<MatchController>();
     TeamVsTeamGameController teamGameController =
         Get.find<TeamVsTeamGameController>();
@@ -846,72 +858,54 @@ class InningDetail extends GetxController {
   List<User> bowlerHistory = [];
 
   // void undoDelivery() {
-  //   Delivery lastDelivery;
-  //   if (deliveryHistory.isNotEmpty) {
-  //     lastDelivery = deliveryHistory.last;
-  //   }
+  //   CustomLogger.trace(deliveryHistory.last.runs);
+
+  //   // Delivery lastDelivery;
+  //   // if (deliveryHistory.isNotEmpty) {
+  //   //   lastDelivery = deliveryHistory.last;
+  //   //   CustomLogger.trace(lastDelivery);
+  //   //   undoRecordDelivery(lastDelivery);
+  //   // }
+  //   update();
   // }
 
-  // List<Delivery> deliveryHistory = [];
-  // recordDeliveryHistory(Delivery delivery) {
-  //   deliveryHistory.add(delivery);
-  // }
+  RxList<Delivery> deliveryHistory = RxList();
+  recordDeliveryHistory(Delivery delivery) {
+    deliveryHistory.value = [
+      Delivery().copyWith(
+        batter: delivery.batter,
+        bowler: delivery.bowler,
+        extras: delivery.extras,
+        out: delivery.out,
+        runs: delivery.runs,
+      )
+    ];
+    CustomLogger.trace(deliveryHistory.last.runs);
+    deliveryHistory.refresh();
+    update();
+  }
 
 //undo delivery
-  void undoRecordDelivery(Delivery delivery) async {
-    MatchController matchController = Get.find<MatchController>();
-    TeamVsTeamGameController teamGameController =
-        Get.find<TeamVsTeamGameController>();
 
-    addRuns(delivery);
-    incrementBalls(delivery);
-    if (delivery.runs % 2 == 1 &&
-        !delivery.isBonus() &&
-        !delivery.isPenalty()) {
-      _changeStrike();
-    }
-    lastSevenDeliveries.add(delivery.shortSummary().split(','));
-    if (Over.finished(currentBalls.value) && isOverInProgress.value) {
-      lastSevenDeliveries.value = [];
-
-//for calculating team game controller
-      TeamVsTeamGameController teamGameController =
-          Get.find<TeamVsTeamGameController>();
-
-      int totalNoOfBalls =
-          ((double.tryParse(teamGameController.numberOfOversController.text) ??
-                      6) *
-                  6)
-              .toInt();
-      int currentBall = matchController.getInningDetail.currentBalls.value + 1;
-
-      if (currentBall > totalNoOfBalls) {
-      } else {
-        var result = await showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return NextOverScreen(
-                bowlingTeam: bowlingTeam,
-                currentBowler: bowler.value!,
-              );
-            });
-        if (result != null && result is User) {
-          concludeOver(result);
-        }
-      }
-    }
-    // while (lastSevenDeliveries.length > 7) {
-    //   lastSevenDeliveries.removeAt(0);
-    // }
-    print(lastSevenDeliveries);
-    _addWicket(delivery);
-    await checkAllOut();
-    await checkRunScoreOver();
-    await checkOverFinish();
-
-    delivery.reset();
-    // checkBoxReset();
+  _undoChangeStrike() {
+    var t = striker.value;
+    print(striker.value?.username);
+    striker.value = nonStriker.value;
+    nonStriker.value = t;
     update();
+  }
+
+  void _undoAddRunsForBatter(int runs) {
+    striker.value!.matchBattingStats?.runs.value -= runs;
+    if (runs == 4) {
+      striker.value!.matchBattingStats?.fours.value -= 1;
+    } else if (runs == 6) {
+      striker.value!.matchBattingStats?.sixes.value -= 1;
+    }
+  }
+
+  void _undoAddRunsAgainstBowler(int runs) {
+    bowler.value?.matchBowlingStats?.runs.value -= runs;
   }
 
   void undoAddRuns(Delivery delivery) {
@@ -920,44 +914,102 @@ class InningDetail extends GetxController {
     isCurrentMaiden.value = false;
     if (delivery.extras[0] == Extra.none) {
       //
-      _addRunsForBatter(delivery.runs);
-      _addRunsAgainstBowler(delivery.runs);
-      totalRunTillNow.value += delivery.runs;
+      _undoAddRunsForBatter(delivery.runs);
+      _undoAddRunsAgainstBowler(delivery.runs);
+      print(totalRunTillNow.value);
+      print(delivery.runs);
+      totalRunTillNow.value -= delivery.runs;
+      print(totalRunTillNow.value);
       return;
     }
     if (delivery.isWide()) {
-      totalRunTillNow.value += delivery.runs + teamGameController.getWideRun;
-      currentWides.value += delivery.runs + 1;
-      _addRunsAgainstBowler(delivery.runs + teamGameController.getWideRun);
+      totalRunTillNow.value -= delivery.runs + teamGameController.getWideRun;
+      currentWides.value -= delivery.runs + 1;
+      _undoAddRunsAgainstBowler(delivery.runs + teamGameController.getWideRun);
     }
     if (delivery.isNoBall()) {
       totalRunTillNow.value =
-          totalRunTillNow.value + teamGameController.getNoBallRun;
-      currentNoBalls.value++;
-      _addRunsAgainstBowler(teamGameController.getNoBallRun);
+          totalRunTillNow.value - teamGameController.getNoBallRun;
+      currentNoBalls.value--;
+      _undoAddRunsAgainstBowler(teamGameController.getNoBallRun);
       if (delivery.runs > 0 && !delivery.isLegBye() && !delivery.isBye()) {
-        totalRunTillNow.value += delivery.runs;
-        _addRunsForBatter(delivery.runs);
-        _addRunsAgainstBowler(delivery.runs);
+        totalRunTillNow.value -= delivery.runs;
+        _undoAddRunsForBatter(delivery.runs);
+        _undoAddRunsAgainstBowler(delivery.runs);
       }
     }
     if (delivery.isLegBye()) {
-      currentLegByes.value += delivery.runs;
-      totalRunTillNow.value += delivery.runs;
+      currentLegByes.value -= delivery.runs;
+      totalRunTillNow.value -= delivery.runs;
     }
     if (delivery.isBye()) {
-      currentByes.value += delivery.runs;
+      currentByes.value -= delivery.runs;
 
-      totalRunTillNow.value += delivery.runs;
+      totalRunTillNow.value -= delivery.runs;
     }
     if (delivery.isPenalty()) {
-      totalRunTillNow.value += delivery.runs;
-      currentPenalty.value += delivery.runs;
+      totalRunTillNow.value -= delivery.runs;
+      currentPenalty.value -= delivery.runs;
     }
     if (delivery.isBonus()) {
-      totalRunTillNow.value += delivery.runs;
-      currentBonus.value += delivery.runs;
+      totalRunTillNow.value -= delivery.runs;
+      currentBonus.value -= delivery.runs;
     }
+  }
+
+  void undoIncrementBalls(Delivery delivery) {
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
+    if (delivery.extras.isLegitBall()) {
+      isOverInProgress.value = true;
+      currentBalls.value--;
+      striker.value?.matchBattingStats?.balls.value--;
+      bowler.value?.matchBowlingStats?.balls.value--;
+    }
+
+    if (delivery.isWide()) {
+      if (teamGameController.hasWideBall.value &&
+          !(teamGameController.hasWideBallReball.value)) {
+        isOverInProgress.value = true;
+        currentBalls.value--;
+        striker.value?.matchBattingStats?.balls.value--;
+        bowler.value?.matchBowlingStats?.balls.value--;
+      }
+    }
+
+    if (delivery.isNoBall()) {
+      if (teamGameController.hasNoBall.value &&
+          (!teamGameController.hasNoBallReball.value)) {
+        isOverInProgress.value = true;
+        currentBalls.value--;
+        striker.value?.matchBattingStats?.balls--;
+        bowler.value?.matchBowlingStats?.balls.value--;
+      } else {
+        striker.value?.matchBattingStats?.balls--;
+      }
+    }
+  }
+
+  void undoRecordDelivery(Delivery delivery) async {
+    MatchController matchController = Get.find<MatchController>();
+    TeamVsTeamGameController teamGameController =
+        Get.find<TeamVsTeamGameController>();
+    CustomLogger.trace(delivery.runs);
+
+    if (delivery.runs % 2 == 1 &&
+        !delivery.isBonus() &&
+        !delivery.isPenalty()) {
+      _undoChangeStrike();
+    }
+
+    undoAddRuns(delivery);
+    undoIncrementBalls(delivery);
+
+    lastSevenDeliveries.removeLast();
+
+    delivery.reset();
+    deliveryHistory.clear();
+    update();
   }
 }
 

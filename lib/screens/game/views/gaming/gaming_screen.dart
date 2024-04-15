@@ -11,7 +11,6 @@ import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
-import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
@@ -1356,7 +1355,28 @@ class GamingScreen extends StatelessWidget {
                               flex: 2,
                               child: CustomElevatedButton(
                                 title: "Undo",
-                                onTap: () {},
+                                onTap: () {
+                                  print(matchController
+                                      .getInningDetail.deliveryHistory);
+
+                                  if (matchController.getInningDetail
+                                      .deliveryHistory.isEmpty) {
+                                    CustomSnackBar.info(
+                                        message: "You cannot make undo");
+                                  } else if (matchController.getInningDetail
+                                          .deliveryHistory.last.out !=
+                                      Out.none) {
+                                    CustomSnackBar.info(
+                                        message:
+                                            "You cannot make undo for wicket.");
+                                  } else {
+                                    matchController.getInningDetail
+                                        .undoRecordDelivery(matchController
+                                            .getInningDetail
+                                            .deliveryHistory
+                                            .last);
+                                  }
+                                },
                                 height: 30,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 0),

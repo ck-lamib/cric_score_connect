@@ -1,15 +1,39 @@
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/screens/match/enums/extra.dart';
 import 'package:cric_score_connect/screens/match/enums/out.dart';
-
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:get/get.dart';
 
 class Delivery extends GetxController {
-  int runs = 0;
+  int runs;
   User? batter;
   User? bowler;
-  var extras = [Extra.none];
-  var out = Out.none;
+  List<Extra> extras = [Extra.none];
+  Out out;
+
+  Delivery({
+    this.runs = 0,
+    this.batter,
+    this.bowler,
+    List<Extra>? extras,
+    this.out = Out.none,
+  }) : extras = extras ?? [Extra.none];
+
+  Delivery copyWith({
+    int? runs,
+    User? batter,
+    User? bowler,
+    dynamic extras,
+    Out? out,
+  }) {
+    return Delivery(
+      runs: runs ?? this.runs,
+      batter: batter ?? this.batter,
+      bowler: bowler ?? this.bowler,
+      extras: extras ?? this.extras,
+      out: out ?? this.out,
+    );
+  }
 
   addBatter(User p) {
     batter = p;
@@ -40,6 +64,7 @@ class Delivery extends GetxController {
       return;
     }
     if (extras[0] == Extra.none) {
+      CustomLogger.trace(extras);
       extras[0] = e;
       if (runs == 0 && e != Extra.wide && e != Extra.noBall) {
         runs = 1;
