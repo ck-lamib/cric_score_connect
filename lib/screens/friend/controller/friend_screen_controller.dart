@@ -40,9 +40,11 @@ class FriendScreenController extends GetxController {
   }
 
   Timer? _debounce;
+  Timer? _debounce2;
   @override
   void dispose() {
     _debounce?.cancel();
+    _debounce2?.cancel();
     super.dispose();
   }
 
@@ -116,6 +118,7 @@ class FriendScreenController extends GetxController {
 
   var isGetAllFriendLoading = false.obs;
   RxList<User> friendList = RxList();
+  RxList<User> finalFriendList = RxList();
   getAllAcceptedFriend() async {
     isGetAllFriendLoading.value = true;
     CoreController cc = Get.find<CoreController>();
@@ -126,10 +129,36 @@ class FriendScreenController extends GetxController {
       onSuccess: (users) async {
         friendList.value = users;
         isGetAllFriendLoading.value = false;
+        finalFriendList.value = users;
       },
       onError: (message) {
         CustomSnackBar.error(title: "Get Friends", message: message);
         isGetAllFriendLoading.value = false;
+      },
+    );
+  }
+
+  searchFriendsList(String query) {
+    isGetAllFriendLoading.value = true;
+    if (_debounce2?.isActive ?? false) _debounce2?.cancel();
+    _debounce2 = Timer(
+      const Duration(seconds: 1),
+      () {
+        List<User> friendListt = [];
+        if (query.isNotEmpty) {
+          for (var item in friendList) {
+            var containsItem =
+                item.username?.toLowerCase().contains(query.toLowerCase());
+            if (containsItem ?? false) {
+              friendListt.add(item);
+            }
+          }
+          finalFriendList.value = friendListt;
+          isGetAllFriendLoading.value = false;
+        } else {
+          finalFriendList.value = friendList.value;
+          isGetAllFriendLoading.value = false;
+        }
       },
     );
   }

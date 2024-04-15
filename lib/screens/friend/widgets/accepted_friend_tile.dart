@@ -7,6 +7,7 @@ import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
 
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
@@ -114,6 +115,7 @@ class AcceptedFriendTile extends StatelessWidget {
                         await GetGameProfileStat.getGameStats(
                             userId: user!.id!);
                     if (gameStats != null && context.mounted) {
+                      CustomLogger.trace("message");
                       Navigator.of(context)
                           .pushNamed(GameProfileScreen.routeName,
                               arguments: GameProfileArgument(

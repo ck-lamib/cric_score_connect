@@ -5,6 +5,95 @@ import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
 
+class SelectTeamTabBar extends StatefulWidget {
+  const SelectTeamTabBar({
+    super.key,
+  });
+
+  @override
+  State<SelectTeamTabBar> createState() => _SelectTeamTabBarState();
+}
+
+class _SelectTeamTabBarState extends State<SelectTeamTabBar>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.sizeOf(context).height;
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: AppColors.backGroundColor,
+              width: 1,
+            ),
+          ),
+          child: TabBar(
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.tab,
+              dividerColor: Colors.transparent,
+              indicator: const BoxDecoration(
+                color: AppColors.backGroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              labelStyle: CustomTextStyles.f16W600(
+                color: AppColors.primaryColor,
+              ),
+              unselectedLabelStyle: CustomTextStyles.f16W600(
+                color: AppColors.textColor,
+              ),
+              labelColor: AppColors.primaryColor,
+              unselectedLabelColor: AppColors.backGroundColor,
+              tabs: const [
+                Tab(
+                  child: Text(
+                    'Home Team',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Away Team',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ]),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        SizedBox(
+          height: height * 0.8,
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              TeamLineUpStats(),
+              TeamLineUpStats(),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class TeamLineUpStats extends StatefulWidget {
   const TeamLineUpStats({
     super.key,
@@ -33,9 +122,6 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 12,
-      ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       // height: height * 0.8,
       decoration: BoxDecoration(
@@ -48,7 +134,7 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
         ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
@@ -85,13 +171,13 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
               tabs: const [
                 Tab(
                   child: Text(
-                    'Home',
+                    'Batting',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Away',
+                    'Bowling',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -106,12 +192,6 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
             child: TabBarView(
               controller: _tabController,
               children: [
-                // BattingStatsTabView(
-                //   battingStats: widget.batBowlStat.batting!,
-                // ),
-                // BowlingStatsTabView(
-                //   bowlingStats: widget.batBowlStat.bowling!,
-                // ),
                 Column(
                   children: [
                     Row(

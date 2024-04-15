@@ -67,7 +67,7 @@ class SearchScreen extends StatelessWidget {
                             child: SvgPicture.asset(
                               ImagePath.searchingImagePath,
                               alignment: Alignment.center,
-                              height: height * 0.25,
+                              height: height * 0.15,
                             ),
                           ),
                           SizeConfig.getSpace(),
@@ -89,7 +89,7 @@ class SearchScreen extends StatelessWidget {
                                 child: SvgPicture.asset(
                                   ImagePath.notFoundImagePath,
                                   alignment: Alignment.center,
-                                  height: height * 0.25,
+                                  height: height * 0.15,
                                 ),
                               ),
                               SizeConfig.getSpace(),

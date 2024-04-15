@@ -35,10 +35,11 @@ class AcceptedFriendTabbarView extends StatelessWidget {
                 top: 10,
                 bottom: 20,
               ),
-              child: const CustomTextField(
+              child: CustomTextField(
                 textInputAction: TextInputAction.done,
                 textInputType: TextInputType.name,
                 preIconPath: Icon(Icons.search_rounded),
+                onValueChange: c.searchFriendsList,
                 labelText: "Search by username",
                 hint: "Search by username",
               ),
@@ -55,10 +56,10 @@ class AcceptedFriendTabbarView extends StatelessWidget {
                             height: 20,
                           );
                         },
-                        itemCount: c.friendList.length,
+                        itemCount: c.finalFriendList.length,
                         itemBuilder: (context, index) {
                           return AcceptedFriendTile(
-                            user: c.friendList[index],
+                            user: c.finalFriendList[index],
                           );
                         },
                       ),

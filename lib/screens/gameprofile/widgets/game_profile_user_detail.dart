@@ -3,6 +3,7 @@ import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
@@ -15,9 +16,11 @@ class GameProfileUserDetailCard extends StatelessWidget {
   });
 
   final GameProfileController c = Get.find<GameProfileController>();
+  final CoreController cc = Get.find<CoreController>();
 
   @override
   Widget build(BuildContext context) {
+    CustomLogger.trace(c.showAddFriend.value);
     return Column(
       children: [
         Stack(
@@ -110,29 +113,31 @@ class GameProfileUserDetailCard extends StatelessWidget {
         ),
         Obx(
           () => c.showAddFriend.value
-              ? Column(
-                  children: [
-                    SizeConfig.getSpace(),
-                    SizedBox(
-                      width: 150,
-                      height: 40,
-                      child: Obx(() => c.isAddFriendSuccess.value
-                          ? CustomElevatedButton(
-                              title: "Request Sent",
-                              backGroundColor: Colors.blue.withOpacity(0.5),
-                              onTap: () {},
-                            )
-                          : CustomElevatedButton(
-                              title: "Add Friend",
-                              backGroundColor: Colors.blue,
-                              onTap: () async {
-                                await c.addFriend(c.gameStats.value!.user!);
-                              },
-                            )),
-                    ),
-                    SizeConfig.getSpace(),
-                  ],
-                )
+              ? (cc.currentUser.value?.id != c.gameStats.value?.user?.id)
+                  ? Column(
+                      children: [
+                        SizeConfig.getSpace(),
+                        SizedBox(
+                          width: 150,
+                          height: 40,
+                          child: Obx(() => c.isAddFriendSuccess.value
+                              ? CustomElevatedButton(
+                                  title: "Request Sent",
+                                  backGroundColor: Colors.blue.withOpacity(0.5),
+                                  onTap: () {},
+                                )
+                              : CustomElevatedButton(
+                                  title: "Add Friend",
+                                  backGroundColor: Colors.blue,
+                                  onTap: () async {
+                                    await c.addFriend(c.gameStats.value!.user!);
+                                  },
+                                )),
+                        ),
+                        SizeConfig.getSpace(),
+                      ],
+                    )
+                  : const SizedBox.shrink()
               : const SizedBox.shrink(),
         ),
       ],

@@ -18,7 +18,7 @@ class GameProfileController extends GetxController {
     var args = Get.arguments;
     if (args != null && args is GameProfileArgument) {
       gameStats.value = args.gameStats;
-      showAddFriend.value = true;
+      showAddFriend.value = args.showAddFriend;
     }
     super.onInit();
   }

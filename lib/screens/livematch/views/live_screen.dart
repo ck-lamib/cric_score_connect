@@ -704,7 +704,7 @@ class LiveScreen extends StatelessWidget {
                   ),
                 ),
                 SizeConfig.getSpace(),
-                TeamLineUpStats(),
+                SelectTeamTabBar(),
               ],
             ),
           ),
