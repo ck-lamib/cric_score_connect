@@ -1,18 +1,18 @@
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class SelectTeamTabBar extends StatefulWidget {
-  const SelectTeamTabBar({
+class HistorySelectTeamTabBar extends StatefulWidget {
+  const HistorySelectTeamTabBar({
     super.key,
   });
 
   @override
-  State<SelectTeamTabBar> createState() => _SelectTeamTabBarState();
+  State<HistorySelectTeamTabBar> createState() =>
+      _HistorySelectTeamTabBarState();
 }
 
-class _SelectTeamTabBarState extends State<SelectTeamTabBar>
+class _HistorySelectTeamTabBarState extends State<HistorySelectTeamTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
@@ -266,7 +266,7 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
                           Expanded(
                             flex: 2,
                             child: Text(
-                              "* striker",
+                              "striker",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
@@ -1171,7 +1171,7 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
                         Expanded(
                           flex: 2,
                           child: Text(
-                            "* bowler1",
+                            "bowler1",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,

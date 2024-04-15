@@ -19,4 +19,6 @@ class Api {
       "$baseUrl/friend-requests/$id/confirm";
 
   static getAllFriendUrl(int id) => "$baseUrl/users/$id/friends";
+
+  static const storeMatchUrl = "$baseUrl/match/store";
 }

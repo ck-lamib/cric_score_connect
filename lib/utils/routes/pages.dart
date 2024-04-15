@@ -16,6 +16,7 @@ import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_s
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
+import 'package:cric_score_connect/screens/history/views/history_screen.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/screens/livematch/controller/live_screen_controller.dart';
 import 'package:cric_score_connect/screens/livematch/views/live_screen.dart';
@@ -184,6 +185,13 @@ var pages = [
         Get.lazyPut(() => LiveScreen());
         Get.lazyPut(() => LiveScreenController());
       },
+    ),
+  ),
+  GetPage(
+    name: HistoryScreen.routeName,
+    page: () => const HistoryScreen(),
+    binding: BindingsBuilder(
+      () {},
     ),
   ),
 

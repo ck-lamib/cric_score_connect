@@ -2,6 +2,7 @@ import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/models/gamestats/game_stats.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
+import 'package:cric_score_connect/screens/history/views/history_screen.dart';
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/screens/password/views/change_passowrd_screen.dart';
 import 'package:cric_score_connect/screens/personalinfo/views/personal_info.dart';
@@ -75,12 +76,14 @@ class ProfileBottomSection extends StatelessWidget {
             onTap: () =>
                 Navigator.of(context).pushNamed(ChangePasswordScreen.routeName),
           ),
-          const ProfileListTile(
-            leadingWidget: Icon(
+          ProfileListTile(
+            leadingWidget: const Icon(
               Icons.history_rounded,
               color: AppColors.backGroundColor,
             ),
             title: 'History',
+            onTap: () =>
+                Navigator.of(context).pushNamed(HistoryScreen.routeName),
           ),
           ProfileListTile(
             leadingWidget: const Icon(

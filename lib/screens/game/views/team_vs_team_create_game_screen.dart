@@ -8,6 +8,7 @@ import 'package:cric_score_connect/utils/constants/datas.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_date_picker.dart';
@@ -320,7 +321,7 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                       Expanded(
                         child: CustomElevatedButton(
                           title: "Next",
-                          onTap: () {
+                          onTap: () async {
                             var homeTeamPlayerCount = c.homeTeamPlayer.length;
                             var awayTeamPlayerCount = c.awayTeamPlayer.length;
 
@@ -427,15 +428,22 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                         );
                                       }
                                     }
-                                    Get.toNamed(
-                                      SelectOpeningPlayerScreen.routeName,
-                                      arguments: SelectOpeningPlayerArgument(
-                                        battingTeam: matchController
-                                            .getInningDetail.battingTeam,
-                                        bowlingTeam: matchController
-                                            .getInningDetail.bowlingTeam,
-                                      ),
-                                    );
+                                    var success = await c.storeMatch();
+                                    if (success) {
+                                      // Get.toNamed(
+                                      //   SelectOpeningPlayerScreen.routeName,
+                                      //   arguments: SelectOpeningPlayerArgument(
+                                      //     battingTeam: matchController
+                                      //         .getInningDetail.battingTeam,
+                                      //     bowlingTeam: matchController
+                                      //         .getInningDetail.bowlingTeam,
+                                      //   ),
+                                      // );
+
+                                      // asdf
+                                    } else {
+                                      //no continue
+                                    }
                                   }
                                 }
                               }

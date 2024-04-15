@@ -24,6 +24,41 @@ class TeamVsTeamGameController extends GetxController {
     super.onInit();
   }
 
+  String matchKey = "";
+
+  Future<bool> storeMatch() async {
+    var result = false;
+    CoreController cc = Get.find<CoreController>();
+    int userId = cc.currentUser.value!.id!;
+    RequestLoader requestLoader = RequestLoader();
+    requestLoader.show(message: "Getting user!!!");
+    await GameDataSourceRepo.uploadMatchDetail(
+      userId: userId,
+      homeTeamName: homeTeamController.text,
+      homeTeamPlayer: homeTeamPlayer,
+      awayTeamName: awayTeamController.text,
+      awayTeamPlayer: awayTeamPlayer,
+      playerPerTeam:
+          int.tryParse(totalNumberOfPlayer.text) ?? awayTeamPlayer.length,
+      date: selectDateController.text,
+      time: selectTimeController.text,
+      noOfOver: int.tryParse(numberOfOversController.text) ?? 6,
+      tossWinner: tossWinner!,
+      venue: venueController.text,
+      onSuccess: (mkey) async {
+        matchKey = mkey;
+        requestLoader.hide();
+        result = true;
+      },
+      onError: (message) {
+        CustomSnackBar.error(title: "Failed", message: message);
+        requestLoader.hide();
+        result = false;
+      },
+    );
+    return result;
+  }
+
   Future<bool> getAllFriend() async {
     var result = false;
     CoreController cc = Get.find<CoreController>();

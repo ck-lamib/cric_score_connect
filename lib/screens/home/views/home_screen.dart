@@ -167,13 +167,6 @@ class HomeScreen extends StatelessWidget {
                         height: 50,
                       ),
                       CustomElevatedButton(
-                        onTap: () {},
-                        title: "Individual",
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      CustomElevatedButton(
                         onTap: () {
                           Get.toNamed(LiveScreen.routeName);
                         },
