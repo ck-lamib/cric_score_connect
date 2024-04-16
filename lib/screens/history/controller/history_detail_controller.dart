@@ -6,7 +6,7 @@ import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:get/get.dart';
 
-class LiveScreenController extends GetxController {
+class HistoryDetailController extends GetxController {
   var matchKey = "";
 
   Rxn<LiveMatchStat> liveMatchStat = Rxn();
@@ -17,7 +17,7 @@ class LiveScreenController extends GetxController {
   @override
   void onInit() {
     var args = Get.arguments;
-    if (args != null && args is LiveScreenArgument) {
+    if (args != null && args is HistoryDetailArgument) {
       matchKey = args.key;
     }
 
@@ -79,7 +79,7 @@ class LiveScreenController extends GetxController {
   //     allPlayers.value.firstWhere((element) => element.bowler == true);
 }
 
-class LiveScreenArgument {
+class HistoryDetailArgument {
   final String key;
-  LiveScreenArgument({required this.key});
+  HistoryDetailArgument({required this.key});
 }

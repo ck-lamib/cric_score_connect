@@ -7,10 +7,12 @@ import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.d
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/screens/livematch/views/live_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
+import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
+import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -167,9 +169,56 @@ class HomeScreen extends StatelessWidget {
                         height: 50,
                       ),
                       CustomElevatedButton(
-                        onTap: () {
+                        onTap: () async {
                           Get.toNamed(LiveScreen.routeName);
+
+//
                         },
+
+                        // {
+                        //   TextEditingController textEditingController =
+                        //       TextEditingController();
+                        //   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+                        //   String? matchKey = await showDialog(
+                        //     context: context,
+                        //     builder: (context) {
+                        //       return Form(
+                        //         key: formKey,
+                        //         child: AlertDialog(
+                        //           title:
+                        //               const Text("Please enter the match key"),
+                        //           content: CustomTextField(
+                        //             controller: textEditingController,
+                        //             textInputAction: TextInputAction.done,
+                        //             textInputType: TextInputType.text,
+                        //             labelText: "Enter match key",
+                        //             hint: "#d123",
+                        //             validator: Validators.checkFieldEmpty,
+                        //           ),
+                        //           actions: [
+                        //             TextButton(
+                        //               onPressed: () {
+                        //                 Get.back();
+                        //               },
+                        //               child: const Text("Cancel"),
+                        //             ),
+                        //             TextButton(
+                        //               onPressed: () {
+                        //                 if (formKey.currentState!.validate()) {
+                        //                   Get.back(
+                        //                       result:
+                        //                           textEditingController.text);
+                        //                 }
+                        //               },
+                        //               child: const Text("OKay"),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       );
+                        //     },
+                        //   );
+                        //   print(matchKey);
+                        // },
                         title: "Join Live Match",
                       ),
                     ],

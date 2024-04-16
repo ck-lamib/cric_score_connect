@@ -35,7 +35,7 @@ class HistoryScreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Get.to(HistoryDetailScreen());
+                  Get.toNamed(HistoryDetailScreen.routeName);
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(

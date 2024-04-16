@@ -1,7 +1,11 @@
+import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
+import 'package:cric_score_connect/screens/livematch/controller/live_screen_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class SelectTeamTabBar extends StatefulWidget {
   const SelectTeamTabBar({
@@ -14,6 +18,7 @@ class SelectTeamTabBar extends StatefulWidget {
 
 class _SelectTeamTabBarState extends State<SelectTeamTabBar>
     with SingleTickerProviderStateMixin {
+  final LiveScreenController c = Get.find<LiveScreenController>();
   late TabController _tabController;
   @override
   void initState() {
@@ -82,8 +87,16 @@ class _SelectTeamTabBarState extends State<SelectTeamTabBar>
           child: TabBarView(
             controller: _tabController,
             children: [
-              TeamLineUpStats(),
-              TeamLineUpStats(),
+              Obx(
+                () => TeamLineUpStats(
+                  gameTeam: c.liveMatchStat.value!.homeTeam!,
+                ),
+              ),
+              Obx(
+                () => TeamLineUpStats(
+                  gameTeam: c.liveMatchStat.value!.awayTeam!,
+                ),
+              )
             ],
           ),
         )
@@ -95,8 +108,10 @@ class _SelectTeamTabBarState extends State<SelectTeamTabBar>
 class TeamLineUpStats extends StatefulWidget {
   const TeamLineUpStats({
     super.key,
+    required this.gameTeam,
   });
 
+  final List<LiveTeam> gameTeam;
   @override
   State<TeamLineUpStats> createState() => _TeamLineUpStatsState();
 }
@@ -261,1046 +276,260 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
                       const SizedBox(
                         height: 15,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "* striker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "non-strker",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "0.00",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
-                              ),
-                            ),
-                          ),
-                        ],
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: widget.gameTeam.length,
+                        itemBuilder: (context, index) {
+                          return LiveBatterTile(
+                            batter: widget.gameTeam[index],
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            "Bowler",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              "Bowler",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.hintTextColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "Overs",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Overs",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.hintTextColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "Run",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "Run",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.hintTextColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "W",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "W",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.hintTextColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "M",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "M",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.hintTextColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "ER",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "ER",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.hintTextColor,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            "* bowler1",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            "bowler2",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "0.00",
-                            textAlign: TextAlign.center,
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      const Divider(),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: widget.gameTeam.length,
+                        itemBuilder: (context, index) {
+                          return LiveBowlerTile(
+                            bowler: widget.gameTeam[index],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class LiveBowlerTile extends StatelessWidget {
+  const LiveBowlerTile({
+    super.key,
+    required this.bowler,
+  });
+  final LiveTeam bowler;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            "${bowler.bowler ?? false ? "* " : ""}${bowler.name}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${bowler.matchBowlingStat?.overs}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${bowler.matchBowlingStat?.runs}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${bowler.matchBowlingStat?.wides}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${bowler.matchBowlingStat?.maidens}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "0.00",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class LiveBatterTile extends StatelessWidget {
+  const LiveBatterTile({
+    super.key,
+    required this.batter,
+  });
+  final LiveTeam batter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            "${batter.striker ?? false ? "* " : ""}${batter.name}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${batter.matchBattingStat?.runs}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${batter.matchBattingStat?.balls}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${batter.matchBattingStat?.fours}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "${batter.matchBattingStat?.sixes}",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            "0.00",
+            textAlign: TextAlign.center,
+            style: CustomTextStyles.f14W500(
+              color: AppColors.hintTextColor,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

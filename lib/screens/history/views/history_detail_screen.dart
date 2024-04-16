@@ -1,11 +1,16 @@
 import 'package:cric_score_connect/common/common_app_bar.dart';
+import 'package:cric_score_connect/screens/history/controller/history_detail_controller.dart';
 import 'package:cric_score_connect/screens/history/widget/history_team_selector.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HistoryDetailScreen extends StatelessWidget {
-  const HistoryDetailScreen({super.key});
+  static const String routeName = "/history-detail-screen";
+  HistoryDetailScreen({super.key});
+
+  final HistoryDetailController c = Get.find<HistoryDetailController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,37 +33,41 @@ class HistoryDetailScreen extends StatelessWidget {
               pinned: true,
             )
           ],
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: ListView(
-              children: [
-                Card(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
+          body: Obx(
+            () => c.isPageLoading.value
+                ? Center(child: CircularProgressIndicator())
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: ListView(
+                      children: [
+                        Card(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                          ),
+                          color: Colors.green,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 12,
+                            ),
+                            child: Text(
+                              "Team A wins the game by 5 wickets.",
+                              textAlign: TextAlign.center,
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        HistorySelectTeamTabBar(),
+                      ],
                     ),
                   ),
-                  color: Colors.green,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
-                    ),
-                    child: Text(
-                      "Team A wins the game by 5 wickets.",
-                      textAlign: TextAlign.center,
-                      style: CustomTextStyles.f14W500(
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                HistorySelectTeamTabBar(),
-              ],
-            ),
           ),
         ),
       ),
