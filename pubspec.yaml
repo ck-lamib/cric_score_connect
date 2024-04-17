@@ -30,7 +30,7 @@ environment:
 dependencies:
   cached_network_image: ^3.3.1
   cupertino_icons: ^1.0.6
-  device_info_plus: ^10.0.1
+  device_info_plus: ^9.0.2
   dropdown_button2: ^2.3.9
   flutter:
     sdk: flutter
@@ -40,7 +40,8 @@ dependencies:
   http: ^1.2.1
   image_cropper: ^5.0.1
   image_picker: ^1.0.7
-  intl: ^0.19.0
+  intl: ^0.18.1
+  khalti_flutter: ^3.0.0
   permission_handler: ^11.3.1
   simple_fontellico_progress_dialog: ^0.3.0
 

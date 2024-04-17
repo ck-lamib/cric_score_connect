@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class LiveMatchStat {
+  final String? matchId;
   final bool? isGameFinished;
   final String? finishedMessage;
   final bool? isGameCanceled;
@@ -8,11 +9,21 @@ class LiveMatchStat {
   final String? target;
   final String? crr;
   final String? rrr;
+  final String? homeTeamName;
+  final String? awayTeamName;
+  final bool? isFirstInning;
+  final int? firstInningTotalRun;
+  final double? firstInningTotalOver;
+  final int? firstInningTotalWicket;
+  final int? secondInningTotalRun;
+  final double? secondInningTotalOver;
+  final int? secondInningTotalWicket;
   final LiveExtras? extras;
   final List<LiveTeam>? homeTeam;
   final List<LiveTeam>? awayTeam;
 
   LiveMatchStat({
+    this.matchId,
     this.isGameFinished,
     this.finishedMessage,
     this.isGameCanceled,
@@ -20,12 +31,22 @@ class LiveMatchStat {
     this.target,
     this.crr,
     this.rrr,
+    this.homeTeamName,
+    this.awayTeamName,
+    this.isFirstInning,
+    this.firstInningTotalRun,
+    this.firstInningTotalOver,
+    this.firstInningTotalWicket,
+    this.secondInningTotalRun,
+    this.secondInningTotalOver,
+    this.secondInningTotalWicket,
     this.extras,
     this.homeTeam,
     this.awayTeam,
   });
 
   LiveMatchStat copyWith({
+    String? matchId,
     bool? isGameFinished,
     String? finishedMessage,
     bool? isGameCanceled,
@@ -33,11 +54,21 @@ class LiveMatchStat {
     String? target,
     String? crr,
     String? rrr,
+    String? homeTeamName,
+    String? awayTeamName,
+    bool? isFirstInning,
+    int? firstInningTotalRun,
+    double? firstInningTotalOver,
+    int? firstInningTotalWicket,
+    int? secondInningTotalRun,
+    double? secondInningTotalOver,
+    int? secondInningTotalWicket,
     LiveExtras? extras,
     List<LiveTeam>? homeTeam,
     List<LiveTeam>? awayTeam,
   }) =>
       LiveMatchStat(
+        matchId: matchId ?? this.matchId,
         isGameFinished: isGameFinished ?? this.isGameFinished,
         finishedMessage: finishedMessage ?? this.finishedMessage,
         isGameCanceled: isGameCanceled ?? this.isGameCanceled,
@@ -45,6 +76,18 @@ class LiveMatchStat {
         target: target ?? this.target,
         crr: crr ?? this.crr,
         rrr: rrr ?? this.rrr,
+        homeTeamName: homeTeamName ?? this.homeTeamName,
+        awayTeamName: awayTeamName ?? this.awayTeamName,
+        isFirstInning: isFirstInning ?? this.isFirstInning,
+        firstInningTotalRun: firstInningTotalRun ?? this.firstInningTotalRun,
+        firstInningTotalOver: firstInningTotalOver ?? this.firstInningTotalOver,
+        firstInningTotalWicket:
+            firstInningTotalWicket ?? this.firstInningTotalWicket,
+        secondInningTotalRun: secondInningTotalRun ?? this.secondInningTotalRun,
+        secondInningTotalOver:
+            secondInningTotalOver ?? this.secondInningTotalOver,
+        secondInningTotalWicket:
+            secondInningTotalWicket ?? this.secondInningTotalWicket,
         extras: extras ?? this.extras,
         homeTeam: homeTeam ?? this.homeTeam,
         awayTeam: awayTeam ?? this.awayTeam,
@@ -56,6 +99,7 @@ class LiveMatchStat {
   String toRawJson() => json.encode(toJson());
 
   factory LiveMatchStat.fromJson(Map<String, dynamic> json) => LiveMatchStat(
+        matchId: json["match_id"],
         isGameFinished: json["isGameFinished"],
         finishedMessage: json["finishedMessage"],
         isGameCanceled: json["isGameCanceled"],
@@ -63,6 +107,15 @@ class LiveMatchStat {
         target: json["target"],
         crr: json["CRR"],
         rrr: json["RRR"],
+        homeTeamName: json["homeTeamName"],
+        awayTeamName: json["awayTeamName"],
+        isFirstInning: json["isFirstInning"],
+        firstInningTotalRun: json["firstInningTotalRun"],
+        firstInningTotalOver: json["firstInningTotalOver"],
+        firstInningTotalWicket: json["firstInningTotalWicket"],
+        secondInningTotalRun: json["secondInningTotalRun"],
+        secondInningTotalOver: json["secondInningTotalOver"],
+        secondInningTotalWicket: json["secondInningTotalWicket"],
         extras:
             json["extras"] == null ? null : LiveExtras.fromJson(json["extras"]),
         homeTeam: json["homeTeam"] == null
@@ -76,6 +129,7 @@ class LiveMatchStat {
       );
 
   Map<String, dynamic> toJson() => {
+        "match_id": matchId,
         "isGameFinished": isGameFinished,
         "finishedMessage": finishedMessage,
         "isGameCanceled": isGameCanceled,
@@ -83,6 +137,15 @@ class LiveMatchStat {
         "target": target,
         "CRR": crr,
         "RRR": rrr,
+        "homeTeamName": homeTeamName,
+        "awayTeamName": awayTeamName,
+        "isFirstInning": isFirstInning,
+        "firstInningTotalRun": firstInningTotalRun,
+        "firstInningTotalOver": firstInningTotalOver,
+        "firstInningTotalWicket": firstInningTotalWicket,
+        "secondInningTotalRun": secondInningTotalRun,
+        "secondInningTotalOver": secondInningTotalOver,
+        "secondInningTotalWicket": secondInningTotalWicket,
         "extras": extras?.toJson(),
         "homeTeam": homeTeam == null
             ? []
@@ -229,7 +292,7 @@ class LiveMatchBowlingStat {
   final int? noBalls;
   final int? maidens;
   final int? wickets;
-  final int? overs;
+  final double? overs;
 
   LiveMatchBowlingStat({
     this.runs,
@@ -252,7 +315,7 @@ class LiveMatchBowlingStat {
     int? noBalls,
     int? maidens,
     int? wickets,
-    int? overs,
+    double? overs,
   }) =>
       LiveMatchBowlingStat(
         runs: runs ?? this.runs,

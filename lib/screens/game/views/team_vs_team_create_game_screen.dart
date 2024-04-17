@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cric_score_connect/screens/game/controller/team_vs_team_game_controller.dart';
 import 'package:cric_score_connect/screens/game/views/game_setting.dart';
 import 'package:cric_score_connect/screens/game/views/pickplayer/select_opening_player.dart';
@@ -8,8 +10,8 @@ import 'package:cric_score_connect/utils/constants/datas.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
-import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
+import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_date_picker.dart';
 import 'package:cric_score_connect/widgets/custom/custom_dropdown_textfield.dart';
@@ -255,6 +257,50 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                     validator: Validators.checkFieldEmpty,
                   ),
                   SizeConfig.getSpace(),
+                  Obx(
+                    () => CustomElevatedButton(
+                      title: "Toss a coin",
+                      onTap: c.isCoinTossed.value
+                          ? () {
+                              CustomSnackBar.info(
+                                title: "Coin toss.",
+                                message: "Already Tossed",
+                              );
+                            }
+                          : () async {
+                              RequestLoader requestLoader = RequestLoader();
+                              requestLoader.show(
+                                message: "Tossing",
+                              );
+                              await Future.delayed(const Duration(seconds: 2),
+                                  () {
+                                requestLoader.hide();
+                                var doubleValue = Random().nextInt(9999);
+                                c.isCoinTossed.value = true;
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          "It's ${doubleValue.isEven ? "Heads" : "Tails"}",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTextStyles.f24W600(),
+                                        ),
+                                        actions: [
+                                          CustomElevatedButton(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            title: "Ok",
+                                          )
+                                        ],
+                                      );
+                                    });
+                              });
+                            },
+                    ),
+                  ),
+                  SizeConfig.getSpace(),
                   CustomDropdownTextField(
                     hint: "Toss Winner",
                     labelText: "Toss Winner",
@@ -346,6 +392,12 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                     .isEmpty) {
                                   CustomSnackBar.info(
                                       message: "Please add number of overs.");
+                                } else if (!c.isCoinTossed.value) {
+                                  CustomSnackBar.info(
+                                    title: "Coin toss.",
+                                    message:
+                                        "You haven't tossed a coin yet. Please toss a coint to continue.",
+                                  );
                                 } else if (c.tossWinner == null) {
                                   CustomSnackBar.info(
                                       message: "Please add toss winner.");
@@ -428,6 +480,7 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                         );
                                       }
                                     }
+
                                     var success = await c.storeMatch();
                                     if (success) {
                                       // Get.toNamed(
@@ -440,8 +493,19 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                       //   ),
                                       // );
 
-                                      // asdf
+                                      Get.toNamed(
+                                        SelectOpeningPlayerScreen.routeName,
+                                        arguments: SelectOpeningPlayerArgument(
+                                          battingTeam: matchController
+                                              .getInningDetail.battingTeam,
+                                          bowlingTeam: matchController
+                                              .getInningDetail.bowlingTeam,
+                                        ),
+                                      );
                                     } else {
+                                      CustomSnackBar.error(
+                                        message: "Something went wrong.",
+                                      );
                                       //no continue
                                     }
                                   }

@@ -19,6 +19,14 @@ ThemeData basicTheme() {
         statusBarIconBrightness: Brightness.light,
       ),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.backGroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    ),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: Colors.grey,
       indicatorColor: AppColors.backGroundColor,

@@ -5,9 +5,11 @@ import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
+import 'package:cric_score_connect/screens/khalti/khalti_payment_integration.dart';
 import 'package:cric_score_connect/screens/livematch/views/live_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/extensions.dart';
 import 'package:cric_score_connect/utils/routes/image_path.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
@@ -16,6 +18,8 @@ import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:khalti/khalti.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = "/home-screen";
@@ -170,9 +174,43 @@ class HomeScreen extends StatelessWidget {
                       ),
                       CustomElevatedButton(
                         onTap: () async {
-                          Get.toNamed(LiveScreen.routeName);
+                          // Get.toNamed(LiveScreen.routeName);
 
-//
+                          bool? paymenResult = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Please enter the match key"),
+                                content: const Text(
+                                    "Please pay with our payement partner khalti."),
+                                actions: [
+                                  SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: Image.asset(
+                                      ImagePath.khaltiLogo,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.back(result: false);
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.back(result: true);
+                                    },
+                                    child: const Text("OKay"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          if (paymenResult != null && paymenResult) {
+                            payWithKhaltiInApp(context);
+                          }
                         },
 
                         // {
@@ -229,6 +267,25 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  payWithKhaltiInApp(BuildContext context) {
+    KhaltiScope.of(context).pay(
+      config: PaymentConfig(
+        amount: 1000, //in paisa
+        productIdentity: 'liveId',
+        productName: 'Live match',
+        mobileReadOnly: false,
+      ),
+      preferences: [
+        PaymentPreference.khalti,
+      ],
+      onSuccess: (paymentSuccessModel) {},
+      onFailure: (paymentFailureModel) {
+        CustomLogger.trace(paymentFailureModel);
+      },
+      onCancel: () {},
     );
   }
 }

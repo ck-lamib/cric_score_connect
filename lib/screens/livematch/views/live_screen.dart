@@ -75,20 +75,24 @@ class LiveScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                text: "11-1",
-                                style: CustomTextStyles.f32W600(
-                                  color: AppColors.backGroundColor,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "(2.0)",
-                                    style: CustomTextStyles.f18W600(
-                                      color: AppColors.hintTextColor,
-                                    ),
+                            Obx(
+                              () => RichText(
+                                text: TextSpan(
+                                  text:
+                                      "${(c.liveMatchStat.value?.isFirstInning ?? false) ? c.liveMatchStat.value?.firstInningTotalRun : c.liveMatchStat.value?.secondInningTotalRun}-${(c.liveMatchStat.value?.isFirstInning ?? false) ? c.liveMatchStat.value?.firstInningTotalWicket : c.liveMatchStat.value?.secondInningTotalWicket}",
+                                  style: CustomTextStyles.f32W600(
+                                    color: AppColors.backGroundColor,
                                   ),
-                                ],
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          "(${(c.liveMatchStat.value?.isFirstInning ?? false) ? c.liveMatchStat.value?.firstInningTotalOver : c.liveMatchStat.value?.secondInningTotalOver})",
+                                      style: CustomTextStyles.f18W600(
+                                        color: AppColors.hintTextColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             Row(

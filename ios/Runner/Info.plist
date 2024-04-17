@@ -51,6 +51,21 @@
 	<string>Allow microphone access for Cric Score Connect</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Cric Score Connect requests photo access to seamlessly upload screenshots and pictures.</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kpg</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>{your package name}</string>
+		</dict>
+	</array>
 	
 </dict>
 </plist>

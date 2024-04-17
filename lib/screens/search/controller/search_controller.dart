@@ -26,7 +26,8 @@ class SearchScreenController extends GetxController {
           query: value,
           id: cc.currentUser.value!.id!.toString(),
           onSuccess: (users) {
-            searchedUser.value = users;
+            searchedUser.value =
+                users.where((e) => e.id != cc.currentUser.value?.id).toList();
             isSearching.value = false;
           },
           onError: (message) {

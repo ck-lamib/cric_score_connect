@@ -1,13 +1,11 @@
 import 'package:cric_score_connect/core/core_controller.dart';
-import 'package:cric_score_connect/screens/game/views/gaming/fall_of_wicket.dart';
-import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/splash/views/splash_screen.dart';
 import 'package:cric_score_connect/utils/routes/pages.dart';
 import 'package:cric_score_connect/utils/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 GlobalKey<ScaffoldMessengerState> scaffoldKey =
     GlobalKey<ScaffoldMessengerState>();
 
@@ -16,17 +14,28 @@ class CricScoreConnect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: "Cric Score Connect",
-      navigatorKey: navigatorKey,
-      scaffoldMessengerKey: scaffoldKey,
-      initialBinding: BindingsBuilder(() {
-        Get.put(CoreController());
-      }),
-      debugShowCheckedModeBanner: false,
-      getPages: pages,
-      theme: basicTheme(),
-      initialRoute: SplashScreen.routeName,
-    );
+    return KhaltiScope(
+        publicKey: "test_public_key_32bf9a5ce5d741d3b90e248bc33d4e15",
+        builder: (context, navKey) {
+          return GetMaterialApp(
+            title: "Cric Score Connect",
+            navigatorKey: navKey,
+            scaffoldMessengerKey: scaffoldKey,
+            initialBinding: BindingsBuilder(() {
+              Get.put(CoreController());
+            }),
+            debugShowCheckedModeBanner: false,
+            getPages: pages,
+            theme: basicTheme(),
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('ne', 'NP'),
+            ],
+            localizationsDelegates: const [
+              KhaltiLocalizations.delegate,
+            ],
+            initialRoute: SplashScreen.routeName,
+          );
+        });
   }
 }

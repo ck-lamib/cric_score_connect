@@ -53,6 +53,7 @@ class GameDataSourceRepo {
       });
 
       CustomLogger.trace(body);
+      CustomLogger.trace(Api.storeMatchUrl);
       http.Response response = await HttpRequest.post(
         Uri.parse(
           Api.storeMatchUrl,
@@ -115,6 +116,51 @@ class GameDataSourceRepo {
           onError("Sorry something went wrong");
         }
       }
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      onError("Sorry something went wrong");
+    }
+  }
+
+  static Future<void> uploadGameData({
+    required LiveMatchStat liveMatchStat,
+    required Function(String matchCode) onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      // var headers = {
+      //   "Content-Type": "application/json",
+      //   "Accept": "application/json",
+      // };
+
+      var body = liveMatchStat.toJson();
+      onSuccess("Done");
+
+      CustomLogger.trace(jsonEncode(body));
+      // http.Response response = await HttpRequest.post(
+      //   Uri.parse(
+      //     Api.storeMatchUrl,
+      //   ),
+      //   headers: headers,
+      //   body: body,
+      // );
+      // CustomLogger.trace(response);
+
+      // var responseData = jsonDecode(response.body);
+      // CustomLogger.trace("register decoded response : -> $responseData");
+      // //check status code
+      // if (response.statusCode >= 200 || response.statusCode < 300) {
+      //   CustomLogger.trace(response.body);
+      //   String matchKey = "${responseData["key"]}";
+      //   onSuccess(matchKey);
+      // } else {
+      //   if (responseData.toString().contains("error")) {
+      //     onError(responseData["error"]);
+      //   } else {
+      //     onError("Sorry something went wrong");
+      //   }
+      // }
     } catch (e, s) {
       log(e.toString());
       log(s.toString());

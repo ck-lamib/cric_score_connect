@@ -1,6 +1,7 @@
 import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/datasource/friend/friends_repo.dart';
 import 'package:cric_score_connect/datasource/game/game_datasource.dart';
+import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
 import 'package:cric_score_connect/models/overs.dart';
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
@@ -16,7 +17,6 @@ import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 class TeamVsTeamGameController extends GetxController {
   @override
@@ -57,6 +57,176 @@ class TeamVsTeamGameController extends GetxController {
       },
     );
     return result;
+  }
+
+  sendData() async {
+    CoreController cc = Get.find<CoreController>();
+    MatchController matchController = Get.find<MatchController>();
+    String battingTeam = "";
+    String bowlingTeam = "";
+
+    if (matchController.optedTo == "Bat") {
+      battingTeam = matchController.tossWinner == homeTeamController.text
+          ? homeTeamController.text
+          : awayTeamController.text;
+      bowlingTeam = matchController.tossWinner == homeTeamController.text
+          ? awayTeamController.text
+          : homeTeamController.text;
+    } else if (matchController.optedTo == "Bowl") {
+      battingTeam = matchController.tossWinner == homeTeamController.text
+          ? awayTeamController.text
+          : homeTeamController.text;
+      bowlingTeam = matchController.tossWinner == homeTeamController.text
+          ? homeTeamController.text
+          : awayTeamController.text;
+    }
+
+    //for crr
+    var noOfOvers = (int.tryParse(numberOfOversController.text) ?? 6);
+    var totalNoOfBalls = noOfOvers * 6;
+
+    var noOfBalls =
+        totalNoOfBalls - matchController.getInningDetail.currentBalls.value;
+
+    //for rrr
+    // Calculate the runs required to win
+    int runsRequired = target.value.toInt() -
+        matchController.getInningDetail.totalRunTillNow.value;
+
+    double currentOver = double.parse(matchController.getInningDetail.overs());
+    var oversRemaining = noOfOvers - currentOver;
+    await GameDataSourceRepo.uploadGameData(
+      liveMatchStat: LiveMatchStat(
+        isGameFinished: false,
+        userId: cc.currentUser.value!.id.toString(),
+        crr: matchController.getInningDetail.totalRunTillNow.value == 0
+            ? "0.00"
+            : (matchController.getInningDetail.totalRunTillNow.value /
+                        (matchController.getInningDetail.currentBalls.value /
+                            6))
+                    .isFinite
+                ? (matchController.getInningDetail.totalRunTillNow.value /
+                        (matchController.getInningDetail.currentBalls.value /
+                            6))
+                    .toStringAsFixed(2)
+                : "0.00",
+        extras: LiveExtras(
+          byes: matchController.getInningDetail.currentByes.value,
+          legByes: matchController.getInningDetail.currentLegByes.value,
+          noBall: matchController.getInningDetail.currentNoBalls.value,
+          penalty: matchController.getInningDetail.currentPenalty.value,
+          wide: matchController.getInningDetail.currentWides.value,
+        ),
+        awayTeamName: awayTeamController.text,
+        homeTeamName: homeTeamController.text,
+        isFirstInning: matchController.getInningDetail.isFirstInning,
+        firstInningTotalOver: double.tryParse(Over.overs(
+                matchController.firstInningDetail.currentNoBalls.value)) ??
+            0,
+        firstInningTotalRun:
+            matchController.firstInningDetail.totalRunTillNow.value,
+        firstInningTotalWicket:
+            matchController.firstInningDetail.totalWicketTillNow.value,
+        secondInningTotalOver: double.tryParse(Over.overs(
+                matchController.secondInningDetail.currentNoBalls.value)) ??
+            0,
+        secondInningTotalRun:
+            matchController.secondInningDetail.totalRunTillNow.value,
+        secondInningTotalWicket:
+            matchController.secondInningDetail.totalWicketTillNow.value,
+        finishedMessage: (matchController.isFirstInnings == false &&
+                    matchController.isSecondInnings == true)
+                .obs
+                .value
+            ? "$bowlingTeam needs ${target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from $noOfBalls balls to win against ${matchController.firstInningBattingTeamName}."
+            : "$battingTeam is Batting against $bowlingTeam",
+        isGameCanceled: false,
+        rrr: oversRemaining == 0
+            ? matchController.getInningDetail.isFirstInning == true
+                ? ""
+                : "0"
+            : matchController.getInningDetail.isFirstInning == true
+                ? ""
+                : (((runsRequired.toDouble() / oversRemaining.toDouble()) * 6) /
+                        6)
+                    .toStringAsFixed(2),
+        target: target.value.toString(),
+        awayTeam: homeTeamPlayer
+            .map(
+              (item) => LiveTeam(
+                id: item.id,
+                name: item.name,
+                username: item.username,
+                out: item.matchBattingStats?.outReason.value.name,
+                bowler:
+                    matchController.getInningDetail.bowler.value?.id == item.id,
+                striker: matchController.getInningDetail.striker.value?.id ==
+                    item.id,
+                nonStriker:
+                    matchController.getInningDetail.nonStriker.value?.id ==
+                        item.id,
+                matchBattingStat: LiveMatchBattingStat(
+                  balls: item.matchBattingStats?.balls.value,
+                  fours: item.matchBattingStats?.fours.value,
+                  runs: item.matchBattingStats?.runs.value,
+                  sixes: item.matchBattingStats?.sixes.value,
+                ),
+                matchBowlingStat: LiveMatchBowlingStat(
+                  maidens: item.matchBowlingStats?.maidens.value,
+                  balls: item.matchBowlingStats?.balls.value,
+                  fours: item.matchBowlingStats?.fours.value,
+                  runs: item.matchBowlingStats?.runs.value,
+                  sixes: item.matchBowlingStats?.sixes.value,
+                  noBalls: item.matchBowlingStats?.noBalls.value,
+                  overs: item.matchBowlingStats?.overs.value,
+                  wickets: item.matchBowlingStats?.wickets.value,
+                  wides: item.matchBowlingStats?.wides.value,
+                ),
+              ),
+            )
+            .toList(),
+        homeTeam: awayTeamPlayer
+            .map(
+              (item) => LiveTeam(
+                id: item.id,
+                name: item.name,
+                username: item.username,
+                out: item.matchBattingStats?.outReason.value.name,
+                bowler:
+                    matchController.getInningDetail.bowler.value?.id == item.id,
+                striker: matchController.getInningDetail.striker.value?.id ==
+                    item.id,
+                nonStriker:
+                    matchController.getInningDetail.nonStriker.value?.id ==
+                        item.id,
+                matchBattingStat: LiveMatchBattingStat(
+                  balls: item.matchBattingStats?.balls.value,
+                  fours: item.matchBattingStats?.fours.value,
+                  runs: item.matchBattingStats?.runs.value,
+                  sixes: item.matchBattingStats?.sixes.value,
+                ),
+                matchBowlingStat: LiveMatchBowlingStat(
+                  maidens: item.matchBowlingStats?.maidens.value,
+                  balls: item.matchBowlingStats?.balls.value,
+                  fours: item.matchBowlingStats?.fours.value,
+                  runs: item.matchBowlingStats?.runs.value,
+                  sixes: item.matchBowlingStats?.sixes.value,
+                  noBalls: item.matchBowlingStats?.noBalls.value,
+                  overs: item.matchBowlingStats?.overs.value,
+                  wickets: item.matchBowlingStats?.wickets.value,
+                  wides: item.matchBowlingStats?.wides.value,
+                ),
+              ),
+            )
+            .toList(),
+      ),
+      onSuccess: (mkey) async {
+        matchKey = mkey;
+      },
+      onError: (message) {
+        CustomSnackBar.error(title: "Failed", message: message);
+      },
+    );
   }
 
   Future<bool> getAllFriend() async {
@@ -112,6 +282,7 @@ class TeamVsTeamGameController extends GetxController {
   //   return result;
   // }
 
+  var isCoinTossed = false.obs;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController homeTeamController = TextEditingController();
   TextEditingController awayTeamController = TextEditingController();
@@ -867,7 +1038,7 @@ class InningDetail extends GetxController {
     await checkAllOut();
     await checkRunScoreOver();
     await checkOverFinish();
-
+    // teamGameController.sendData();
     delivery.reset();
     // checkBoxReset();
     update();

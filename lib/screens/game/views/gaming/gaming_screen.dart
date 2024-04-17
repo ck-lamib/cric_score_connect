@@ -97,6 +97,12 @@ class GamingScreen extends StatelessWidget {
               child: ListView(
                 shrinkWrap: true,
                 children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      c.sendData();
+                    },
+                    child: const Text("send data"),
+                  ),
                   Card(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
@@ -173,7 +179,7 @@ class GamingScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "#321F",
+                            "${c.matchKey}",
                             style: CustomTextStyles.f14W500(
                               color: AppColors.hintTextColor,
                             ),
@@ -181,8 +187,16 @@ class GamingScreen extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          const InkWell(
+                          InkWell(
                             splashFactory: InkRipple.splashFactory,
+                            onTap: () {
+                              Clipboard.setData(ClipboardData(text: c.matchKey))
+                                  .then(
+                                (value) => CustomSnackBar.info(
+                                    message:
+                                        "Successfully copied ${c.matchKey} to clipboard."),
+                              );
+                            },
                             child: Icon(
                               Icons.copy_rounded,
                               size: 20,
