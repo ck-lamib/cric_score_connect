@@ -16,10 +16,10 @@ import 'package:cric_score_connect/screens/game/views/team_vs_team_create_game_s
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/game_profile.dart';
-import 'package:cric_score_connect/screens/history/controller/history_controller.dart';
-import 'package:cric_score_connect/screens/history/controller/history_detail_controller.dart';
-import 'package:cric_score_connect/screens/history/views/history_detail_screen.dart';
-import 'package:cric_score_connect/screens/history/views/history_screen.dart';
+import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_controller.dart';
+import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_detail_controller.dart';
+import 'package:cric_score_connect/screens/paidHistory/views/paid_history_detail_screen.dart';
+import 'package:cric_score_connect/screens/paidHistory/views/paid_history_screen.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/screens/livematch/controller/live_screen_controller.dart';
 import 'package:cric_score_connect/screens/livematch/views/live_screen.dart';
@@ -190,20 +190,20 @@ var pages = [
     ),
   ),
   GetPage(
-    name: HistoryScreen.routeName,
-    page: () => HistoryScreen(),
+    name: PaidHistoryScreen.routeName,
+    page: () => PaidHistoryScreen(),
     binding: BindingsBuilder(
       () {
-        Get.lazyPut(() => HistoryScreenController());
+        Get.lazyPut(() => PaidHistoryScreenController());
       },
     ),
   ),
   GetPage(
-    name: HistoryDetailScreen.routeName,
-    page: () => HistoryDetailScreen(),
+    name: PaidHistoryDetailScreen.routeName,
+    page: () => PaidHistoryDetailScreen(),
     binding: BindingsBuilder(
       () {
-        Get.lazyPut(() => HistoryDetailController());
+        Get.lazyPut(() => PaidHistoryDetailController());
       },
     ),
   ),

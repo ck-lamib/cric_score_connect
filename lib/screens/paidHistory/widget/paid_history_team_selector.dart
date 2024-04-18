@@ -1,23 +1,24 @@
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
-import 'package:cric_score_connect/screens/history/controller/history_detail_controller.dart';
+import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_detail_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HistorySelectTeamTabBar extends StatefulWidget {
-  const HistorySelectTeamTabBar({
+class PaidHistorySelectTeamTabBar extends StatefulWidget {
+  const PaidHistorySelectTeamTabBar({
     super.key,
   });
 
   @override
-  State<HistorySelectTeamTabBar> createState() =>
-      _HistorySelectTeamTabBarState();
+  State<PaidHistorySelectTeamTabBar> createState() =>
+      _PaidHistorySelectTeamTabBarState();
 }
 
-class _HistorySelectTeamTabBarState extends State<HistorySelectTeamTabBar>
+class _PaidHistorySelectTeamTabBarState
+    extends State<PaidHistorySelectTeamTabBar>
     with SingleTickerProviderStateMixin {
-  HistoryDetailController c = Get.find<HistoryDetailController>();
+  PaidHistoryDetailController c = Get.find<PaidHistoryDetailController>();
   late TabController _tabController;
   @override
   void initState() {

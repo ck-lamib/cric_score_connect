@@ -20,6 +20,19 @@ class LiveScreenController extends GetxController {
   Rxn<LiveTeam> striker = Rxn();
   Rxn<LiveTeam> nonStriker = Rxn();
   RequestLoader requestLoader = RequestLoader();
+  Timer? _timer;
+
+  void startFetching() {
+    // Start a timer to fetch data every 5 seconds
+    _timer = Timer.periodic(Duration(seconds: 5), (_) {
+      getMatchDetail();
+    });
+  }
+
+  void stopFetching() {
+    // Cancel the timer when no longer needed
+    _timer?.cancel();
+  }
 
   @override
   void onInit() {
@@ -34,14 +47,18 @@ class LiveScreenController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    stopFetching();
+    super.onClose();
+  }
+
   var isPageLoading = true.obs;
 
   geLiveMatchStatForFirstTime() async {
     isPageLoading.value = true;
     requestLoader.show();
-    await getMatchDetail().whenComplete(
-      () {},
-    );
+    await getMatchDetail().then((value) => startFetching());
   }
 
   Future<void> getMatchDetail() async {

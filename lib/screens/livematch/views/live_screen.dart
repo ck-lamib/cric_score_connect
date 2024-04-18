@@ -4,8 +4,10 @@ import 'package:cric_score_connect/screens/livematch/controller/live_screen_cont
 import 'package:cric_score_connect/screens/livematch/views/team_line_up_stats_tab.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
+import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class LiveScreen extends StatelessWidget {
@@ -104,7 +106,7 @@ class LiveScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "#321F",
+                                  c.matchKey,
                                   style: CustomTextStyles.f14W500(
                                     color: AppColors.hintTextColor,
                                   ),
@@ -112,9 +114,18 @@ class LiveScreen extends StatelessWidget {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                const InkWell(
+                                InkWell(
                                   splashFactory: InkRipple.splashFactory,
-                                  child: Icon(
+                                  onTap: () {
+                                    Clipboard.setData(
+                                            ClipboardData(text: c.matchKey))
+                                        .then(
+                                      (value) => CustomSnackBar.info(
+                                          message:
+                                              "Successfully copied ${c.matchKey} to clipboard."),
+                                    );
+                                  },
+                                  child: const Icon(
                                     Icons.copy_rounded,
                                     size: 20,
                                   ),

@@ -63,7 +63,11 @@ class TeamVsTeamGameController extends GetxController {
     return result;
   }
 
-  sendData() async {
+  sendData({
+    bool? isGameCanceledd,
+    String? message,
+    bool? isGameFinished,
+  }) async {
     CoreController cc = Get.find<CoreController>();
     MatchController matchController = Get.find<MatchController>();
     String battingTeam = "";
@@ -103,7 +107,7 @@ class TeamVsTeamGameController extends GetxController {
         matchId: matchStoreData.value?.id.toString(),
         team1Id: matchStoreData.value?.team1Id,
         team2Id: matchStoreData.value?.team2Id,
-        isGameFinished: false,
+        isGameFinished: isGameFinished ?? false,
         userId: cc.currentUser.value!.id.toString(),
         crr: matchController.getInningDetail.totalRunTillNow.value == 0
             ? "0.00"
@@ -140,13 +144,14 @@ class TeamVsTeamGameController extends GetxController {
             matchController.secondInningDetail.totalRunTillNow.value,
         secondInningTotalWicket:
             matchController.secondInningDetail.totalWicketTillNow.value,
-        finishedMessage: (matchController.isFirstInnings == false &&
-                    matchController.isSecondInnings == true)
-                .obs
-                .value
-            ? "$bowlingTeam needs ${target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from $noOfBalls balls to win against ${matchController.firstInningBattingTeamName}."
-            : "$battingTeam is Batting against $bowlingTeam",
-        isGameCanceled: false,
+        finishedMessage: message ??
+            ((matchController.isFirstInnings == false &&
+                        matchController.isSecondInnings == true)
+                    .obs
+                    .value
+                ? "$bowlingTeam needs ${target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from $noOfBalls balls to win against ${matchController.firstInningBattingTeamName}."
+                : "$battingTeam is Batting against $bowlingTeam"),
+        isGameCanceled: isGameCanceledd ?? false,
         rrr: oversRemaining == 0
             ? matchController.getInningDetail.isFirstInning == true
                 ? ""
@@ -727,7 +732,12 @@ class InningDetail extends GetxController {
                   ),
                   actions: [
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await teamGameController.sendData(
+                          isGameFinished: true,
+                          message:
+                              "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                        );
                         Get.offNamedUntil(
                             DashboardScreen.routeName, (route) => false);
                       },
@@ -749,7 +759,8 @@ class InningDetail extends GetxController {
                       "End of first inning due to all-out. Press continue for second inning."),
                   actions: [
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await teamGameController.sendData();
                         matchController.endFirstInnings();
                         teamGameController.target.value = matchController
                                 .firstInningDetail.totalRunTillNow.value
@@ -798,7 +809,13 @@ class InningDetail extends GetxController {
                   ),
                   actions: [
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await teamGameController.sendData(
+                          isGameFinished: true,
+                          message:
+                              "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                        );
+
                         Get.offNamedUntil(
                             DashboardScreen.routeName, (route) => false);
                       },
@@ -820,7 +837,8 @@ class InningDetail extends GetxController {
                       "End of first inning due to all-out. Press continue for second inning."),
                   actions: [
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await teamGameController.sendData();
                         matchController.endFirstInnings();
                         teamGameController.target.value = matchController
                                 .firstInningDetail.totalRunTillNow.value
@@ -883,7 +901,13 @@ class InningDetail extends GetxController {
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await teamGameController.sendData(
+                        isGameFinished: true,
+                        message:
+                            "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                      );
+
                       Get.offNamedUntil(
                           DashboardScreen.routeName, (route) => false);
                     },
@@ -905,7 +929,8 @@ class InningDetail extends GetxController {
                     "Total no. of over is finished. Press continue for second inning."),
                 actions: [
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await teamGameController.sendData();
                       matchController.endFirstInnings();
                       teamGameController.target.value = matchController
                               .firstInningDetail.totalRunTillNow.value
@@ -963,7 +988,12 @@ class InningDetail extends GetxController {
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await teamGameController.sendData(
+                        isGameFinished: true,
+                        message:
+                            "${matchController.firstInningBowlingTeamName} wins by ${(teamGameController.hasLastManStand.value ? matchController.getInningDetail.battingTeam.length : matchController.getInningDetail.battingTeam.length - 1) - (matchController.getInningDetail.outBattingTeam.length)} wicket.",
+                      );
                       Get.offNamedUntil(
                           DashboardScreen.routeName, (route) => false);
                     },
@@ -1045,7 +1075,7 @@ class InningDetail extends GetxController {
     await checkAllOut();
     await checkRunScoreOver();
     await checkOverFinish();
-    // teamGameController.sendData();
+    teamGameController.sendData();
     delivery.reset();
     // checkBoxReset();
     update();
@@ -1220,6 +1250,7 @@ class InningDetail extends GetxController {
 
     lastSevenDeliveries.removeLast();
 
+    teamGameController.sendData();
     delivery.reset();
     deliveryHistory.clear();
     update();

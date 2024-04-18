@@ -392,12 +392,6 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                                     .isEmpty) {
                                   CustomSnackBar.info(
                                       message: "Please add number of overs.");
-                                } else if (!c.isCoinTossed.value) {
-                                  CustomSnackBar.info(
-                                    title: "Coin toss.",
-                                    message:
-                                        "You haven't tossed a coin yet. Please toss a coint to continue.",
-                                  );
                                 } else if (c.tossWinner == null) {
                                   CustomSnackBar.info(
                                       message: "Please add toss winner.");

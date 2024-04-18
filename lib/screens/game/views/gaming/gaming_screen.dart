@@ -97,12 +97,12 @@ class GamingScreen extends StatelessWidget {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      c.sendData();
-                    },
-                    child: const Text("send data"),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     c.sendData();
+                  //   },
+                  //   child: const Text("send data"),
+                  // ),
                   Card(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
@@ -1433,7 +1433,11 @@ class GamingScreen extends StatelessWidget {
                                               ),
                                             ),
                                             TextButton(
-                                              onPressed: () {
+                                              onPressed: () async {
+                                                await c.sendData(
+                                                  message: "Game is Cancled",
+                                                  isGameCanceledd: true,
+                                                );
                                                 Get.offNamedUntil(
                                                     DashboardScreen.routeName,
                                                     (route) => false);
