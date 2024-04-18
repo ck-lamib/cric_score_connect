@@ -279,6 +279,56 @@ class GameDataSourceRepo {
     }
   }
 
+  static Future<void> getUnPaidMatchHistorys({
+    required int userId,
+    required Function(List<MatchHistoryModel> matchHistoryModelList) onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      var headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      };
+      CustomLogger.trace(Api.getUnPaidMatchHistoryUrl);
+      var body = {
+        "user_id": userId,
+      };
+      CustomLogger.trace(body);
+
+      http.Response response = await HttpRequest.post(
+        Uri.parse(
+          Api.getUnPaidMatchHistoryUrl,
+        ),
+        headers: headers,
+        body: jsonEncode(body),
+      );
+      CustomLogger.trace(response);
+
+      var responseData = jsonDecode(response.body);
+      CustomLogger.trace(
+          "paid match history decoded response : -> $responseData");
+      //check status code
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        CustomLogger.trace(response.body);
+        List<MatchHistoryModel> matchHistoryModelList =
+            matchHistoryModelListFromJson(responseData);
+        onSuccess(matchHistoryModelList);
+      } else if (response.statusCode == 403) {
+        onError(responseData["error"]);
+      } else {
+        if (responseData.toString().contains("error")) {
+          onError(responseData["error"]);
+        } else {
+          onError("Sorry something went wrong");
+        }
+      }
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      onError("Sorry something went wrong");
+    }
+  }
+
   static Future<void> getPaidMatchHistoryDetail({
     required String matchKey,
     required String matchId,

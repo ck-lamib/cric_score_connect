@@ -49,7 +49,11 @@ class LiveScreenController extends GetxController {
 
   @override
   void onClose() {
-    stopFetching();
+    try {
+      stopFetching();
+    } catch (_) {
+      CustomLogger.trace(_);
+    }
     super.onClose();
   }
 
@@ -58,7 +62,7 @@ class LiveScreenController extends GetxController {
   geLiveMatchStatForFirstTime() async {
     isPageLoading.value = true;
     requestLoader.show();
-    await getMatchDetail().then((value) => startFetching());
+    await getMatchDetail();
   }
 
   Future<void> getMatchDetail() async {
@@ -74,7 +78,7 @@ class LiveScreenController extends GetxController {
           ...liveMatchStat.value?.homeTeam ?? [],
           ...liveMatchStat.value?.awayTeam ?? []
         ];
-        print(allPlayers);
+
         try {
           bowler.value = allPlayers.firstWhere(
             (element) => element.bowler == true,
@@ -92,6 +96,7 @@ class LiveScreenController extends GetxController {
 
         requestLoader.hide();
         isPageLoading.value = false;
+        startFetching();
       },
       onError: (message) async {
         if (message.contains("Invalid match key")) {
@@ -150,14 +155,14 @@ class LiveScreenController extends GetxController {
                 );
                 CoreController cc = Get.find<CoreController>();
                 requestLoader.show();
-                GameDataSourceRepo.saveTransaction(
+                await GameDataSourceRepo.saveTransaction(
                     transactionId: paymentSuccessModel.idx,
                     userId: cc.currentUser.value!.id!,
                     matchId: matchKey,
                     onSuccess: (message) {
-                      Get.offNamedUntil(
-                          DashboardScreen.routeName, (route) => false);
                       requestLoader.hide();
+                      Get.back();
+                      Get.back();
                       CustomSnackBar.success(
                         title: "Payment success",
                         message:
@@ -165,9 +170,9 @@ class LiveScreenController extends GetxController {
                       );
                     },
                     onError: (message) {
-                      requestLoader.show();
-                      Get.offNamedUntil(
-                          DashboardScreen.routeName, (route) => false);
+                      requestLoader.hide();
+                      Get.back();
+                      Get.back();
                       CustomSnackBar.error(
                         title: "Payment success but system error.",
                         message: message,

@@ -6,6 +6,8 @@ import 'package:cric_score_connect/screens/paidHistory/views/paid_history_screen
 import 'package:cric_score_connect/screens/login/views/login_screen.dart';
 import 'package:cric_score_connect/screens/password/views/change_passowrd_screen.dart';
 import 'package:cric_score_connect/screens/personalinfo/views/personal_info.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/views/un_paid_history_detail_screen.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/views/un_paid_history_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +85,7 @@ class ProfileBottomSection extends StatelessWidget {
             ),
             title: 'Match History',
             onTap: () =>
-                Navigator.of(context).pushNamed(PaidHistoryScreen.routeName),
+                Navigator.of(context).pushNamed(UnPaidHistoryScreen.routeName),
           ),
           ProfileListTile(
             leadingWidget: const Icon(

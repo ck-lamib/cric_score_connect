@@ -37,6 +37,10 @@ import 'package:cric_score_connect/screens/signup/controller/signup_controller.d
 import 'package:cric_score_connect/screens/signup/views/signup_screen.dart';
 import 'package:cric_score_connect/screens/splash/controller/splash_controller.dart';
 import 'package:cric_score_connect/screens/splash/views/splash_screen.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/controller/un_paid_history_controller.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/controller/un_paid_history_detail_controller.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/views/un_paid_history_detail_screen.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/views/un_paid_history_screen.dart';
 import 'package:get/get.dart';
 
 var pages = [
@@ -204,6 +208,24 @@ var pages = [
     binding: BindingsBuilder(
       () {
         Get.lazyPut(() => PaidHistoryDetailController());
+      },
+    ),
+  ),
+  GetPage(
+    name: UnPaidHistoryScreen.routeName,
+    page: () => UnPaidHistoryScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => UnPaidHistoryScreenController());
+      },
+    ),
+  ),
+  GetPage(
+    name: UnPaidHistoryDetailScreen.routeName,
+    page: () => UnPaidHistoryDetailScreen(),
+    binding: BindingsBuilder(
+      () {
+        Get.lazyPut(() => UnPaidHistoryDetailController());
       },
     ),
   ),
