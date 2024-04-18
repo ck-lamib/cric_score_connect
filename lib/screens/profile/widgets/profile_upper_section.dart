@@ -32,7 +32,7 @@ class ProfileUpperSection extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              const ProfileFrientStats(),
+              ProfileFrientStats(),
             ],
           ),
         ),

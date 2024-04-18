@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cric_score_connect/screens/gameprofile/controller/game_profile_controller.dart';
 import 'package:cric_score_connect/screens/gameprofile/views/batting_bowling_stat_tab.dart';
 import 'package:cric_score_connect/screens/gameprofile/widgets/game_profile_app_bar.dart';

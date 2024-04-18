@@ -1,11 +1,14 @@
+import 'package:cric_score_connect/screens/dashboard/controller/dashboard_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileFrientStats extends StatelessWidget {
-  const ProfileFrientStats({
+  ProfileFrientStats({
     super.key,
   });
+  DashboardController dashboardController = Get.find<DashboardController>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +23,24 @@ class ProfileFrientStats extends StatelessWidget {
           width: 1.5,
         ),
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ProfileFrientStatsTile(
-            data: "5",
-            title: "Total Friends",
+          Obx(
+            () => ProfileFrientStatsTile(
+              data: "${dashboardController.totalFriend.value}",
+              title: "Total Friends",
+            ),
           ),
           SizedBox(
             width: 5,
           ),
-          ProfileFrientStatsTile(
-            data: "5",
-            title: "Request Sent",
+          Obx(
+            () => ProfileFrientStatsTile(
+              data: "${dashboardController.totalMatchPlayed.value}",
+              title: "Match Played",
+            ),
           ),
         ],
       ),

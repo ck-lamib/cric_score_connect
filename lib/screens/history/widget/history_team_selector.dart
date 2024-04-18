@@ -88,12 +88,12 @@ class _HistorySelectTeamTabBarState extends State<HistorySelectTeamTabBar>
             children: [
               Obx(
                 () => HistoryTeamLineUpStats(
-                  gameTeam: c.liveMatchStat.value!.homeTeam!,
+                  gameTeam: c.matchStat.value!.homeTeam!,
                 ),
               ),
               Obx(
                 () => HistoryTeamLineUpStats(
-                  gameTeam: c.liveMatchStat.value!.awayTeam!,
+                  gameTeam: c.matchStat.value!.awayTeam!,
                 ),
               )
             ],
@@ -395,7 +395,7 @@ class HistoryBowlerTile extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            "${bowler.bowler ?? false ? "* " : ""}${bowler.name}",
+            "${bowler.name}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
@@ -471,7 +471,7 @@ class HistoryBatterTile extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            "${batter.striker ?? false ? "* " : ""}${batter.name}",
+            "${batter.name}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

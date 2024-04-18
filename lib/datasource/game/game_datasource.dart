@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
+import 'package:cric_score_connect/models/gamestats/match_store.dart';
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/http_request.dart';
 import 'package:cric_score_connect/utils/routes/api.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/retry.dart';
 
 class GameDataSourceRepo {
   //
@@ -24,7 +24,7 @@ class GameDataSourceRepo {
     required int noOfOver,
     required int playerPerTeam,
     required String tossWinner,
-    required Function(String matchCode) onSuccess,
+    required Function(MatchStore matchStore) onSuccess,
     required Function(String message) onError,
   }) async {
     try {
@@ -69,7 +69,7 @@ class GameDataSourceRepo {
       //check status code
       if (response.statusCode >= 200 || response.statusCode < 300) {
         CustomLogger.trace(response.body);
-        String matchKey = "${responseData["key"]}";
+        MatchStore matchKey = MatchStore.fromJson(responseData);
         onSuccess(matchKey);
       } else {
         if (responseData.toString().contains("error")) {
@@ -146,6 +146,7 @@ class GameDataSourceRepo {
       };
 
       var body = liveMatchStat.toJson();
+      CustomLogger.trace("api: => ${Api.updateGameDataUrl}");
 
       CustomLogger.trace(jsonEncode(body));
       http.Response response = await HttpRequest.post(
@@ -153,7 +154,7 @@ class GameDataSourceRepo {
           Api.updateGameDataUrl,
         ),
         headers: headers,
-        body: body,
+        body: jsonEncode(body),
       );
       CustomLogger.trace(response);
 
@@ -213,6 +214,53 @@ class GameDataSourceRepo {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         CustomLogger.trace(response.body);
         onSuccess("Payment success");
+      } else {
+        if (responseData.toString().contains("error")) {
+          onError(responseData["error"]);
+        } else {
+          onError("Sorry something went wrong");
+        }
+      }
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      onError("Sorry something went wrong");
+    }
+  }
+
+  static Future<void> getMatchHistoryDetail({
+    required int userId,
+    required Function(List<LiveMatchStat> liveMatchStatList) onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      var headers = {
+        "Accept": "application/json",
+      };
+      var body = {
+        "user_id": userId,
+      };
+
+      http.Response response = await HttpRequest.post(
+        Uri.parse(
+          Api.getMatchHistoryUrl,
+        ),
+        headers: headers,
+        body: jsonEncode(body),
+      );
+      CustomLogger.trace(response);
+
+      var responseData = jsonDecode(response.body);
+      CustomLogger.trace(
+          "fetch live match decoded response : -> $responseData");
+      //check status code
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        CustomLogger.trace(response.body);
+        List<LiveMatchStat> liveMatchStatList =
+            liveMatchStatListFromJson(responseData);
+        onSuccess(liveMatchStatList);
+      } else if (response.statusCode == 403) {
+        onError(responseData["error"]);
       } else {
         if (responseData.toString().contains("error")) {
           onError(responseData["error"]);

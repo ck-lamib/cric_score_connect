@@ -46,4 +46,44 @@ class UserStatsRepo {
       onError("Sorry something went wrong");
     }
   }
+
+  static Future<void> getUserSummaryStat({
+    required int userId,
+    required Function(int totalFreiend, int totalMatchPlayed) onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      var headers = {
+        "Accept": "application/json",
+      };
+
+      CustomLogger.trace(Api.getUserStatUrl(userId));
+
+      http.Response response = await HttpRequest.get(
+        Uri.parse(
+          Api.getUserMatchSummary(userId),
+        ),
+        headers: headers,
+      );
+
+      var responseData = jsonDecode(response.body);
+      CustomLogger.trace(
+          "user summary stats decoded response : -> $responseData");
+      //check status code
+      if (response.statusCode == 200) {
+        onSuccess(
+            responseData["Total_friend"], responseData["Total_match_played"]);
+      } else {
+        if (responseData.toString().contains("error")) {
+          onError(responseData["error"]);
+        } else {
+          onError("Sorry something went wrong");
+        }
+      }
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      onError("Sorry something went wrong");
+    }
+  }
 }

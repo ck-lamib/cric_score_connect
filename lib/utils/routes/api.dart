@@ -24,4 +24,6 @@ class Api {
   static const fetchLiveMatchUrl = "$baseUrl/join-live-games";
   static const updateGameDataUrl = "$baseUrl/update-game-data";
   static const payementStoreUrl = "$baseUrl/payment-store";
+  static const getMatchHistoryUrl = "$baseUrl/payment-store";
+  static getUserMatchSummary(int userId) => "$baseUrl/user/$userId/summary";
 }

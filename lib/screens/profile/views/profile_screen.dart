@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cric_score_connect/screens/dashboard/controller/dashboard_controller.dart';
 import 'package:cric_score_connect/screens/profile/controller/profile_controller.dart';
 import 'package:cric_score_connect/screens/profile/widgets/profile_app_bar.dart';
 import 'package:cric_score_connect/screens/profile/widgets/profile_bottom_section.dart';
@@ -31,22 +32,30 @@ class ProfileScreen extends StatelessWidget {
               margin: const EdgeInsets.only(
                 top: kToolbarHeight * 1.18,
               ),
-              child: CustomScrollView(
-                physics: ClampingScrollPhysics(),
-                slivers: [
-                  SliverList.list(
-                    children: [
-                      const ProfileUpperSection(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      ProfileBottomSection(),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                    ],
-                  ),
-                ],
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  DashboardController dashboardController =
+                      Get.find<DashboardController>();
+                  dashboardController.getUserSummaryStats();
+                  dashboardController.getUserData();
+                },
+                child: CustomScrollView(
+                  physics: ClampingScrollPhysics(),
+                  slivers: [
+                    SliverList.list(
+                      children: [
+                        const ProfileUpperSection(),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        ProfileBottomSection(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

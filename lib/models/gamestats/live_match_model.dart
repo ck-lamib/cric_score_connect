@@ -2,8 +2,16 @@ import 'dart:convert';
 
 import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 
+List<LiveMatchStat> liveMatchStatListFromJson(List<dynamic> jsons) => jsons
+    .map(
+      (e) => LiveMatchStat.fromJson(e),
+    )
+    .toList();
+
 class LiveMatchStat {
   final String? matchId;
+  final int? team1Id;
+  final int? team2Id;
   final bool? isGameFinished;
   final String? finishedMessage;
   final bool? isGameCanceled;
@@ -26,6 +34,8 @@ class LiveMatchStat {
 
   LiveMatchStat({
     this.matchId,
+    this.team1Id,
+    this.team2Id,
     this.isGameFinished,
     this.finishedMessage,
     this.isGameCanceled,
@@ -49,6 +59,8 @@ class LiveMatchStat {
 
   LiveMatchStat copyWith({
     String? matchId,
+    int? team1Id,
+    int? team2Id,
     bool? isGameFinished,
     String? finishedMessage,
     bool? isGameCanceled,
@@ -71,6 +83,8 @@ class LiveMatchStat {
   }) =>
       LiveMatchStat(
         matchId: matchId ?? this.matchId,
+        team1Id: team1Id ?? this.team1Id,
+        team2Id: team2Id ?? this.team2Id,
         isGameFinished: isGameFinished ?? this.isGameFinished,
         finishedMessage: finishedMessage ?? this.finishedMessage,
         isGameCanceled: isGameCanceled ?? this.isGameCanceled,
@@ -105,6 +119,8 @@ class LiveMatchStat {
         double.tryParse(json["firstInningTotalOver"].toString()) ?? 0.0);
     return LiveMatchStat(
       matchId: json["match_id"],
+      team1Id: json["team1_id"],
+      team2Id: json["team2_id"],
       isGameFinished: json["isGameFinished"],
       finishedMessage: json["finishedMessage"],
       isGameCanceled: json["isGameCanceled"],
@@ -138,6 +154,8 @@ class LiveMatchStat {
 
   Map<String, dynamic> toJson() => {
         "match_id": matchId,
+        "team1_id": team1Id,
+        "team2_id": team2Id,
         "isGameFinished": isGameFinished,
         "finishedMessage": finishedMessage,
         "isGameCanceled": isGameCanceled,

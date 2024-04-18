@@ -2,6 +2,7 @@ import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/datasource/friend/friends_repo.dart';
 import 'package:cric_score_connect/datasource/game/game_datasource.dart';
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
+import 'package:cric_score_connect/models/gamestats/match_store.dart';
 import 'package:cric_score_connect/models/overs.dart';
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
@@ -17,6 +18,7 @@ import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class TeamVsTeamGameController extends GetxController {
   @override
@@ -24,7 +26,8 @@ class TeamVsTeamGameController extends GetxController {
     super.onInit();
   }
 
-  String matchKey = "";
+  // String matchKey = "";
+  Rxn<MatchStore> matchStoreData = Rxn();
 
   Future<bool> storeMatch() async {
     var result = false;
@@ -32,6 +35,7 @@ class TeamVsTeamGameController extends GetxController {
     int userId = cc.currentUser.value!.id!;
     RequestLoader requestLoader = RequestLoader();
     requestLoader.show(message: "Getting user!!!");
+
     await GameDataSourceRepo.uploadMatchDetail(
       userId: userId,
       homeTeamName: homeTeamController.text,
@@ -46,7 +50,7 @@ class TeamVsTeamGameController extends GetxController {
       tossWinner: tossWinner!,
       venue: venueController.text,
       onSuccess: (mkey) async {
-        matchKey = mkey;
+        matchStoreData.value = mkey;
         requestLoader.hide();
         result = true;
       },
@@ -64,7 +68,6 @@ class TeamVsTeamGameController extends GetxController {
     MatchController matchController = Get.find<MatchController>();
     String battingTeam = "";
     String bowlingTeam = "";
-
     if (matchController.optedTo == "Bat") {
       battingTeam = matchController.tossWinner == homeTeamController.text
           ? homeTeamController.text
@@ -97,6 +100,9 @@ class TeamVsTeamGameController extends GetxController {
     var oversRemaining = noOfOvers - currentOver;
     await GameDataSourceRepo.uploadGameData(
       liveMatchStat: LiveMatchStat(
+        matchId: matchStoreData.value?.id.toString(),
+        team1Id: matchStoreData.value?.team1Id,
+        team2Id: matchStoreData.value?.team2Id,
         isGameFinished: false,
         userId: cc.currentUser.value!.id.toString(),
         crr: matchController.getInningDetail.totalRunTillNow.value == 0
@@ -220,11 +226,12 @@ class TeamVsTeamGameController extends GetxController {
             )
             .toList(),
       ),
-      onSuccess: (mkey) async {
-        matchKey = mkey;
+      onSuccess: (message) async {
+        // matchKey = mkey;
+        CustomLogger.trace(message);
       },
       onError: (message) {
-        CustomSnackBar.error(title: "Failed", message: message);
+        CustomSnackBar.error(title: "Failed to send data", message: message);
       },
     );
   }

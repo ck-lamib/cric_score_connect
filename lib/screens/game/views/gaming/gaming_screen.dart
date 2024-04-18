@@ -57,21 +57,21 @@ class GamingScreen extends StatelessWidget {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text("End game!"),
-                content: Text(
+                title: const Text("End game!"),
+                content: const Text(
                     "Do you want to end the game?. If yes then all of your progress will be lost."),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Get.back(result: true);
                     },
-                    child: Text("Yes"),
+                    child: const Text("Yes"),
                   ),
                   TextButton(
                     onPressed: () {
                       Get.back(result: false);
                     },
-                    child: Text("No"),
+                    child: const Text("No"),
                   ),
                 ],
               );
@@ -178,10 +178,12 @@ class GamingScreen extends StatelessWidget {
                               color: AppColors.hintTextColor,
                             ),
                           ),
-                          Text(
-                            "${c.matchKey}",
-                            style: CustomTextStyles.f14W500(
-                              color: AppColors.hintTextColor,
+                          Obx(
+                            () => Text(
+                              "${c.matchStoreData.value?.key}",
+                              style: CustomTextStyles.f14W500(
+                                color: AppColors.hintTextColor,
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -190,14 +192,15 @@ class GamingScreen extends StatelessWidget {
                           InkWell(
                             splashFactory: InkRipple.splashFactory,
                             onTap: () {
-                              Clipboard.setData(ClipboardData(text: c.matchKey))
+                              Clipboard.setData(ClipboardData(
+                                      text: c.matchStoreData.value!.key!))
                                   .then(
                                 (value) => CustomSnackBar.info(
                                     message:
-                                        "Successfully copied ${c.matchKey} to clipboard."),
+                                        "Successfully copied ${c.matchStoreData.value?.key} to clipboard."),
                               );
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.copy_rounded,
                               size: 20,
                             ),

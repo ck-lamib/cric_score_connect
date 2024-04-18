@@ -1,14 +1,14 @@
 import 'package:cric_score_connect/common/common_app_bar.dart';
+import 'package:cric_score_connect/screens/history/controller/history_controller.dart';
 import 'package:cric_score_connect/screens/history/views/history_detail_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class HistoryScreen extends StatelessWidget {
   static const String routeName = "/history-screen";
-  const HistoryScreen({super.key});
+  HistoryScreen({super.key});
+  HistoryScreenController c = Get.find<HistoryScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,30 +31,54 @@ class HistoryScreen extends StatelessWidget {
               pinned: true,
             )
           ],
-          body: ListView(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Get.toNamed(HistoryDetailScreen.routeName);
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 5,
-                  ),
-                  child: Card(
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: AppColors.backGroundColor,
-                        child: Text("1"),
+          body: Obx(
+            () => c.isDataLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : c.liveMatchStatList.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "No match history found. Please check again later.",
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () async {},
+                        child: ListView.builder(
+                          itemCount: c.liveMatchStatList.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Get.toNamed(
+                                  HistoryDetailScreen.routeName,
+                                  arguments: c.liveMatchStatList[index],
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 5,
+                                ),
+                                child: Card(
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor:
+                                          AppColors.backGroundColor,
+                                      child: Text("$index"),
+                                    ),
+                                    title: Text(
+                                        c.liveMatchStatList[index].matchId ??
+                                            "#123"),
+                                    subtitle: Text(
+                                      "Match between ${c.liveMatchStatList[index].homeTeamName} and ${c.liveMatchStatList[index].awayTeamName}",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      title: Text("Match1"),
-                      subtitle: Text("Match between TEam A and TEam B"),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
         ),
       ),

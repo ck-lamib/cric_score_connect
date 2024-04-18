@@ -33,41 +33,37 @@ class HistoryDetailScreen extends StatelessWidget {
               pinned: true,
             )
           ],
-          body: Obx(
-            () => c.isPageLoading.value
-                ? Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: ListView(
-                      children: [
-                        Card(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
-                          ),
-                          color: Colors.green,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 12,
-                            ),
-                            child: Text(
-                              "Team A wins the game by 5 wickets.",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        HistorySelectTeamTabBar(),
-                      ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: ListView(
+              children: [
+                Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
                     ),
                   ),
+                  color: Colors.green,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    child: Text(
+                      c.matchStat.value?.finishedMessage ?? "",
+                      textAlign: TextAlign.center,
+                      style: CustomTextStyles.f14W500(
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                const HistorySelectTeamTabBar(),
+              ],
+            ),
           ),
         ),
       ),
