@@ -236,12 +236,14 @@ class GameDataSourceRepo {
   }) async {
     try {
       var headers = {
+        "Content-Type": "application/json",
         "Accept": "application/json",
       };
       CustomLogger.trace(Api.getPaidMatchHistoryUrl);
       var body = {
         "user_id": userId,
       };
+      CustomLogger.trace(body);
 
       http.Response response = await HttpRequest.post(
         Uri.parse(
@@ -278,23 +280,25 @@ class GameDataSourceRepo {
   }
 
   static Future<void> getPaidMatchHistoryDetail({
-    required int userId,
+    required String matchKey,
     required String matchId,
     required Function(LiveMatchStat matchStat) onSuccess,
     required Function(String message) onError,
   }) async {
     try {
       var headers = {
+        "Content-Type": "application/json",
         "Accept": "application/json",
       };
-      CustomLogger.trace(Api.getPaidMatchHistoryUrl);
+      CustomLogger.trace(Api.getMatchHistoryDetail);
       var body = {
-        "user_id": userId,
+        "key": matchKey,
       };
+      CustomLogger.trace(body);
 
       http.Response response = await HttpRequest.post(
         Uri.parse(
-          Api.getPaidMatchHistoryUrl,
+          Api.getMatchHistoryDetail,
         ),
         headers: headers,
         body: jsonEncode(body),

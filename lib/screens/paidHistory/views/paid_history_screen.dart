@@ -1,6 +1,8 @@
 import 'package:cric_score_connect/common/common_app_bar.dart';
 import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_controller.dart';
+import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_detail_controller.dart';
 import 'package:cric_score_connect/screens/paidHistory/views/paid_history_detail_screen.dart';
+
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -54,10 +56,12 @@ class PaidHistoryScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  // Get.toNamed(
-                                  //   HistoryDetailScreen.routeName,
-                                  //   arguments: c.liveMatchStatList[index],
-                                  // );
+                                  Get.toNamed(
+                                    PaidHistoryDetailScreen.routeName,
+                                    arguments: PaidHistoryDetailArgument(
+                                        key: c.matchHistoryModelList[index]
+                                            .matchKey!),
+                                  );
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(

@@ -81,7 +81,16 @@ class ProfileBottomSection extends StatelessWidget {
               Icons.history_rounded,
               color: AppColors.backGroundColor,
             ),
-            title: 'History',
+            title: 'Match History',
+            onTap: () =>
+                Navigator.of(context).pushNamed(PaidHistoryScreen.routeName),
+          ),
+          ProfileListTile(
+            leadingWidget: const Icon(
+              Icons.history_rounded,
+              color: AppColors.backGroundColor,
+            ),
+            title: 'Paid Match History',
             onTap: () =>
                 Navigator.of(context).pushNamed(PaidHistoryScreen.routeName),
           ),
