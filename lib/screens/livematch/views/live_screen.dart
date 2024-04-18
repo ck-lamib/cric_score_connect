@@ -25,7 +25,7 @@ class LiveScreen extends StatelessWidget {
       body: SafeArea(
         child: Obx(
           () => c.isPageLoading.value
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : NestedScrollView(
@@ -247,7 +247,7 @@ class LiveScreen extends StatelessWidget {
                               const Divider(),
                               Obx(
                                 () => c.striker.value == null
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -323,7 +323,7 @@ class LiveScreen extends StatelessWidget {
                               SizeConfig.getSpace(height: 5),
                               Obx(
                                 () => c.nonStriker.value == null
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -485,7 +485,7 @@ class LiveScreen extends StatelessWidget {
                               const Divider(),
                               Obx(
                                 () => c.bowler.value == null
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : Row(
                                         children: [
                                           Expanded(
@@ -555,95 +555,6 @@ class LiveScreen extends StatelessWidget {
                           ),
                         ),
                         SizeConfig.getSpace(),
-                        // Container(
-                        //   padding: const EdgeInsets.symmetric(
-                        //     horizontal: 10,
-                        //     vertical: 5,
-                        //   ),
-                        //   decoration: BoxDecoration(
-                        //     color: AppColors.primaryColor,
-                        //     shape: BoxShape.rectangle,
-                        //     borderRadius: BorderRadius.circular(10),
-                        //     border: Border.all(
-                        //       color: AppColors.backGroundColor,
-                        //       width: 1,
-                        //     ),
-                        //   ),
-                        //   child: Row(
-                        //     children: [
-                        //       Expanded(
-                        //         flex: 1,
-                        //         child: Text(
-                        //           "This Over:",
-                        //           textAlign: TextAlign.center,
-                        //           style: CustomTextStyles.f14W500(),
-                        //         ),
-                        //       ),
-                        //       Expanded(
-                        //         flex: 4,
-                        //         child: SizedBox(
-                        //           height: 70,
-                        //           child: ListView.builder(
-                        //             scrollDirection: Axis.horizontal,
-                        //             itemCount: 6,
-                        //             itemBuilder: (context, index) {
-                        //               return Container(
-                        //                 margin: const EdgeInsets.symmetric(
-                        //                   horizontal: 5,
-                        //                 ),
-                        //                 child: Column(
-                        //                   crossAxisAlignment:
-                        //                       CrossAxisAlignment.center,
-                        //                   mainAxisAlignment:
-                        //                       MainAxisAlignment.center,
-                        //                   children: [
-                        //                     Container(
-                        //                       height: 30,
-                        //                       width: 30,
-                        //                       alignment: Alignment.center,
-                        //                       decoration: BoxDecoration(
-                        //                         color: "" != ""
-                        //                             ? AppColors.errorColor
-                        //                             : AppColors.primaryColor,
-                        //                         shape: BoxShape.circle,
-                        //                         // borderRadius: BorderRadius.circular(10),
-                        //                         border: Border.all(
-                        //                           color: "" != ""
-                        //                               ? AppColors.errorColor
-                        //                               : AppColors.hintTextColor,
-                        //                           width: 1,
-                        //                         ),
-                        //                       ),
-                        //                       child: Text(
-                        //                         "" != "" ? "" : "",
-                        //                         style: CustomTextStyles.f10W400(
-                        //                           color: "" != ""
-                        //                               ? AppColors.primaryColor
-                        //                               : AppColors.hintTextColor,
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                     Text(
-                        //                       "" != ""
-                        //                           ? "" == ""
-                        //                               ? ""
-                        //                               : ""
-                        //                           : "",
-                        //                       style: CustomTextStyles.f12W400(
-                        //                         color: AppColors.hintTextColor,
-                        //                       ),
-                        //                     ),
-                        //                   ],
-                        //                 ),
-                        //               );
-                        //             },
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // SizeConfig.getSpace(),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 0,
@@ -675,51 +586,61 @@ class LiveScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       flex: 1,
-                                      child: Text(
-                                        "${c.liveMatchStat.value?.extras?.byes} B",
-                                        textAlign: TextAlign.center,
-                                        style: CustomTextStyles.f14W500(
-                                          color: AppColors.hintTextColor,
+                                      child: Obx(
+                                        () => Text(
+                                          "${c.liveMatchStat.value?.extras?.byes} B",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTextStyles.f14W500(
+                                            color: AppColors.hintTextColor,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Text(
-                                        "${c.liveMatchStat.value?.extras?.legByes} LB",
-                                        textAlign: TextAlign.center,
-                                        style: CustomTextStyles.f14W500(
-                                          color: AppColors.hintTextColor,
+                                      child: Obx(
+                                        () => Text(
+                                          "${c.liveMatchStat.value?.extras?.legByes} LB",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTextStyles.f14W500(
+                                            color: AppColors.hintTextColor,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Text(
-                                        "${c.liveMatchStat.value?.extras?.wide} WD",
-                                        textAlign: TextAlign.center,
-                                        style: CustomTextStyles.f14W500(
-                                          color: AppColors.hintTextColor,
+                                      child: Obx(
+                                        () => Text(
+                                          "${c.liveMatchStat.value?.extras?.wide} WD",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTextStyles.f14W500(
+                                            color: AppColors.hintTextColor,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Text(
-                                        "${c.liveMatchStat.value?.extras?.noBall} NB",
-                                        textAlign: TextAlign.center,
-                                        style: CustomTextStyles.f14W500(
-                                          color: AppColors.hintTextColor,
+                                      child: Obx(
+                                        () => Text(
+                                          "${c.liveMatchStat.value?.extras?.noBall} NB",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTextStyles.f14W500(
+                                            color: AppColors.hintTextColor,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Text(
-                                        "${c.liveMatchStat.value?.extras?.penalty} P",
-                                        textAlign: TextAlign.center,
-                                        style: CustomTextStyles.f14W500(
-                                          color: AppColors.hintTextColor,
+                                      child: Obx(
+                                        () => Text(
+                                          "${c.liveMatchStat.value?.extras?.penalty} P",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTextStyles.f14W500(
+                                            color: AppColors.hintTextColor,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -730,7 +651,7 @@ class LiveScreen extends StatelessWidget {
                           ),
                         ),
                         SizeConfig.getSpace(),
-                        SelectTeamTabBar(),
+                        const SelectTeamTabBar(),
                       ],
                     ),
                   ),

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
+
 class LiveMatchStat {
   final String? matchId;
   final bool? isGameFinished;
@@ -98,35 +100,41 @@ class LiveMatchStat {
 
   String toRawJson() => json.encode(toJson());
 
-  factory LiveMatchStat.fromJson(Map<String, dynamic> json) => LiveMatchStat(
-        matchId: json["match_id"],
-        isGameFinished: json["isGameFinished"],
-        finishedMessage: json["finishedMessage"],
-        isGameCanceled: json["isGameCanceled"],
-        userId: json["user_id"],
-        target: json["target"],
-        crr: json["CRR"],
-        rrr: json["RRR"],
-        homeTeamName: json["homeTeamName"],
-        awayTeamName: json["awayTeamName"],
-        isFirstInning: json["isFirstInning"],
-        firstInningTotalRun: json["firstInningTotalRun"],
-        firstInningTotalOver: json["firstInningTotalOver"],
-        firstInningTotalWicket: json["firstInningTotalWicket"],
-        secondInningTotalRun: json["secondInningTotalRun"],
-        secondInningTotalOver: json["secondInningTotalOver"],
-        secondInningTotalWicket: json["secondInningTotalWicket"],
-        extras:
-            json["extras"] == null ? null : LiveExtras.fromJson(json["extras"]),
-        homeTeam: json["homeTeam"] == null
-            ? []
-            : List<LiveTeam>.from(
-                json["homeTeam"]!.map((x) => LiveTeam.fromJson(x))),
-        awayTeam: json["awayTeam"] == null
-            ? []
-            : List<LiveTeam>.from(
-                json["awayTeam"]!.map((x) => LiveTeam.fromJson(x))),
-      );
+  factory LiveMatchStat.fromJson(Map<String, dynamic> json) {
+    CustomLogger.trace(
+        double.tryParse(json["firstInningTotalOver"].toString()) ?? 0.0);
+    return LiveMatchStat(
+      matchId: json["match_id"],
+      isGameFinished: json["isGameFinished"],
+      finishedMessage: json["finishedMessage"],
+      isGameCanceled: json["isGameCanceled"],
+      userId: json["user_id"],
+      target: json["target"],
+      crr: json["CRR"],
+      rrr: json["RRR"],
+      homeTeamName: json["homeTeamName"],
+      awayTeamName: json["awayTeamName"],
+      isFirstInning: json["isFirstInning"],
+      firstInningTotalRun: json["firstInningTotalRun"],
+      firstInningTotalOver:
+          double.tryParse(json["firstInningTotalOver"].toString()) ?? 0.0,
+      firstInningTotalWicket: json["firstInningTotalWicket"],
+      secondInningTotalRun: json["secondInningTotalRun"],
+      secondInningTotalOver:
+          double.tryParse(json["secondInningTotalOver"].toString()) ?? 0,
+      secondInningTotalWicket: json["secondInningTotalWicket"],
+      extras:
+          json["extras"] == null ? null : LiveExtras.fromJson(json["extras"]),
+      homeTeam: json["homeTeam"] == null
+          ? []
+          : List<LiveTeam>.from(
+              json["homeTeam"]!.map((x) => LiveTeam.fromJson(x))),
+      awayTeam: json["awayTeam"] == null
+          ? []
+          : List<LiveTeam>.from(
+              json["awayTeam"]!.map((x) => LiveTeam.fromJson(x))),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "match_id": matchId,
@@ -163,7 +171,7 @@ class LiveTeam {
   final bool? striker;
   final bool? nonStriker;
   final bool? bowler;
-  final String? out;
+  final bool? out;
   final LiveMatchBattingStat? matchBattingStat;
   final LiveMatchBowlingStat? matchBowlingStat;
 
@@ -186,7 +194,7 @@ class LiveTeam {
     bool? striker,
     bool? nonStriker,
     bool? bowler,
-    String? out,
+    bool? out,
     LiveMatchBattingStat? matchBattingStat,
     LiveMatchBowlingStat? matchBowlingStat,
   }) =>
@@ -344,7 +352,7 @@ class LiveMatchBowlingStat {
         noBalls: json["noBalls"],
         maidens: json["maidens"],
         wickets: json["wickets"],
-        overs: json["overs"],
+        overs: double.tryParse(json["overs"].toString()) ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

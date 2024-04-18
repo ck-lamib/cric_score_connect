@@ -21,5 +21,7 @@ class Api {
   static getAllFriendUrl(int id) => "$baseUrl/users/$id/friends";
 
   static const storeMatchUrl = "$baseUrl/match/store";
-  static const fetchLiveMatchUrl = "$baseUrl/games/2";
+  static const fetchLiveMatchUrl = "$baseUrl/join-live-games";
+  static const updateGameDataUrl = "$baseUrl/update-game-data";
+  static const payementStoreUrl = "$baseUrl/payment-store";
 }

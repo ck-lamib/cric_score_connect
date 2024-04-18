@@ -1,10 +1,16 @@
 import 'dart:async';
 
+import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/datasource/game/game_datasource.dart';
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
+import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
+import 'package:cric_score_connect/utils/routes/image_path.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 class LiveScreenController extends GetxController {
   var matchKey = "";
@@ -13,6 +19,7 @@ class LiveScreenController extends GetxController {
   Rxn<LiveTeam> bowler = Rxn();
   Rxn<LiveTeam> striker = Rxn();
   Rxn<LiveTeam> nonStriker = Rxn();
+  RequestLoader requestLoader = RequestLoader();
 
   @override
   void onInit() {
@@ -31,18 +38,17 @@ class LiveScreenController extends GetxController {
 
   geLiveMatchStatForFirstTime() async {
     isPageLoading.value = true;
-    RequestLoader requestLoader = RequestLoader();
     requestLoader.show();
     await getMatchDetail().whenComplete(
-      () {
-        requestLoader.hide();
-        isPageLoading.value = false;
-      },
+      () {},
     );
   }
 
   Future<void> getMatchDetail() async {
+    CoreController cc = Get.find<CoreController>();
     await GameDataSourceRepo.getLiveMatchDetail(
+      userId: cc.currentUser.value!.id!,
+      matchKey: matchKey,
       onSuccess: (liveMatchStats) async {
         liveMatchStat.value = liveMatchStats;
 
@@ -51,15 +57,128 @@ class LiveScreenController extends GetxController {
           ...liveMatchStat.value?.homeTeam ?? [],
           ...liveMatchStat.value?.awayTeam ?? []
         ];
-        bowler.value =
-            allPlayers.firstWhere((element) => element.bowler == true);
-        striker.value =
-            allPlayers.firstWhere((element) => element.striker == true);
-        nonStriker.value =
-            allPlayers.firstWhere((element) => element.nonStriker == true);
+        print(allPlayers);
+        try {
+          bowler.value = allPlayers.firstWhere(
+            (element) => element.bowler == true,
+          );
+        } catch (_) {}
+        try {
+          striker.value =
+              allPlayers.firstWhere((element) => element.striker == true);
+        } catch (_) {}
+
+        try {
+          nonStriker.value =
+              allPlayers.firstWhere((element) => element.nonStriker == true);
+        } catch (_) {}
+
+        requestLoader.hide();
+        isPageLoading.value = false;
       },
-      onError: (message) {
-        CustomSnackBar.error(title: "Reject request", message: message);
+      onError: (message) async {
+        if (message.contains("Invalid match key")) {
+          requestLoader.hide();
+          Get.back();
+          CustomSnackBar.error(title: "Reject request", message: message);
+        } else if (message.contains("You have not paid for this match")) {
+          requestLoader.hide();
+          bool? paymenResult = await showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text("Payment required!!!"),
+                content: const Text(
+                    "You haven't made any payement for this game. Please pay with our payement partner khalti."),
+                actions: [
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Image.asset(
+                      ImagePath.khaltiLogo,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.back(result: false);
+                    },
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.back(result: true);
+                    },
+                    child: const Text("OKay"),
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (paymenResult != null && paymenResult) {
+            await KhaltiScope.of(Get.context!).pay(
+              config: PaymentConfig(
+                amount: 1000, //in paisa
+                productIdentity: 'liveId',
+                productName: 'Live match',
+                mobileReadOnly: false,
+              ),
+              preferences: [
+                PaymentPreference.khalti,
+              ],
+              onSuccess: (paymentSuccessModel) async {
+                CustomLogger.trace(paymentSuccessModel.toString());
+                CustomLogger.trace(
+                  paymentSuccessModel.idx,
+                );
+                CoreController cc = Get.find<CoreController>();
+                requestLoader.show();
+                GameDataSourceRepo.saveTransaction(
+                    transactionId: paymentSuccessModel.idx,
+                    userId: cc.currentUser.value!.id!,
+                    matchId: matchKey,
+                    onSuccess: (message) {
+                      Get.offNamedUntil(
+                          DashboardScreen.routeName, (route) => false);
+                      requestLoader.hide();
+                      CustomSnackBar.success(
+                        title: "Payment success",
+                        message:
+                            "$message. Please load match again to view it.",
+                      );
+                    },
+                    onError: (message) {
+                      requestLoader.show();
+                      Get.offNamedUntil(
+                          DashboardScreen.routeName, (route) => false);
+                      CustomSnackBar.error(
+                        title: "Payment success but system error.",
+                        message: message,
+                      );
+                    });
+              },
+              onFailure: (paymentFailureModel) {
+                Get.back();
+                CustomSnackBar.error(
+                  title: "Payment failure",
+                  message: paymentFailureModel.message,
+                );
+              },
+              onCancel: () {
+                Get.back();
+                CustomSnackBar.error(message: "Cancled by user");
+              },
+            );
+          } else {
+            Get.back();
+          }
+        } else {
+          requestLoader.hide();
+          Get.back();
+          CustomSnackBar.error(title: "Reject request", message: message);
+        }
+        // requestLoader.hide();
+        // isPageLoading.value = false;
       },
     );
   }

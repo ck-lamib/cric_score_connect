@@ -157,7 +157,7 @@ class TeamVsTeamGameController extends GetxController {
                 id: item.id,
                 name: item.name,
                 username: item.username,
-                out: item.matchBattingStats?.outReason.value.name,
+                out: item.matchBattingStats?.outReason.value == Out.none,
                 bowler:
                     matchController.getInningDetail.bowler.value?.id == item.id,
                 striker: matchController.getInningDetail.striker.value?.id ==
@@ -191,7 +191,7 @@ class TeamVsTeamGameController extends GetxController {
                 id: item.id,
                 name: item.name,
                 username: item.username,
-                out: item.matchBattingStats?.outReason.value.name,
+                out: item.matchBattingStats?.outReason.value == Out.none,
                 bowler:
                     matchController.getInningDetail.bowler.value?.id == item.id,
                 striker: matchController.getInningDetail.striker.value?.id ==

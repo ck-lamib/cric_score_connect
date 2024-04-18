@@ -82,57 +82,57 @@ class TeamVsTeamGameScreen extends StatelessWidget {
                         },
                       ),
                       SizeConfig.getSpace(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                        ),
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: "You have ",
-                            style: CustomTextStyles.f14W400(
-                              color: AppColors.hintTextColor,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "3*",
-                                style: CustomTextStyles.f14W400(
-                                  color: AppColors.backGroundColor,
-                                ),
-                              ),
-                              const TextSpan(
-                                text: "  remaining Team vs Team Match Credits.",
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizeConfig.getSpace(height: 5),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                        ),
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            style: CustomTextStyles.f14W400(
-                              color: AppColors.hintTextColor,
-                            ),
-                            children: [
-                              TextSpan(
-                                  text: "Click Here",
-                                  style: CustomTextStyles.f14W400(
-                                    color: AppColors.backGroundColor,
-                                  ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {}),
-                              const TextSpan(
-                                text: "  to pay via Khalti.",
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //     horizontal: 10,
+                      //   ),
+                      //   child: RichText(
+                      //     textAlign: TextAlign.center,
+                      //     text: TextSpan(
+                      //       text: "You have ",
+                      //       style: CustomTextStyles.f14W400(
+                      //         color: AppColors.hintTextColor,
+                      //       ),
+                      //       children: [
+                      //         TextSpan(
+                      //           text: "3*",
+                      //           style: CustomTextStyles.f14W400(
+                      //             color: AppColors.backGroundColor,
+                      //           ),
+                      //         ),
+                      //         const TextSpan(
+                      //           text: "  remaining Team vs Team Match Credits.",
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizeConfig.getSpace(height: 5),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //     horizontal: 10,
+                      //   ),
+                      //   child: RichText(
+                      //     textAlign: TextAlign.center,
+                      //     text: TextSpan(
+                      //       style: CustomTextStyles.f14W400(
+                      //         color: AppColors.hintTextColor,
+                      //       ),
+                      //       children: [
+                      //         TextSpan(
+                      //             text: "Click Here",
+                      //             style: CustomTextStyles.f14W400(
+                      //               color: AppColors.backGroundColor,
+                      //             ),
+                      //             recognizer: TapGestureRecognizer()
+                      //               ..onTap = () {}),
+                      //         const TextSpan(
+                      //           text: "  to pay via Khalti.",
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

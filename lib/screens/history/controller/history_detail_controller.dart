@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/datasource/game/game_datasource.dart';
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
@@ -42,7 +43,10 @@ class HistoryDetailController extends GetxController {
   }
 
   Future<void> getMatchDetail() async {
+    CoreController cc = Get.find<CoreController>();
     await GameDataSourceRepo.getLiveMatchDetail(
+      userId: cc.currentUser.value!.id!,
+      matchKey: matchKey,
       onSuccess: (liveMatchStats) async {
         liveMatchStat.value = liveMatchStats;
 

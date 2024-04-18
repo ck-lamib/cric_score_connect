@@ -6,6 +6,7 @@ import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart'
 import 'package:cric_score_connect/screens/game/views/team_vs_team_game_screen.dart';
 import 'package:cric_score_connect/screens/home/controller/home_controller.dart';
 import 'package:cric_score_connect/screens/khalti/khalti_payment_integration.dart';
+import 'package:cric_score_connect/screens/livematch/controller/live_screen_controller.dart';
 import 'package:cric_score_connect/screens/livematch/views/live_screen.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
@@ -176,87 +177,56 @@ class HomeScreen extends StatelessWidget {
                         onTap: () async {
                           // Get.toNamed(LiveScreen.routeName);
 
-                          bool? paymenResult = await showDialog(
+                          TextEditingController textEditingController =
+                              TextEditingController();
+                          GlobalKey<FormState> formKey = GlobalKey<FormState>();
+                          String? matchKey = await showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Please enter the match key"),
-                                content: const Text(
-                                    "Please pay with our payement partner khalti."),
-                                actions: [
-                                  SizedBox(
-                                    height: 50,
-                                    width: 50,
-                                    child: Image.asset(
-                                      ImagePath.khaltiLogo,
+                              return Form(
+                                key: formKey,
+                                child: AlertDialog(
+                                  title:
+                                      const Text("Please enter the match key"),
+                                  content: CustomTextField(
+                                    controller: textEditingController,
+                                    textInputAction: TextInputAction.done,
+                                    textInputType: TextInputType.text,
+                                    labelText: "Enter match key",
+                                    hint: "#d123",
+                                    validator: Validators.checkFieldEmpty,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      child: const Text("Cancel"),
                                     ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Get.back(result: false);
-                                    },
-                                    child: const Text("Cancel"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Get.back(result: true);
-                                    },
-                                    child: const Text("OKay"),
-                                  ),
-                                ],
+                                    TextButton(
+                                      onPressed: () {
+                                        if (formKey.currentState!.validate()) {
+                                          Get.back(
+                                              result:
+                                                  textEditingController.text);
+                                        }
+                                      },
+                                      child: const Text("OKay"),
+                                    ),
+                                  ],
+                                ),
                               );
                             },
                           );
+                          print(matchKey);
 
-                          if (paymenResult != null && paymenResult) {
-                            payWithKhaltiInApp(context);
+                          if (matchKey != null) {
+                            Get.toNamed(
+                              LiveScreen.routeName,
+                              arguments: LiveScreenArgument(key: matchKey),
+                            );
                           }
                         },
-
-                        // {
-                        //   TextEditingController textEditingController =
-                        //       TextEditingController();
-                        //   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-                        //   String? matchKey = await showDialog(
-                        //     context: context,
-                        //     builder: (context) {
-                        //       return Form(
-                        //         key: formKey,
-                        //         child: AlertDialog(
-                        //           title:
-                        //               const Text("Please enter the match key"),
-                        //           content: CustomTextField(
-                        //             controller: textEditingController,
-                        //             textInputAction: TextInputAction.done,
-                        //             textInputType: TextInputType.text,
-                        //             labelText: "Enter match key",
-                        //             hint: "#d123",
-                        //             validator: Validators.checkFieldEmpty,
-                        //           ),
-                        //           actions: [
-                        //             TextButton(
-                        //               onPressed: () {
-                        //                 Get.back();
-                        //               },
-                        //               child: const Text("Cancel"),
-                        //             ),
-                        //             TextButton(
-                        //               onPressed: () {
-                        //                 if (formKey.currentState!.validate()) {
-                        //                   Get.back(
-                        //                       result:
-                        //                           textEditingController.text);
-                        //                 }
-                        //               },
-                        //               child: const Text("OKay"),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       );
-                        //     },
-                        //   );
-                        //   print(matchKey);
-                        // },
                         title: "Join Live Match",
                       ),
                     ],
@@ -270,22 +240,22 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  payWithKhaltiInApp(BuildContext context) {
-    KhaltiScope.of(context).pay(
-      config: PaymentConfig(
-        amount: 1000, //in paisa
-        productIdentity: 'liveId',
-        productName: 'Live match',
-        mobileReadOnly: false,
-      ),
-      preferences: [
-        PaymentPreference.khalti,
-      ],
-      onSuccess: (paymentSuccessModel) {},
-      onFailure: (paymentFailureModel) {
-        CustomLogger.trace(paymentFailureModel);
-      },
-      onCancel: () {},
-    );
-  }
+  // payWithKhaltiInApp(BuildContext context) {
+  //   KhaltiScope.of(context).pay(
+  //     config: PaymentConfig(
+  //       amount: 1000, //in paisa
+  //       productIdentity: 'liveId',
+  //       productName: 'Live match',
+  //       mobileReadOnly: false,
+  //     ),
+  //     preferences: [
+  //       PaymentPreference.khalti,
+  //     ],
+  //     onSuccess: (paymentSuccessModel) {},
+  //     onFailure: (paymentFailureModel) {
+  //       CustomLogger.trace(paymentFailureModel);
+  //     },
+  //     onCancel: () {},
+  //   );
+  // }
 }
