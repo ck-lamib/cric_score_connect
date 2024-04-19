@@ -330,7 +330,7 @@ class _UnPaidHistoryTeamLineUpStatsState
                           Expanded(
                             flex: 1,
                             child: Text(
-                              "W",
+                              "Wk",
                               textAlign: TextAlign.center,
                               style: CustomTextStyles.f14W500(
                                 color: AppColors.hintTextColor,
@@ -434,7 +434,7 @@ class UnPaidHistoryBowlerTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "${bowler.matchBowlingStat?.wides}",
+            "${bowler.matchBowlingStat?.wickets}",
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,

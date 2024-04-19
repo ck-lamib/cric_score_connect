@@ -329,7 +329,7 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
                           Expanded(
                             flex: 1,
                             child: Text(
-                              "W",
+                              "Wk",
                               textAlign: TextAlign.center,
                               style: CustomTextStyles.f14W500(
                                 color: AppColors.hintTextColor,
@@ -433,7 +433,7 @@ class LiveBowlerTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "${bowler.matchBowlingStat?.wides}",
+            "${bowler.matchBowlingStat?.wickets}",
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,

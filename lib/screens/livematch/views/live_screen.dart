@@ -533,7 +533,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                   Expanded(
                                     flex: 1,
                                     child: Text(
-                                      "W",
+                                      "Wk",
                                       textAlign: TextAlign.center,
                                       style: CustomTextStyles.f14W500(
                                         color: AppColors.hintTextColor,

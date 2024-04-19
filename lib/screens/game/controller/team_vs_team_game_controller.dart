@@ -575,7 +575,7 @@ class InningDetail extends GetxController {
     }
     _changeStrike();
     _changeBowler(newBowler);
-    isCurrentMaiden.value = true;
+    isCurrentMaiden.value = false;
     isOverInProgress.value = false;
     deliveryHistory.clear();
   }
@@ -930,7 +930,12 @@ class InningDetail extends GetxController {
       _changeStrike();
     }
     lastSevenDeliveries.add(delivery.shortSummary().split(','));
+
     if (Over.finished(currentBalls.value) && isOverInProgress.value) {
+      bool hasZeroRun = lastSevenDeliveries.every((e) => e[0] == "0" || e[0]);
+      if (hasZeroRun && lastSevenDeliveries.length == 6) {
+        isCurrentMaiden.value = true;
+      }
       lastSevenDeliveries.value = [];
 
 //for calculating team game controller
