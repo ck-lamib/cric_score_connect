@@ -1,4 +1,5 @@
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
+import 'package:cric_score_connect/models/overs.dart';
 import 'package:cric_score_connect/screens/livematch/controller/live_screen_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
@@ -38,6 +39,7 @@ class _SelectTeamTabBarState extends State<SelectTeamTabBar>
     return Column(
       children: [
         Container(
+          height: height * 0.04,
           padding: const EdgeInsets.all(0),
           decoration: BoxDecoration(
             color: AppColors.primaryColor,
@@ -64,16 +66,16 @@ class _SelectTeamTabBarState extends State<SelectTeamTabBar>
               ),
               labelColor: AppColors.primaryColor,
               unselectedLabelColor: AppColors.backGroundColor,
-              tabs: const [
+              tabs: [
                 Tab(
                   child: Text(
-                    'Home Team',
+                    '${c.liveMatchStat.value?.homeTeamName}',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Away Team',
+                    '${c.liveMatchStat.value?.awayTeamName}',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -155,7 +157,7 @@ class _TeamLineUpStatsState extends State<TeamLineUpStats>
               horizontal: 12 * 4,
             ),
             padding: const EdgeInsets.all(0),
-            height: height * 0.05,
+            height: height * 0.035,
             decoration: BoxDecoration(
               color: AppColors.primaryColor,
               shape: BoxShape.rectangle,
@@ -391,6 +393,11 @@ class LiveBowlerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double? totalRunsConceded =
+        (bowler.matchBowlingStat?.runs ?? 0.0).toDouble();
+    double totalOversBowled = double.parse(
+      Over.overs(bowler.matchBowlingStat?.balls ?? 0),
+    );
     return Row(
       children: [
         Expanded(
@@ -446,7 +453,12 @@ class LiveBowlerTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "0.00",
+            totalRunsConceded == 0 && totalOversBowled == 0
+                ? "0.0"
+                : ((totalRunsConceded / totalOversBowled)).isFinite
+                    ? ((totalRunsConceded / totalOversBowled))
+                        .toStringAsFixed(0)
+                    : "0",
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,
@@ -467,6 +479,8 @@ class LiveBatterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int? strikerRuns = batter.matchBattingStat?.runs ?? 0;
+    int strikerBalls = batter.matchBattingStat?.balls ?? 0;
     return Row(
       children: [
         Expanded(
@@ -522,7 +536,9 @@ class LiveBatterTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "0.00",
+            strikerBalls == 0 && strikerRuns == 0
+                ? "0.0"
+                : ((strikerRuns / strikerBalls) * 100).toStringAsFixed(0),
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,

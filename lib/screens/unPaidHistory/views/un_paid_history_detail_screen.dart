@@ -1,6 +1,7 @@
 import 'package:cric_score_connect/common/common_app_bar.dart';
 import 'package:cric_score_connect/screens/paidHistory/widget/paid_history_team_selector.dart';
 import 'package:cric_score_connect/screens/unPaidHistory/controller/un_paid_history_detail_controller.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/widget/un_paid_history_team_selector.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class UnPaidHistoryDetailScreen extends StatelessWidget {
                         const SizedBox(
                           height: 25,
                         ),
-                        const PaidHistorySelectTeamTabBar(),
+                        const UnPaidHistorySelectTeamTabBar(),
                       ],
                     ),
                   ),

@@ -1,4 +1,5 @@
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
+import 'package:cric_score_connect/models/overs.dart';
 import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_detail_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
@@ -64,16 +65,16 @@ class _PaidHistorySelectTeamTabBarState
               ),
               labelColor: AppColors.primaryColor,
               unselectedLabelColor: AppColors.backGroundColor,
-              tabs: const [
+              tabs: [
                 Tab(
                   child: Text(
-                    'Home Team',
+                    '${c.matchStat.value?.homeTeamName}',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Away Team',
+                    '${c.matchStat.value?.awayTeamName}',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -391,6 +392,11 @@ class HistoryBowlerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double? totalRunsConceded =
+        (bowler.matchBowlingStat?.runs ?? 0.0).toDouble();
+    double totalOversBowled = double.parse(
+      Over.overs(bowler.matchBowlingStat?.balls ?? 0),
+    );
     return Row(
       children: [
         Expanded(
@@ -446,7 +452,12 @@ class HistoryBowlerTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "0.00",
+            totalRunsConceded == 0 && totalOversBowled == 0
+                ? "0.0"
+                : ((totalRunsConceded / totalOversBowled)).isFinite
+                    ? ((totalRunsConceded / totalOversBowled))
+                        .toStringAsFixed(0)
+                    : "0",
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,
@@ -467,6 +478,8 @@ class HistoryBatterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int? strikerRuns = batter.matchBattingStat?.runs ?? 0;
+    int strikerBalls = batter.matchBattingStat?.balls ?? 0;
     return Row(
       children: [
         Expanded(
@@ -522,7 +535,9 @@ class HistoryBatterTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "0.00",
+            strikerBalls == 0 && strikerRuns == 0
+                ? "0.0"
+                : ((strikerRuns / strikerBalls) * 100).toStringAsFixed(0),
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,

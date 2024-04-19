@@ -398,7 +398,7 @@ class GamingScreen extends StatelessWidget {
                               flex: 2,
                               child: Obx(
                                 () => Text(
-                                  "* ${matchController.getInningDetail.striker.value?.username}",
+                                  "* ${matchController.getInningDetail.striker.value?.name}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
@@ -503,7 +503,7 @@ class GamingScreen extends StatelessWidget {
                                       flex: 2,
                                       child: Obx(
                                         () => Text(
-                                          "${matchController.getInningDetail.nonStriker.value?.username}",
+                                          "${matchController.getInningDetail.nonStriker.value?.name}",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,
@@ -690,7 +690,7 @@ class GamingScreen extends StatelessWidget {
                               flex: 2,
                               child: Obx(
                                 () => Text(
-                                  "${matchController.getInningDetail.bowler.value?.username}",
+                                  "${matchController.getInningDetail.bowler.value?.name}",
                                   textAlign: TextAlign.center,
                                   style: CustomTextStyles.f14W500(),
                                 ),

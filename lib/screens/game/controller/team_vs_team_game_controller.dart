@@ -183,7 +183,9 @@ class TeamVsTeamGameController extends GetxController {
                   runs: item.matchBowlingStats?.runs.value,
                   sixes: item.matchBowlingStats?.sixes.value,
                   noBalls: item.matchBowlingStats?.noBalls.value,
-                  overs: item.matchBowlingStats?.overs.value,
+                  overs: double.tryParse(
+                          item.matchBowlingStats?.oversBowled ?? "0.0") ??
+                      0.0,
                   wickets: item.matchBowlingStats?.wickets.value,
                   wides: item.matchBowlingStats?.wides.value,
                 ),
@@ -217,7 +219,9 @@ class TeamVsTeamGameController extends GetxController {
                   runs: item.matchBowlingStats?.runs.value,
                   sixes: item.matchBowlingStats?.sixes.value,
                   noBalls: item.matchBowlingStats?.noBalls.value,
-                  overs: item.matchBowlingStats?.overs.value,
+                  overs: double.tryParse(
+                          item.matchBowlingStats?.oversBowled ?? "0.0") ??
+                      0.0,
                   wickets: item.matchBowlingStats?.wickets.value,
                   wides: item.matchBowlingStats?.wides.value,
                 ),

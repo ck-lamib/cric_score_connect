@@ -1,4 +1,5 @@
 import 'package:cric_score_connect/common/common_app_bar.dart';
+import 'package:cric_score_connect/models/overs.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
 import 'package:cric_score_connect/screens/livematch/controller/live_screen_controller.dart';
 import 'package:cric_score_connect/screens/livematch/views/team_line_up_stats_tab.dart';
@@ -52,7 +53,7 @@ class _LiveScreenState extends State<LiveScreen> {
                   headerSliverBuilder: (context, innerBoxIsScrolled) => [
                     const CommonSilverAppBar(
                       hasLeading: true,
-                      title: "Live match screen",
+                      title: "Live match",
                       hasNotification: false,
                       scrolledUnderElevation: 0,
                       floating: false,
@@ -338,12 +339,37 @@ class _LiveScreenState extends State<LiveScreen> {
                                           ),
                                           Expanded(
                                             flex: 1,
-                                            child: Text(
-                                              "0.00",
-                                              textAlign: TextAlign.center,
-                                              style: CustomTextStyles.f14W500(
-                                                color: AppColors.hintTextColor,
-                                              ),
+                                            child: Obx(
+                                              () {
+                                                int? strikerRuns = c
+                                                        .striker
+                                                        .value!
+                                                        .matchBattingStat
+                                                        ?.runs ??
+                                                    0;
+                                                int strikerBalls = c
+                                                        .striker
+                                                        .value
+                                                        ?.matchBattingStat
+                                                        ?.balls ??
+                                                    0;
+
+                                                return Text(
+                                                  strikerBalls == 0 &&
+                                                          strikerRuns == 0
+                                                      ? "0.0"
+                                                      : ((strikerRuns /
+                                                                  strikerBalls) *
+                                                              100)
+                                                          .toStringAsFixed(0),
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      CustomTextStyles.f14W500(
+                                                    color:
+                                                        AppColors.hintTextColor,
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ],
@@ -414,14 +440,39 @@ class _LiveScreenState extends State<LiveScreen> {
                                           ),
                                           Expanded(
                                             flex: 1,
-                                            child: Text(
-                                              "0.00",
-                                              textAlign: TextAlign.center,
-                                              style: CustomTextStyles.f14W500(
-                                                color: AppColors.hintTextColor,
-                                              ),
+                                            child: Obx(
+                                              () {
+                                                int? nonStrikerRuns = c
+                                                        .nonStriker
+                                                        .value!
+                                                        .matchBattingStat
+                                                        ?.runs ??
+                                                    0;
+                                                int nonStrikerBalls = c
+                                                        .nonStriker
+                                                        .value
+                                                        ?.matchBattingStat
+                                                        ?.balls ??
+                                                    0;
+
+                                                return Text(
+                                                  nonStrikerBalls == 0 &&
+                                                          nonStrikerRuns == 0
+                                                      ? "0.0"
+                                                      : ((nonStrikerRuns /
+                                                                  nonStrikerBalls) *
+                                                              100)
+                                                          .toStringAsFixed(0),
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      CustomTextStyles.f14W500(
+                                                    color:
+                                                        AppColors.hintTextColor,
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          ),
+                                          )
                                         ],
                                       ),
                               ),
@@ -569,14 +620,47 @@ class _LiveScreenState extends State<LiveScreen> {
                                           ),
                                           Expanded(
                                             flex: 1,
-                                            child: Text(
-                                              "0.00",
-                                              textAlign: TextAlign.center,
-                                              style: CustomTextStyles.f14W500(
-                                                color: AppColors.hintTextColor,
-                                              ),
+                                            child: Obx(
+                                              () {
+                                                double? totalRunsConceded = (c
+                                                            .bowler
+                                                            .value
+                                                            ?.matchBowlingStat
+                                                            ?.runs ??
+                                                        0.0)
+                                                    .toDouble();
+                                                double totalOversBowled =
+                                                    double.parse(
+                                                  Over.overs(c
+                                                          .bowler
+                                                          .value
+                                                          ?.matchBowlingStat
+                                                          ?.balls ??
+                                                      0),
+                                                );
+
+                                                return Text(
+                                                  totalRunsConceded == 0 &&
+                                                          totalOversBowled == 0
+                                                      ? "0.0"
+                                                      : ((totalRunsConceded /
+                                                                  totalOversBowled))
+                                                              .isFinite
+                                                          ? ((totalRunsConceded /
+                                                                  totalOversBowled))
+                                                              .toStringAsFixed(
+                                                                  0)
+                                                          : "0",
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      CustomTextStyles.f14W500(
+                                                    color:
+                                                        AppColors.hintTextColor,
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          ),
+                                          )
                                         ],
                                       ),
                               ),

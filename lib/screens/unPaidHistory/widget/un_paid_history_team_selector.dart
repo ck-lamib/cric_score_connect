@@ -1,5 +1,6 @@
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
-import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_detail_controller.dart';
+import 'package:cric_score_connect/models/overs.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/controller/un_paid_history_detail_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class UnPaidHistorySelectTeamTabBar extends StatefulWidget {
 class _UnPaidHistorySelectTeamTabBarState
     extends State<UnPaidHistorySelectTeamTabBar>
     with SingleTickerProviderStateMixin {
-  PaidHistoryDetailController c = Get.find<PaidHistoryDetailController>();
+  UnPaidHistoryDetailController c = Get.find<UnPaidHistoryDetailController>();
   late TabController _tabController;
   @override
   void initState() {
@@ -64,16 +65,16 @@ class _UnPaidHistorySelectTeamTabBarState
               ),
               labelColor: AppColors.primaryColor,
               unselectedLabelColor: AppColors.backGroundColor,
-              tabs: const [
+              tabs: [
                 Tab(
                   child: Text(
-                    'Home Team',
+                    '${c.matchStat.value?.homeTeamName}',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Tab(
                   child: Text(
-                    'Away Team',
+                    '${c.matchStat.value?.awayTeamName}',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -88,12 +89,12 @@ class _UnPaidHistorySelectTeamTabBarState
             controller: _tabController,
             children: [
               Obx(
-                () => HistoryTeamLineUpStats(
+                () => UnPaidHistoryTeamLineUpStats(
                   gameTeam: c.matchStat.value!.homeTeam!,
                 ),
               ),
               Obx(
-                () => HistoryTeamLineUpStats(
+                () => UnPaidHistoryTeamLineUpStats(
                   gameTeam: c.matchStat.value!.awayTeam!,
                 ),
               )
@@ -105,18 +106,20 @@ class _UnPaidHistorySelectTeamTabBarState
   }
 }
 
-class HistoryTeamLineUpStats extends StatefulWidget {
-  const HistoryTeamLineUpStats({
+class UnPaidHistoryTeamLineUpStats extends StatefulWidget {
+  const UnPaidHistoryTeamLineUpStats({
     super.key,
     required this.gameTeam,
   });
 
   final List<LiveTeam> gameTeam;
   @override
-  State<HistoryTeamLineUpStats> createState() => _HistoryTeamLineUpStatsState();
+  State<UnPaidHistoryTeamLineUpStats> createState() =>
+      _UnPaidHistoryTeamLineUpStatsState();
 }
 
-class _HistoryTeamLineUpStatsState extends State<HistoryTeamLineUpStats>
+class _UnPaidHistoryTeamLineUpStatsState
+    extends State<UnPaidHistoryTeamLineUpStats>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
@@ -281,7 +284,7 @@ class _HistoryTeamLineUpStatsState extends State<HistoryTeamLineUpStats>
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: widget.gameTeam.length,
                         itemBuilder: (context, index) {
-                          return HistoryBatterTile(
+                          return UnPaidHistoryBatterTile(
                             batter: widget.gameTeam[index],
                           );
                         },
@@ -365,7 +368,7 @@ class _HistoryTeamLineUpStatsState extends State<HistoryTeamLineUpStats>
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: widget.gameTeam.length,
                         itemBuilder: (context, index) {
-                          return HistoryBowlerTile(
+                          return UnPaidHistoryBowlerTile(
                             bowler: widget.gameTeam[index],
                           );
                         },
@@ -382,8 +385,8 @@ class _HistoryTeamLineUpStatsState extends State<HistoryTeamLineUpStats>
   }
 }
 
-class HistoryBowlerTile extends StatelessWidget {
-  const HistoryBowlerTile({
+class UnPaidHistoryBowlerTile extends StatelessWidget {
+  const UnPaidHistoryBowlerTile({
     super.key,
     required this.bowler,
   });
@@ -391,6 +394,11 @@ class HistoryBowlerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double? totalRunsConceded =
+        (bowler.matchBowlingStat?.runs ?? 0.0).toDouble();
+    double totalOversBowled = double.parse(
+      Over.overs(bowler.matchBowlingStat?.balls ?? 0),
+    );
     return Row(
       children: [
         Expanded(
@@ -446,7 +454,12 @@ class HistoryBowlerTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "0.00",
+            totalRunsConceded == 0 && totalOversBowled == 0
+                ? "0.0"
+                : ((totalRunsConceded / totalOversBowled)).isFinite
+                    ? ((totalRunsConceded / totalOversBowled))
+                        .toStringAsFixed(0)
+                    : "0",
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,
@@ -458,8 +471,8 @@ class HistoryBowlerTile extends StatelessWidget {
   }
 }
 
-class HistoryBatterTile extends StatelessWidget {
-  const HistoryBatterTile({
+class UnPaidHistoryBatterTile extends StatelessWidget {
+  const UnPaidHistoryBatterTile({
     super.key,
     required this.batter,
   });
@@ -467,6 +480,8 @@ class HistoryBatterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int? strikerRuns = batter.matchBattingStat?.runs ?? 0;
+    int strikerBalls = batter.matchBattingStat?.balls ?? 0;
     return Row(
       children: [
         Expanded(
@@ -522,7 +537,9 @@ class HistoryBatterTile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            "0.00",
+            strikerBalls == 0 && strikerRuns == 0
+                ? "0.0"
+                : ((strikerRuns / strikerBalls) * 100).toStringAsFixed(0),
             textAlign: TextAlign.center,
             style: CustomTextStyles.f14W500(
               color: AppColors.hintTextColor,
