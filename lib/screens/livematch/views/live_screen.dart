@@ -5,15 +5,33 @@ import 'package:cric_score_connect/screens/livematch/views/team_line_up_stats_ta
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
+import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class LiveScreen extends StatelessWidget {
+class LiveScreen extends StatefulWidget {
   static const String routeName = "/live-screen";
   LiveScreen({super.key});
+
+  @override
+  State<LiveScreen> createState() => _LiveScreenState();
+}
+
+class _LiveScreenState extends State<LiveScreen> {
   final LiveScreenController c = Get.find<LiveScreenController>();
+
+  @override
+  void dispose() {
+    try {
+      c.stopFetching();
+    } catch (e) {
+      CustomLogger.trace(e);
+    }
+    CustomLogger.trace("Disposed called");
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

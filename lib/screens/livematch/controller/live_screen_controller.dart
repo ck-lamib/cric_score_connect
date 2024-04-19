@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cric_score_connect/core/core_controller.dart';
 import 'package:cric_score_connect/datasource/game/game_datasource.dart';
 import 'package:cric_score_connect/models/gamestats/live_match_model.dart';
-import 'package:cric_score_connect/screens/dashboard/views/dashboard_screen.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
@@ -14,24 +13,31 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 
 class LiveScreenController extends GetxController {
   var matchKey = "";
+  bool isTimerForFirstTime = true;
 
   Rxn<LiveMatchStat> liveMatchStat = Rxn();
   Rxn<LiveTeam> bowler = Rxn();
   Rxn<LiveTeam> striker = Rxn();
   Rxn<LiveTeam> nonStriker = Rxn();
   RequestLoader requestLoader = RequestLoader();
-  Timer? _timer;
+  Timer? timer;
 
   void startFetching() {
+    CustomLogger.trace("is started");
     // Start a timer to fetch data every 5 seconds
-    _timer = Timer.periodic(Duration(seconds: 5), (_) {
+    timer = Timer.periodic(const Duration(seconds: 5), (_) {
+      CustomLogger.trace("===>> it is here..");
       getMatchDetail();
     });
   }
 
   void stopFetching() {
-    // Cancel the timer when no longer needed
-    _timer?.cancel();
+    try {
+      timer!.cancel();
+      CustomLogger.trace("timer cancled");
+    } catch (e) {
+      CustomLogger.trace(e);
+    }
   }
 
   @override
@@ -49,9 +55,8 @@ class LiveScreenController extends GetxController {
 
   @override
   void onClose() {
-    try {
-      stopFetching();
-    } catch (_) {
+    stopFetching();
+    try {} catch (_) {
       CustomLogger.trace(_);
     }
     super.onClose();
@@ -96,7 +101,10 @@ class LiveScreenController extends GetxController {
 
         requestLoader.hide();
         isPageLoading.value = false;
-        startFetching();
+        if (isTimerForFirstTime) {
+          startFetching();
+          isTimerForFirstTime = false;
+        }
       },
       onError: (message) async {
         if (message.contains("Invalid match key")) {

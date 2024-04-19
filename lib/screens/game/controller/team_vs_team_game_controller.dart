@@ -18,14 +18,8 @@ import 'package:cric_score_connect/utils/helpers/custom_logger.dart';
 import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 class TeamVsTeamGameController extends GetxController {
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   // String matchKey = "";
   Rxn<MatchStore> matchStoreData = Rxn();
 
