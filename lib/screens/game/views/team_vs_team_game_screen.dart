@@ -4,6 +4,7 @@ import 'package:cric_score_connect/screens/game/widgets/team_vs_team_game_app_ba
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
+import 'package:cric_score_connect/utils/custom_snackbar.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -69,9 +70,16 @@ class TeamVsTeamGameScreen extends StatelessWidget {
                           if (c.formKey.currentState!.validate()) {
                             if (c.homeTeamController.text.trim().isNotEmpty ||
                                 c.awayTeamController.text.trim().isNotEmpty) {
-                              bool getUsers = await c.getAllFriend();
-                              if (getUsers) {
-                                Get.toNamed(TeamVsTeamCreateGame.routeName);
+                              if (c.homeTeamController.text ==
+                                  c.awayTeamController.text) {
+                                CustomSnackBar.info(
+                                    message:
+                                        "Home and away team name cannot be same.");
+                              } else {
+                                bool getUsers = await c.getAllFriend();
+                                if (getUsers) {
+                                  Get.toNamed(TeamVsTeamCreateGame.routeName);
+                                }
                               }
 
                               // Get.toNamed(SelectOpeningPlayerScreen.routeName);
