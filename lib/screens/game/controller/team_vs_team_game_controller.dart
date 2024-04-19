@@ -156,13 +156,13 @@ class TeamVsTeamGameController extends GetxController {
                         6)
                     .toStringAsFixed(2),
         target: target.value.toString(),
-        awayTeam: homeTeamPlayer
+        homeTeam: homeTeamPlayer
             .map(
               (item) => LiveTeam(
                 id: item.id,
                 name: item.name,
                 username: item.username,
-                out: item.matchBattingStats?.outReason.value == Out.none,
+                out: item.matchBattingStats?.outReason.value != Out.none,
                 bowler:
                     matchController.getInningDetail.bowler.value?.id == item.id,
                 striker: matchController.getInningDetail.striker.value?.id ==
@@ -190,13 +190,13 @@ class TeamVsTeamGameController extends GetxController {
               ),
             )
             .toList(),
-        homeTeam: awayTeamPlayer
+        awayTeam: awayTeamPlayer
             .map(
               (item) => LiveTeam(
                 id: item.id,
                 name: item.name,
                 username: item.username,
-                out: item.matchBattingStats?.outReason.value == Out.none,
+                out: item.matchBattingStats?.outReason.value != Out.none,
                 bowler:
                     matchController.getInningDetail.bowler.value?.id == item.id,
                 striker: matchController.getInningDetail.striker.value?.id ==
@@ -336,120 +336,14 @@ class TeamVsTeamGameController extends GetxController {
   GlobalKey<FormState> createGameFormKey = GlobalKey<FormState>();
 
   RxList<User> allAvailablePlayers = RxList();
-  // [
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username1",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username2",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username3",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username4",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username5",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username6",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username7",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username8",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username9",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  //   User(
-  //     name: "Bibek khatri",
-  //     username: "username10",
-  //     email: "email@gmail.com",
-  //     address: "Pokhara",
-  //     dob: "2002-07-07",
-  //     phone: "98677743236",
-  //     matchBattingStats: MatchBattingStats(),
-  //     matchBowlingStats: MatchBowlingStats(),
-  //   ),
-  // ],
 
   RxList<User> homeTeamPlayer = RxList();
   RxList<User> awayTeamPlayer = RxList();
 
-  TextEditingController selectDateController =
-      TextEditingController(text: "2002-02-02");
-  TextEditingController selectTimeController =
-      TextEditingController(text: "2:30");
-  TextEditingController venueController =
-      TextEditingController(text: "pokhara");
-  TextEditingController numberOfOversController =
-      TextEditingController(text: "1");
+  TextEditingController selectDateController = TextEditingController();
+  TextEditingController selectTimeController = TextEditingController();
+  TextEditingController venueController = TextEditingController();
+  TextEditingController numberOfOversController = TextEditingController();
   String? tossWinner;
   String? optedTo;
 

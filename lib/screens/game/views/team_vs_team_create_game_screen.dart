@@ -257,48 +257,38 @@ class TeamVsTeamCreateGame extends StatelessWidget {
                     validator: Validators.checkFieldEmpty,
                   ),
                   SizeConfig.getSpace(),
-                  Obx(
-                    () => CustomElevatedButton(
-                      title: "Toss a coin",
-                      onTap: c.isCoinTossed.value
-                          ? () {
-                              CustomSnackBar.info(
-                                title: "Coin toss.",
-                                message: "Already Tossed",
+                  CustomElevatedButton(
+                    title: "Toss a coin",
+                    onTap: () async {
+                      RequestLoader requestLoader = RequestLoader();
+                      requestLoader.show(
+                        message: "Tossing",
+                      );
+                      await Future.delayed(const Duration(seconds: 2), () {
+                        requestLoader.hide();
+                        var doubleValue = Random().nextInt(9999);
+                        c.isCoinTossed.value = true;
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                  "It's ${doubleValue.isEven ? "Heads" : "Tails"}",
+                                  textAlign: TextAlign.center,
+                                  style: CustomTextStyles.f24W600(),
+                                ),
+                                actions: [
+                                  CustomElevatedButton(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    title: "Ok",
+                                  )
+                                ],
                               );
-                            }
-                          : () async {
-                              RequestLoader requestLoader = RequestLoader();
-                              requestLoader.show(
-                                message: "Tossing",
-                              );
-                              await Future.delayed(const Duration(seconds: 2),
-                                  () {
-                                requestLoader.hide();
-                                var doubleValue = Random().nextInt(9999);
-                                c.isCoinTossed.value = true;
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          "It's ${doubleValue.isEven ? "Heads" : "Tails"}",
-                                          textAlign: TextAlign.center,
-                                          style: CustomTextStyles.f24W600(),
-                                        ),
-                                        actions: [
-                                          CustomElevatedButton(
-                                            onTap: () {
-                                              Get.back();
-                                            },
-                                            title: "Ok",
-                                          )
-                                        ],
-                                      );
-                                    });
-                              });
-                            },
-                    ),
+                            });
+                      });
+                    },
                   ),
                   SizeConfig.getSpace(),
                   CustomDropdownTextField(

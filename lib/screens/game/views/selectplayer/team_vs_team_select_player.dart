@@ -56,39 +56,99 @@ class SelectPlayer extends StatelessWidget {
           ),
           itemCount: c.availablePlayer.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              leading: c.availablePlayer[index].profilePhotoPath == null
-                  ? const CircleAvatar(
-                      backgroundColor: AppColors.onBackGroundColor,
-                      backgroundImage: AssetImage(
-                        ImagePath.defaultAvatar,
+            return Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
+              child: Row(
+                children: [
+                  c.availablePlayer[index].profilePhotoPath == null
+                      ? const CircleAvatar(
+                          radius: 25,
+                          backgroundColor: AppColors.onBackGroundColor,
+                          backgroundImage: AssetImage(
+                            ImagePath.defaultAvatar,
+                          ),
+                        )
+                      : CircleAvatar(
+                          radius: 25,
+                          backgroundColor: AppColors.onBackGroundColor,
+                          backgroundImage: NetworkImage(
+                            c.availablePlayer[index].profilePhotoPath!,
+                          ),
+                        ),
+                  Expanded(
+                    child: Theme(
+                      data: ThemeData(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                       ),
-                    )
-                  : const CircleAvatar(
-                      backgroundColor: AppColors.onBackGroundColor,
-                      backgroundImage: AssetImage(
-                        ImagePath.defaultAvatar,
+                      child: Obx(
+                        () => CheckboxListTile(
+                          checkColor: AppColors.primaryColor,
+                          selectedTileColor: AppColors.backGroundColor,
+                          fillColor: MaterialStateColor.resolveWith(
+                            (states) {
+                              if (states.contains(MaterialState.selected)) {
+                                return AppColors.backGroundColor;
+                              }
+                              return AppColors.primaryColor;
+                            },
+                          ),
+                          onChanged: (value) {
+                            c.togglePlayer(
+                                value: value, user: c.availablePlayer[index]);
+                          },
+                          value: c.selectedTeamPlayer.any(
+                            (e) =>
+                                e.username == c.availablePlayer[index].username,
+                          ),
+                          title: Text(
+                              c.availablePlayer[index].name ?? "Demo user"),
+                          subtitle: Text(c.availablePlayer[index].username ??
+                              "demoUser@12"),
+                          splashRadius: 0,
+                        ),
                       ),
                     ),
-              title: Text(c.availablePlayer[index].name ?? "Demo user"),
-              subtitle:
-                  Text(c.availablePlayer[index].username ?? "demoUser@12"),
-              trailing: Obx(
-                () => SizedBox(
-                  height: 22,
-                  width: 22,
-                  child: Checkbox(
-                    onChanged: (value) {
-                      c.togglePlayer(
-                          value: value, user: c.availablePlayer[index]);
-                    },
-                    value: c.selectedTeamPlayer.any(
-                      (e) => e.username == c.availablePlayer[index].username,
-                    ),
-                  ),
-                ),
+                  )
+                ],
               ),
             );
+            // ListTile(
+            //   onTap: () {},
+            //   leading: c.availablePlayer[index].profilePhotoPath == null
+            //       ? const CircleAvatar(
+            //           backgroundColor: AppColors.onBackGroundColor,
+            //           backgroundImage: AssetImage(
+            //             ImagePath.defaultAvatar,
+            //           ),
+            //         )
+            //       : const CircleAvatar(
+            //           backgroundColor: AppColors.onBackGroundColor,
+            //           backgroundImage: AssetImage(
+            //             ImagePath.defaultAvatar,
+            //           ),
+            //         ),
+            //   title: Text(c.availablePlayer[index].name ?? "Demo user"),
+            //   subtitle:
+            //       Text(c.availablePlayer[index].username ?? "demoUser@12"),
+            //   trailing: Obx(
+            //     () => SizedBox(
+            //       // height: 22,
+            //       // width: 22,
+            //       child: Checkbox(
+            //         onChanged: (value) {
+            //           c.togglePlayer(
+            //               value: value, user: c.availablePlayer[index]);
+            //         },
+            //         value: c.selectedTeamPlayer.any(
+            //           (e) => e.username == c.availablePlayer[index].username,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // );
           },
         ),
       ),
