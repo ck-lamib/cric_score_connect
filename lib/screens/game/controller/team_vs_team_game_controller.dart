@@ -125,14 +125,14 @@ class TeamVsTeamGameController extends GetxController {
         homeTeamName: homeTeamController.text,
         isFirstInning: matchController.getInningDetail.isFirstInning,
         firstInningTotalOver: double.tryParse(Over.overs(
-                matchController.firstInningDetail.currentNoBalls.value)) ??
+                matchController.firstInningDetail.currentBalls.value)) ??
             0,
         firstInningTotalRun:
             matchController.firstInningDetail.totalRunTillNow.value,
         firstInningTotalWicket:
             matchController.firstInningDetail.totalWicketTillNow.value,
         secondInningTotalOver: double.tryParse(Over.overs(
-                matchController.secondInningDetail.currentNoBalls.value)) ??
+                matchController.secondInningDetail.currentBalls.value)) ??
             0,
         secondInningTotalRun:
             matchController.secondInningDetail.totalRunTillNow.value,
