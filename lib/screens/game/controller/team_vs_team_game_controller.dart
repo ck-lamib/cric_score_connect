@@ -148,10 +148,10 @@ class TeamVsTeamGameController extends GetxController {
         isGameCanceled: isGameCanceledd ?? false,
         rrr: oversRemaining == 0
             ? matchController.getInningDetail.isFirstInning == true
-                ? ""
-                : "0"
+                ? "0.00"
+                : "0.00"
             : matchController.getInningDetail.isFirstInning == true
-                ? ""
+                ? "0.00"
                 : (((runsRequired.toDouble() / oversRemaining.toDouble()) * 6) /
                         6)
                     .toStringAsFixed(2),

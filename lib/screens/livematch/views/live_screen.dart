@@ -362,7 +362,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                           Expanded(
                                             flex: 2,
                                             child: Text(
-                                              "* ${c.nonStriker.value!.name}",
+                                              "${c.nonStriker.value!.name}",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.center,
