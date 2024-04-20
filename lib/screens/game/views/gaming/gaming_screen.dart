@@ -11,6 +11,7 @@ import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:cric_score_connect/utils/constants/size_config.dart';
 import 'package:cric_score_connect/utils/constants/validators.dart';
 import 'package:cric_score_connect/utils/custom_snackbar.dart';
+import 'package:cric_score_connect/utils/helpers/request_loader.dart';
 import 'package:cric_score_connect/utils/themes/custom_text_styles.dart';
 import 'package:cric_score_connect/widgets/custom/custom_elevated_button.dart';
 import 'package:cric_score_connect/widgets/custom/custom_textfield.dart';
@@ -240,68 +241,75 @@ class GamingScreen extends StatelessWidget {
                             );
                           },
                         ),
-                        Obx(
-                          () => GamingRatingStat(
-                              title: "C.R.R",
-                              stat: (matchController.getInningDetail
-                                          .totalRunTillNow.value ==
-                                      0
-                                  ? "0.00"
-                                  : (matchController.getInningDetail
-                                                  .totalRunTillNow.value /
-                                              (matchController.getInningDetail
-                                                      .currentBalls.value /
-                                                  6))
-                                          .isFinite
-                                      ? (matchController.getInningDetail
-                                                  .totalRunTillNow.value /
-                                              (matchController.getInningDetail
-                                                      .currentBalls.value /
-                                                  6))
-                                          .toStringAsFixed(2)
-                                      : "0.00")),
+                        Tooltip(
+                          message: "Current run rate",
+                          child: Obx(
+                            () => GamingRatingStat(
+                                title: "C.R.R",
+                                stat: (matchController.getInningDetail
+                                            .totalRunTillNow.value ==
+                                        0
+                                    ? "0.00"
+                                    : (matchController.getInningDetail
+                                                    .totalRunTillNow.value /
+                                                (matchController.getInningDetail
+                                                        .currentBalls.value /
+                                                    6))
+                                            .isFinite
+                                        ? (matchController.getInningDetail
+                                                    .totalRunTillNow.value /
+                                                (matchController.getInningDetail
+                                                        .currentBalls.value /
+                                                    6))
+                                            .toStringAsFixed(2)
+                                        : "0.00")),
+                          ),
                         ),
-                        Obx(
-                          () {
-                            // Calculate the runs required to win
-                            int runsRequired = c.target.value.toInt() -
-                                matchController
-                                    .getInningDetail.totalRunTillNow.value;
+                        Tooltip(
+                          message: "Required run rate",
+                          child: Obx(
+                            () {
+                              // Calculate the runs required to win
+                              int runsRequired = c.target.value.toInt() -
+                                  matchController
+                                      .getInningDetail.totalRunTillNow.value;
 
-                            double noOfOvers = (double.tryParse(
-                                    c.numberOfOversController.text) ??
-                                6);
-                            double currentOver = double.parse(
-                                matchController.getInningDetail.overs());
-                            var oversRemaining = noOfOvers - currentOver;
+                              double noOfOvers = (double.tryParse(
+                                      c.numberOfOversController.text) ??
+                                  6);
+                              double currentOver = double.parse(
+                                  matchController.getInningDetail.overs());
+                              var oversRemaining = noOfOvers - currentOver;
 
-                            // If overs remaining is 0, return a default value
-                            if (oversRemaining == 0.0) {
+                              // If overs remaining is 0, return a default value
+                              if (oversRemaining == 0.0) {
+                                return GamingRatingStat(
+                                  title: "R.R.R",
+                                  stat: matchController
+                                              .getInningDetail.isFirstInning ==
+                                          true
+                                      ? "--:--"
+                                      : "0",
+                                );
+                              }
+
+                              // Calculate the required run rate
+                              double requiredRunRate =
+                                  ((runsRequired.toDouble() /
+                                              oversRemaining.toDouble()) *
+                                          6) /
+                                      6;
+
                               return GamingRatingStat(
                                 title: "R.R.R",
                                 stat: matchController
                                             .getInningDetail.isFirstInning ==
                                         true
                                     ? "--:--"
-                                    : "0",
+                                    : requiredRunRate.toStringAsFixed(2),
                               );
-                            }
-
-                            // Calculate the required run rate
-                            double requiredRunRate = ((runsRequired.toDouble() /
-                                        oversRemaining.toDouble()) *
-                                    6) /
-                                6;
-
-                            return GamingRatingStat(
-                              title: "R.R.R",
-                              stat: matchController
-                                          .getInningDetail.isFirstInning ==
-                                      true
-                                  ? "--:--"
-                                  : requiredRunRate.toStringAsFixed(2),
-                            );
-                          },
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -379,11 +387,14 @@ class GamingScreen extends StatelessWidget {
                             ),
                             Expanded(
                               flex: 1,
-                              child: Text(
-                                "SR",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
+                              child: Tooltip(
+                                message: "Strike rate",
+                                child: Text(
+                                  "SR",
+                                  textAlign: TextAlign.center,
+                                  style: CustomTextStyles.f14W500(
+                                    color: AppColors.hintTextColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -651,33 +662,42 @@ class GamingScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Wk",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
+                            Tooltip(
+                              message: "Wicktes",
+                              child: Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Wk",
+                                  textAlign: TextAlign.center,
+                                  style: CustomTextStyles.f14W500(
+                                    color: AppColors.hintTextColor,
+                                  ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "M",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
+                            Tooltip(
+                              message: "Maidens",
+                              child: Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "M",
+                                  textAlign: TextAlign.center,
+                                  style: CustomTextStyles.f14W500(
+                                    color: AppColors.hintTextColor,
+                                  ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "ER",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.hintTextColor,
+                            Tooltip(
+                              message: "Economy Rate",
+                              child: Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "ER",
+                                  textAlign: TextAlign.center,
+                                  style: CustomTextStyles.f14W500(
+                                    color: AppColors.hintTextColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -1434,10 +1454,14 @@ class GamingScreen extends StatelessWidget {
                                             ),
                                             TextButton(
                                               onPressed: () async {
+                                                RequestLoader requestLoader =
+                                                    RequestLoader();
+                                                requestLoader.show();
                                                 await c.sendData(
                                                   message: "Game is Cancled",
                                                   isGameCanceledd: true,
                                                 );
+                                                requestLoader.hide();
                                                 Get.offNamedUntil(
                                                     DashboardScreen.routeName,
                                                     (route) => false);

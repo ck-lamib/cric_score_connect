@@ -265,11 +265,14 @@ class _UnPaidHistoryTeamLineUpStatsState
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              "SR",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
+                            child: Tooltip(
+                              message: "Strike Rate",
+                              child: Text(
+                                "SR",
+                                textAlign: TextAlign.center,
+                                style: CustomTextStyles.f14W500(
+                                  color: AppColors.hintTextColor,
+                                ),
                               ),
                             ),
                           ),
@@ -329,31 +332,40 @@ class _UnPaidHistoryTeamLineUpStatsState
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              "Wk",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
+                            child: Tooltip(
+                              message: "Wickets",
+                              child: Text(
+                                "Wk",
+                                textAlign: TextAlign.center,
+                                style: CustomTextStyles.f14W500(
+                                  color: AppColors.hintTextColor,
+                                ),
                               ),
                             ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              "M",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
+                            child: Tooltip(
+                              message: "Maidens",
+                              child: Text(
+                                "M",
+                                textAlign: TextAlign.center,
+                                style: CustomTextStyles.f14W500(
+                                  color: AppColors.hintTextColor,
+                                ),
                               ),
                             ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              "ER",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
+                            child: Tooltip(
+                              message: "Economy Rate",
+                              child: Text(
+                                "ER",
+                                textAlign: TextAlign.center,
+                                style: CustomTextStyles.f14W500(
+                                  color: AppColors.hintTextColor,
+                                ),
                               ),
                             ),
                           ),
@@ -407,7 +419,7 @@ class UnPaidHistoryBowlerTile extends StatelessWidget {
             "${bowler.name}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             style: CustomTextStyles.f14W500(),
           ),
         ),
@@ -490,7 +502,7 @@ class UnPaidHistoryBatterTile extends StatelessWidget {
             "${batter.name}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             style: CustomTextStyles.f14W500(),
           ),
         ),

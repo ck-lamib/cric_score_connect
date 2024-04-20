@@ -63,6 +63,47 @@ class PaidHistoryDetailScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        // const SizedBox(
+                        //   height: 25,
+                        // ),
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(
+                        //     horizontal: 24,
+                        //     vertical: 5,
+                        //   ),
+                        //   decoration: BoxDecoration(
+                        //     color: AppColors.primaryColor,
+                        //     shape: BoxShape.rectangle,
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     border: Border.all(
+                        //       color: AppColors.backGroundColor,
+                        //       width: 1,
+                        //     ),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //     children: [
+                        //       RichText(
+                        //         text: TextSpan(
+                        //           text:
+                        //               "${matchController.getInningDetail.totalRunTillNow.value}-${matchController.getInningDetail.totalWicketTillNow.value}",
+                        //           style: CustomTextStyles.f32W600(
+                        //             color: AppColors.backGroundColor,
+                        //           ),
+                        //           children: [
+                        //             TextSpan(
+                        //               text:
+                        //                   "(${matchController.getInningDetail.overs()})",
+                        //               style: CustomTextStyles.f18W600(
+                        //                 color: AppColors.hintTextColor,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 25,
                         ),

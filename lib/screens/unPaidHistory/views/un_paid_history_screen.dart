@@ -27,7 +27,7 @@ class UnPaidHistoryScreen extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             const CommonSilverAppBar(
               hasLeading: true,
-              title: "Un-Paid History Screen",
+              title: "History Screen",
               hasNotification: false,
               scrolledUnderElevation: 0,
               floating: false,

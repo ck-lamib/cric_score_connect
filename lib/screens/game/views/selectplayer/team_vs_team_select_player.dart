@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cric_score_connect/models/user.dart';
 import 'package:cric_score_connect/screens/game/controller/selectplayer/select_player_controller.dart';
 import 'package:cric_score_connect/utils/constants/colors.dart';
@@ -70,11 +71,25 @@ class SelectPlayer extends StatelessWidget {
                             ImagePath.defaultAvatar,
                           ),
                         )
-                      : CircleAvatar(
-                          radius: 25,
-                          backgroundColor: AppColors.onBackGroundColor,
-                          backgroundImage: NetworkImage(
-                            c.availablePlayer[index].profilePhotoPath!,
+                      : SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  c.availablePlayer[index].profilePhotoPath!,
+                              fit: BoxFit.cover,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      Image.asset(
+                                ImagePath.defaultAvatar,
+                                fit: BoxFit.cover,
+                              ),
+                              errorWidget: (context, url, error) => Image.asset(
+                                ImagePath.defaultAvatar,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
                   Expanded(

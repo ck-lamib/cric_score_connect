@@ -177,15 +177,22 @@ class _LiveScreenState extends State<LiveScreen> {
                                     stat: c.liveMatchStat.value?.target ??
                                         "--:--"),
                               ),
-                              Obx(
-                                () => GamingRatingStat(
-                                    title: "C.R.R",
-                                    stat: c.liveMatchStat.value?.crr ?? "0.00"),
+                              Tooltip(
+                                message: "Current run rate",
+                                child: Obx(
+                                  () => GamingRatingStat(
+                                      title: "C.R.R",
+                                      stat:
+                                          c.liveMatchStat.value?.crr ?? "0.00"),
+                                ),
                               ),
-                              Obx(
-                                () => GamingRatingStat(
-                                  title: "R.R.R",
-                                  stat: c.liveMatchStat.value?.rrr ?? "--:--",
+                              Tooltip(
+                                message: "Required run rate",
+                                child: Obx(
+                                  () => GamingRatingStat(
+                                    title: "R.R.R",
+                                    stat: c.liveMatchStat.value?.rrr ?? "--:--",
+                                  ),
                                 ),
                               ),
                             ],
@@ -290,7 +297,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                               "* ${c.striker.value!.name}",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
+                                              textAlign: TextAlign.left,
                                               style: CustomTextStyles.f14W500(
                                                 color: Colors.green,
                                               ),
@@ -391,7 +398,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                               "${c.nonStriker.value!.name}",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
+                                              textAlign: TextAlign.left,
                                               style: CustomTextStyles.f14W500(
                                                 color: Colors.green,
                                               ),
@@ -532,31 +539,40 @@ class _LiveScreenState extends State<LiveScreen> {
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: Text(
-                                      "Wk",
-                                      textAlign: TextAlign.center,
-                                      style: CustomTextStyles.f14W500(
-                                        color: AppColors.hintTextColor,
+                                    child: Tooltip(
+                                      message: "Wicket",
+                                      child: Text(
+                                        "Wk",
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: Text(
-                                      "M",
-                                      textAlign: TextAlign.center,
-                                      style: CustomTextStyles.f14W500(
-                                        color: AppColors.hintTextColor,
+                                    child: Tooltip(
+                                      message: "Maiden",
+                                      child: Text(
+                                        "M",
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: Text(
-                                      "ER",
-                                      textAlign: TextAlign.center,
-                                      style: CustomTextStyles.f14W500(
-                                        color: AppColors.hintTextColor,
+                                    child: Tooltip(
+                                      message: "Economy Rate",
+                                      child: Text(
+                                        "ER",
+                                        textAlign: TextAlign.center,
+                                        style: CustomTextStyles.f14W500(
+                                          color: AppColors.hintTextColor,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -574,7 +590,7 @@ class _LiveScreenState extends State<LiveScreen> {
                                               "${c.bowler.value?.name}",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
+                                              textAlign: TextAlign.left,
                                               style: CustomTextStyles.f14W500(),
                                             ),
                                           ),
@@ -699,60 +715,75 @@ class _LiveScreenState extends State<LiveScreen> {
                                   children: [
                                     Expanded(
                                       flex: 1,
-                                      child: Obx(
-                                        () => Text(
-                                          "${c.liveMatchStat.value?.extras?.byes} B",
-                                          textAlign: TextAlign.center,
-                                          style: CustomTextStyles.f14W500(
-                                            color: AppColors.hintTextColor,
+                                      child: Tooltip(
+                                        message: "Byes",
+                                        child: Obx(
+                                          () => Text(
+                                            "${c.liveMatchStat.value?.extras?.byes} B",
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles.f14W500(
+                                              color: AppColors.hintTextColor,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Obx(
-                                        () => Text(
-                                          "${c.liveMatchStat.value?.extras?.legByes} LB",
-                                          textAlign: TextAlign.center,
-                                          style: CustomTextStyles.f14W500(
-                                            color: AppColors.hintTextColor,
+                                      child: Tooltip(
+                                        message: "Let Byes",
+                                        child: Obx(
+                                          () => Text(
+                                            "${c.liveMatchStat.value?.extras?.legByes} LB",
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles.f14W500(
+                                              color: AppColors.hintTextColor,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Obx(
-                                        () => Text(
-                                          "${c.liveMatchStat.value?.extras?.wide} WD",
-                                          textAlign: TextAlign.center,
-                                          style: CustomTextStyles.f14W500(
-                                            color: AppColors.hintTextColor,
+                                      child: Tooltip(
+                                        message: "Wides",
+                                        child: Obx(
+                                          () => Text(
+                                            "${c.liveMatchStat.value?.extras?.wide} WD",
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles.f14W500(
+                                              color: AppColors.hintTextColor,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Obx(
-                                        () => Text(
-                                          "${c.liveMatchStat.value?.extras?.noBall} NB",
-                                          textAlign: TextAlign.center,
-                                          style: CustomTextStyles.f14W500(
-                                            color: AppColors.hintTextColor,
+                                      child: Tooltip(
+                                        message: "No Balls",
+                                        child: Obx(
+                                          () => Text(
+                                            "${c.liveMatchStat.value?.extras?.noBall} NB",
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles.f14W500(
+                                              color: AppColors.hintTextColor,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                     Expanded(
                                       flex: 1,
-                                      child: Obx(
-                                        () => Text(
-                                          "${c.liveMatchStat.value?.extras?.penalty} P",
-                                          textAlign: TextAlign.center,
-                                          style: CustomTextStyles.f14W500(
-                                            color: AppColors.hintTextColor,
+                                      child: Tooltip(
+                                        message: "Penalties",
+                                        child: Obx(
+                                          () => Text(
+                                            "${c.liveMatchStat.value?.extras?.penalty} P",
+                                            textAlign: TextAlign.center,
+                                            style: CustomTextStyles.f14W500(
+                                              color: AppColors.hintTextColor,
+                                            ),
                                           ),
                                         ),
                                       ),

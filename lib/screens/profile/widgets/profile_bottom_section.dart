@@ -92,7 +92,7 @@ class ProfileBottomSection extends StatelessWidget {
               Icons.history_rounded,
               color: AppColors.backGroundColor,
             ),
-            title: 'Paid Match History',
+            title: 'Paid Matches',
             onTap: () =>
                 Navigator.of(context).pushNamed(PaidHistoryScreen.routeName),
           ),

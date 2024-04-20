@@ -61,6 +61,7 @@ class TeamVsTeamGameController extends GetxController {
     bool? isGameCanceledd,
     String? message,
     bool? isGameFinished,
+    String? rrr,
   }) async {
     CoreController cc = Get.find<CoreController>();
     MatchController matchController = Get.find<MatchController>();
@@ -93,6 +94,8 @@ class TeamVsTeamGameController extends GetxController {
     // Calculate the runs required to win
     int runsRequired = target.value.toInt() -
         matchController.getInningDetail.totalRunTillNow.value;
+
+    print("run required: $runsRequired");
 
     double currentOver = double.parse(matchController.getInningDetail.overs());
     var oversRemaining = noOfOvers - currentOver;
@@ -146,15 +149,17 @@ class TeamVsTeamGameController extends GetxController {
                 ? "$bowlingTeam needs ${target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from $noOfBalls balls to win against ${matchController.firstInningBattingTeamName}."
                 : "$battingTeam is Batting against $bowlingTeam"),
         isGameCanceled: isGameCanceledd ?? false,
-        rrr: oversRemaining == 0
-            ? matchController.getInningDetail.isFirstInning == true
-                ? "0.00"
-                : "0.00"
-            : matchController.getInningDetail.isFirstInning == true
-                ? "0.00"
-                : (((runsRequired.toDouble() / oversRemaining.toDouble()) * 6) /
-                        6)
-                    .toStringAsFixed(2),
+        rrr: rrr ??
+            (oversRemaining == 0
+                ? matchController.getInningDetail.isFirstInning == true
+                    ? "0.00"
+                    : "0.00"
+                : matchController.getInningDetail.isFirstInning == true
+                    ? "0.00"
+                    : (((runsRequired.toDouble() / oversRemaining.toDouble()) *
+                                6) /
+                            6)
+                        .toStringAsFixed(2)),
         target: target.value.toString(),
         homeTeam: homeTeamPlayer
             .map(
@@ -625,11 +630,15 @@ class InningDetail extends GetxController {
                   actions: [
                     TextButton(
                       onPressed: () async {
+                        RequestLoader requestLoader = RequestLoader();
+                        requestLoader.show();
                         await teamGameController.sendData(
                           isGameFinished: true,
                           message:
                               "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                          rrr: "0.00",
                         );
+                        requestLoader.hide();
                         Get.offNamedUntil(
                             DashboardScreen.routeName, (route) => false);
                       },
@@ -652,7 +661,11 @@ class InningDetail extends GetxController {
                   actions: [
                     TextButton(
                       onPressed: () async {
+                        RequestLoader requestLoader = RequestLoader();
+                        requestLoader.show();
                         await teamGameController.sendData();
+                        requestLoader.hide();
+
                         matchController.endFirstInnings();
                         teamGameController.target.value = matchController
                                 .firstInningDetail.totalRunTillNow.value
@@ -702,11 +715,15 @@ class InningDetail extends GetxController {
                   actions: [
                     TextButton(
                       onPressed: () async {
+                        RequestLoader requestLoader = RequestLoader();
+                        requestLoader.show();
                         await teamGameController.sendData(
                           isGameFinished: true,
                           message:
                               "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                          rrr: "0.00",
                         );
+                        requestLoader.hide();
 
                         Get.offNamedUntil(
                             DashboardScreen.routeName, (route) => false);
@@ -730,7 +747,10 @@ class InningDetail extends GetxController {
                   actions: [
                     TextButton(
                       onPressed: () async {
+                        RequestLoader requestLoader = RequestLoader();
+                        requestLoader.show();
                         await teamGameController.sendData();
+                        requestLoader.hide();
                         matchController.endFirstInnings();
                         teamGameController.target.value = matchController
                                 .firstInningDetail.totalRunTillNow.value
@@ -794,11 +814,15 @@ class InningDetail extends GetxController {
                 actions: [
                   TextButton(
                     onPressed: () async {
+                      RequestLoader requestLoader = RequestLoader();
+                      requestLoader.show();
                       await teamGameController.sendData(
                         isGameFinished: true,
                         message:
                             "${matchController.firstInningBattingTeamName} wins by ${(teamGameController.target.value - 1) - (matchController.getInningDetail.totalRunTillNow.value)} runs.",
+                        rrr: "0.00",
                       );
+                      requestLoader.hide();
 
                       Get.offNamedUntil(
                           DashboardScreen.routeName, (route) => false);
@@ -822,7 +846,10 @@ class InningDetail extends GetxController {
                 actions: [
                   TextButton(
                     onPressed: () async {
+                      RequestLoader requestLoader = RequestLoader();
+                      requestLoader.show();
                       await teamGameController.sendData();
+                      requestLoader.hide();
                       matchController.endFirstInnings();
                       teamGameController.target.value = matchController
                               .firstInningDetail.totalRunTillNow.value
@@ -881,11 +908,15 @@ class InningDetail extends GetxController {
                 actions: [
                   TextButton(
                     onPressed: () async {
+                      RequestLoader requestLoader = RequestLoader();
+                      requestLoader.show();
                       await teamGameController.sendData(
                         isGameFinished: true,
                         message:
                             "${matchController.firstInningBowlingTeamName} wins by ${(teamGameController.hasLastManStand.value ? matchController.getInningDetail.battingTeam.length : matchController.getInningDetail.battingTeam.length - 1) - (matchController.getInningDetail.outBattingTeam.length)} wicket.",
+                        rrr: "0.00",
                       );
+                      requestLoader.hide();
                       Get.offNamedUntil(
                           DashboardScreen.routeName, (route) => false);
                     },
@@ -905,7 +936,7 @@ class InningDetail extends GetxController {
 
   void recordDelivery(Delivery delivery) async {
     recordDeliveryHistory(delivery);
-    print("hello $deliveryHistory");
+    print("delivery history $deliveryHistory");
     MatchController matchController = Get.find<MatchController>();
     TeamVsTeamGameController teamGameController =
         Get.find<TeamVsTeamGameController>();
@@ -932,10 +963,12 @@ class InningDetail extends GetxController {
     lastSevenDeliveries.add(delivery.shortSummary().split(','));
 
     if (Over.finished(currentBalls.value) && isOverInProgress.value) {
-      bool hasZeroRun = lastSevenDeliveries.every((e) => e[0] == "0" || e[0]);
+      bool hasZeroRun =
+          lastSevenDeliveries.every((e) => e[0] == "0" || e[0] == 0);
       if (hasZeroRun && lastSevenDeliveries.length == 6) {
         isCurrentMaiden.value = true;
       }
+
       lastSevenDeliveries.value = [];
 
 //for calculating team game controller
