@@ -320,11 +320,14 @@ class _HistoryTeamLineUpStatsState extends State<HistoryTeamLineUpStats>
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              "Run",
-                              textAlign: TextAlign.center,
-                              style: CustomTextStyles.f14W500(
-                                color: AppColors.hintTextColor,
+                            child: Tooltip(
+                              message: "Run conceded",
+                              child: Text(
+                                "Run",
+                                textAlign: TextAlign.center,
+                                style: CustomTextStyles.f14W500(
+                                  color: AppColors.hintTextColor,
+                                ),
                               ),
                             ),
                           ),

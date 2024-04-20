@@ -26,7 +26,7 @@ class PaidHistoryScreen extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             const CommonSilverAppBar(
               hasLeading: true,
-              title: "History Screen",
+              title: "Paid Matches",
               hasNotification: false,
               scrolledUnderElevation: 0,
               floating: false,

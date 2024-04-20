@@ -28,7 +28,7 @@ class BowlingStatsTabView extends StatelessWidget {
           data: bowlingStats.innings,
         ),
         UserGameStatsTile(
-          title: "RUNS",
+          title: "RUN CONCEDED",
           data: bowlingStats.runs,
         ),
         UserGameStatsTile(
@@ -48,7 +48,7 @@ class BowlingStatsTabView extends StatelessWidget {
           data: bowlingStats.wickets,
         ),
         UserGameStatsTile(
-          title: "B. BOWLING",
+          title: "Best BOWLING",
           data: bowlingStats.bBowling,
         ),
         UserGameStatsTile(

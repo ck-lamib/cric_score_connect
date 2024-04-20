@@ -3,6 +3,8 @@ import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_c
 import 'package:cric_score_connect/screens/paidHistory/controller/paid_history_detail_controller.dart';
 import 'package:cric_score_connect/screens/paidHistory/views/paid_history_detail_screen.dart';
 import 'package:cric_score_connect/screens/unPaidHistory/controller/un_paid_history_controller.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/controller/un_paid_history_detail_controller.dart';
+import 'package:cric_score_connect/screens/unPaidHistory/views/un_paid_history_detail_screen.dart';
 
 import 'package:cric_score_connect/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ class UnPaidHistoryScreen extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             const CommonSilverAppBar(
               hasLeading: true,
-              title: "History Screen",
+              title: "Match History",
               hasNotification: false,
               scrolledUnderElevation: 0,
               floating: false,
@@ -58,8 +60,8 @@ class UnPaidHistoryScreen extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () {
                                   Get.toNamed(
-                                    PaidHistoryDetailScreen.routeName,
-                                    arguments: PaidHistoryDetailArgument(
+                                    UnPaidHistoryDetailScreen.routeName,
+                                    arguments: UnPaidHistoryDetailArgument(
                                         key: c.matchHistoryModelList[index]
                                             .matchKey!),
                                   );

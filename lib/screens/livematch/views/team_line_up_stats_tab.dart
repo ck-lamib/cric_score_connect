@@ -82,7 +82,7 @@ class _SelectTeamTabBarState extends State<SelectTeamTabBar>
               ]),
         ),
         SizedBox(
-          height: 30,
+          height: 20,
         ),
         SizedBox(
           height: height * 0.49,
@@ -486,11 +486,13 @@ class LiveBatterTile extends StatelessWidget {
         Expanded(
           flex: 2,
           child: Text(
-            "${batter.striker ?? false ? "* " : ""}${batter.name}",
+            "${batter.striker ?? false ? "▶ " : ""}${batter.name}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.left,
-            style: CustomTextStyles.f14W500(),
+            style: CustomTextStyles.f14W500(
+              color: batter.striker == true ? Colors.green : null,
+            ),
           ),
         ),
         Expanded(

@@ -407,14 +407,17 @@ class GamingScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 2,
-                              child: Obx(
-                                () => Text(
-                                  "* ${matchController.getInningDetail.striker.value?.name}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: CustomTextStyles.f14W500(
-                                    color: Colors.green,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Obx(
+                                  () => Text(
+                                    "▶ ${matchController.getInningDetail.striker.value?.name}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                    style: CustomTextStyles.f14W500(
+                                      color: Colors.green,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -512,13 +515,17 @@ class GamingScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       flex: 2,
-                                      child: Obx(
-                                        () => Text(
-                                          "${matchController.getInningDetail.nonStriker.value?.name}",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.center,
-                                          style: CustomTextStyles.f14W500(),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15.0),
+                                        child: Obx(
+                                          () => Text(
+                                            "${matchController.getInningDetail.nonStriker.value?.name}",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style: CustomTextStyles.f14W500(),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -662,10 +669,10 @@ class GamingScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Tooltip(
-                              message: "Wicktes",
-                              child: Expanded(
-                                flex: 1,
+                            Expanded(
+                              flex: 1,
+                              child: Tooltip(
+                                message: "Wicktes",
                                 child: Text(
                                   "Wk",
                                   textAlign: TextAlign.center,
@@ -675,10 +682,10 @@ class GamingScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Tooltip(
-                              message: "Maidens",
-                              child: Expanded(
-                                flex: 1,
+                            Expanded(
+                              flex: 1,
+                              child: Tooltip(
+                                message: "Maidens",
                                 child: Text(
                                   "M",
                                   textAlign: TextAlign.center,
@@ -688,10 +695,10 @@ class GamingScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Tooltip(
-                              message: "Economy Rate",
-                              child: Expanded(
-                                flex: 1,
+                            Expanded(
+                              flex: 1,
+                              child: Tooltip(
+                                message: "Economy Rate",
                                 child: Text(
                                   "ER",
                                   textAlign: TextAlign.center,
@@ -708,11 +715,16 @@ class GamingScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               flex: 2,
-                              child: Obx(
-                                () => Text(
-                                  "${matchController.getInningDetail.bowler.value?.name}",
-                                  textAlign: TextAlign.center,
-                                  style: CustomTextStyles.f14W500(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Obx(
+                                  () => Text(
+                                    "${matchController.getInningDetail.bowler.value?.name}",
+                                    textAlign: TextAlign.left,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: CustomTextStyles.f14W500(),
+                                  ),
                                 ),
                               ),
                             ),
@@ -1018,9 +1030,7 @@ class GamingScreen extends StatelessWidget {
                                                 style:
                                                     CustomTextStyles.f18W600(),
                                               ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
+                                              const SizedBox(),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,

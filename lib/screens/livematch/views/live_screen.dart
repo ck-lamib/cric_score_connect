@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cric_score_connect/common/common_app_bar.dart';
 import 'package:cric_score_connect/models/overs.dart';
 import 'package:cric_score_connect/screens/game/views/gaming/gaming_screen.dart';
@@ -66,29 +67,144 @@ class _LiveScreenState extends State<LiveScreen> {
                     child: ListView(
                       shrinkWrap: true,
                       children: [
-                        Card(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
-                          ),
-                          color: Colors.green,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 12,
-                            ),
-                            child: Obx(
-                              () => Text(
-                                c.liveMatchStat.value?.finishedMessage ?? "",
-                                textAlign: TextAlign.center,
-                                style: CustomTextStyles.f14W500(
-                                  color: AppColors.primaryColor,
+                        CarouselSlider(
+                          items: [
+                            Card(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
                                 ),
                               ),
+                              color: Colors.green,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 12,
+                                    ),
+                                    child: Text(
+                                      c.liveMatchStat.value?.finishedMessage ??
+                                          "",
+                                      textAlign: TextAlign.center,
+                                      style: CustomTextStyles.f14W500(
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                            Card(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                              ),
+                              color: Colors.green,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 12,
+                                      ),
+                                      child: (c.liveMatchStat.value
+                                                  ?.isFirstInning ??
+                                              true)
+                                          ? Text(
+                                              "This is First inning",
+                                              textAlign: TextAlign.center,
+                                              style: CustomTextStyles.f14W500(
+                                                color: AppColors.primaryColor,
+                                              ),
+                                            )
+                                          : RichText(
+                                              text: TextSpan(
+                                                text: "First Inning Details: ",
+                                                style: CustomTextStyles.f14W500(
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "${c.liveMatchStat.value?.firstInningTotalRun}-${c.liveMatchStat.value?.firstInningTotalWicket}",
+                                                    style: CustomTextStyles
+                                                        .f14W500(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        "(${c.liveMatchStat.value?.firstInningTotalOver})",
+                                                    style: CustomTextStyles
+                                                        .f12W400(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+
+                                      // Text(
+                                      //   "First inning detail: ${c.matchStat.value?.firstInningTotalRun}-${c.matchStat.value?.firstInningTotalWicket} (${c.matchStat.value?.firstInningTotalOver})",
+                                      //   textAlign: TextAlign.center,
+                                      //   style: CustomTextStyles.f14W500(
+                                      //     color: AppColors.primaryColor,
+                                      //   ),
+                                      // ),
+                                      ),
+                                ],
+                              ),
+                            ),
+                          ],
+                          carouselController: CarouselController(),
+                          options: CarouselOptions(
+                            // height: 150,
+                            aspectRatio: 5,
+                            viewportFraction: 0.8,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            enlargeFactor: 0.3,
+                            // viewportFraction: 1,
                           ),
                         ),
+                        // Card(
+                        //   shape: const RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.all(
+                        //       Radius.circular(8),
+                        //     ),
+                        //   ),
+                        //   color: Colors.green,
+                        //   child: Container(
+                        //     margin: const EdgeInsets.symmetric(
+                        //       horizontal: 12,
+                        //       vertical: 12,
+                        //     ),
+                        //     child: Obx(
+                        //       () => Text(
+                        //         c.liveMatchStat.value?.finishedMessage ?? "",
+                        //         textAlign: TextAlign.center,
+                        //         style: CustomTextStyles.f14W500(
+                        //           color: AppColors.primaryColor,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SizeConfig.getSpace(
                           height: 10,
                         ),
@@ -293,16 +409,19 @@ class _LiveScreenState extends State<LiveScreen> {
                                         children: [
                                           Expanded(
                                             flex: 2,
-                                            child: Text(
-                                              "* ${c.striker.value!.name}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: CustomTextStyles.f14W500(
-                                                color: Colors.green,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
+                                              child: Text(
+                                                "▶  ${c.striker.value!.name}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: CustomTextStyles.f14W500(
+                                                  color: Colors.green,
+                                                ),
                                               ),
                                             ),
-                                            // child:
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -394,13 +513,16 @@ class _LiveScreenState extends State<LiveScreen> {
                                         children: [
                                           Expanded(
                                             flex: 2,
-                                            child: Text(
-                                              "${c.nonStriker.value!.name}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: CustomTextStyles.f14W500(
-                                                color: Colors.green,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15.0),
+                                              child: Text(
+                                                "${c.nonStriker.value!.name}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style:
+                                                    CustomTextStyles.f14W500(),
                                               ),
                                             ),
                                             // child:
@@ -586,12 +708,17 @@ class _LiveScreenState extends State<LiveScreen> {
                                         children: [
                                           Expanded(
                                             flex: 2,
-                                            child: Text(
-                                              "${c.bowler.value?.name}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: CustomTextStyles.f14W500(),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
+                                              child: Text(
+                                                "${c.bowler.value?.name}",
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style:
+                                                    CustomTextStyles.f14W500(),
+                                              ),
                                             ),
                                           ),
                                           Expanded(

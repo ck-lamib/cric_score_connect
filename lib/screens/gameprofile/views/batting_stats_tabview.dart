@@ -36,7 +36,7 @@ class BattingStatsTabView extends StatelessWidget {
           data: battingStats.average,
         ),
         UserGameStatsTile(
-          title: "HIGHEST",
+          title: "HIGHEST RUN",
           data: battingStats.highest,
         ),
         UserGameStatsTile(

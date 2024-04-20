@@ -146,7 +146,7 @@ class TeamVsTeamGameController extends GetxController {
                         matchController.isSecondInnings == true)
                     .obs
                     .value
-                ? "$bowlingTeam needs ${target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from $noOfBalls balls to win against ${matchController.firstInningBattingTeamName}."
+                ? "$bowlingTeam needs ${target.value - matchController.getInningDetail.totalRunTillNow.value.toDouble()} runs from $noOfBalls balls to won against ${matchController.firstInningBattingTeamName}."
                 : "$battingTeam is Batting against $bowlingTeam"),
         isGameCanceled: isGameCanceledd ?? false,
         rrr: rrr ??
