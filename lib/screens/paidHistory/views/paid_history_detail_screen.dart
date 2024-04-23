@@ -143,7 +143,7 @@ class PaidHistoryDetailScreen extends StatelessWidget {
                           options: CarouselOptions(
                             // height: 150,
                             aspectRatio: 5,
-                            viewportFraction: 0.8,
+                            viewportFraction: 0.9,
                             initialPage: 0,
                             enableInfiniteScroll: true,
                             reverse: false,
@@ -153,7 +153,7 @@ class PaidHistoryDetailScreen extends StatelessWidget {
                                 Duration(milliseconds: 800),
                             autoPlayCurve: Curves.fastOutSlowIn,
                             enlargeCenterPage: true,
-                            enlargeFactor: 0.3,
+                            enlargeFactor: 0.2,
                             // viewportFraction: 1,
                           ),
                         ),

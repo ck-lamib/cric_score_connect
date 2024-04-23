@@ -17,7 +17,7 @@ class UnPaidHistoryScreenController extends GetxController {
   Future<void> getUnPaidMatchHistoryDetail() async {
     isDataLoading.value = true;
     CoreController cc = Get.find<CoreController>();
-    await GameDataSourceRepo.getPaidMatchHistorys(
+    await GameDataSourceRepo.getUnPaidMatchHistorys(
       userId: cc.currentUser.value!.id!,
       onSuccess: (listss) async {
         matchHistoryModelList.value = listss;
