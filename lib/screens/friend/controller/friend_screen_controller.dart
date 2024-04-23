@@ -98,7 +98,7 @@ class FriendScreenController extends GetxController {
   confirmFriendRequest(int id) async {
     RequestLoader requestLoader = RequestLoader();
     requestLoader.show();
-    await FriendRepo.rejectRequest(
+    await FriendRepo.confirmRequest(
       requestId: id,
       onSuccess: (message) async {
         CustomSnackBar.success(title: "Confirm request", message: message);
@@ -110,7 +110,7 @@ class FriendScreenController extends GetxController {
         requestLoader.hide();
       },
       onError: (message) {
-        CustomSnackBar.error(title: "Reject request", message: message);
+        CustomSnackBar.error(title: "Confirm request", message: message);
         requestLoader.hide();
       },
     );
